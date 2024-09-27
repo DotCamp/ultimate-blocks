@@ -18,8 +18,8 @@ if [ ! -d "$path" ]; then
     exit
 fi
 
-if [ -d "packages/base" ]; then
-    base_package_dir="packages/base"
+if [ -d "packages/ultimate-blocks" ]; then
+    base_package_dir="packages/ultimate-blocks"
 else
     printf "Enter path to base package: "
     read base_package_dir
