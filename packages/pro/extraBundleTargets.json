@@ -1,0 +1,6 @@
+{
+  "entries": [
+    "./src/block-extensions/content-toggle/inc/js/ContentToggleSearch.js"
+  ],
+  "distDir": "./inc/extra/js/dist"
+}

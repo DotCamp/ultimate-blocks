@@ -1,0 +1,6 @@
+@import "./common.scss";
+
+.ub-expand-portion.ub-expand-partial .ub-fade {
+  position: relative;
+  mask-image: linear-gradient(to top, transparent, #000000 95%);
+}

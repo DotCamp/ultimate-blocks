@@ -1,0 +1,58 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ub/timeline-item",
+  "title": "Timeline Item",
+  "category": "ultimateblocks",
+  "description": "Effortlessly create and customize interactive timelines to showcase your story or project milestones.",
+  "parent": [
+    "ub/timeline"
+  ],
+  "keywords": [
+    "timeline",
+    "ultimate coupon"
+  ],
+  "attributes": {
+    "oppositeText": {
+      "type": "string",
+      "default": ""
+    },
+    "contentColor": {
+      "type": "string",
+      "default": null
+    },
+    "contentBackground": {
+      "type": "string",
+      "default": null
+    },
+    "contentGradient": {
+      "type": "string",
+      "default": null
+    },
+    "contentPadding": {
+      "type": "object",
+      "default": {}
+    },
+    "contentBorder": {
+      "type": "object",
+      "default": {}
+    },
+    "contentBorderRadius": {
+      "type": "object",
+      "default": {}
+    },
+    "timelineType": {
+      "type": "string",
+      "default": "vertical"
+    }
+  },
+  "usesContext": [
+    "showOppositeText",
+    "icon",
+    "iconConnector"
+  ],
+  "supports": {},
+  "editorScript": "./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style.css"
+}

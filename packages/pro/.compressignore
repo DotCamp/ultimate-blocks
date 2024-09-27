@@ -1,0 +1,17 @@
+webpack.config.js
+README.md
+pluginCompress.js
+ParcelBundler.js
+package.json
+package-lock.json
+extraBundleWatch.js
+extraBundleTargets.json
+extraBundleBuild.js
+**/*.sass
+**/*.scss
+**/*.map
+src/**/!(front).js
+composer.json
+composer.lock
+vendor/bin/
+zip/

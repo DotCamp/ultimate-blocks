@@ -1,0 +1,67 @@
+@import "../../../base/styles/common";
+
+.wp-block-ub-tabbed-content-tab-holder {
+  .ultimate-blocks-pro-cta-wrap {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: "overlay";
+
+    .ultimate-blocks-pro-cta-overlay {
+      grid-area: overlay;
+      z-index: 1000;
+
+      .ultimate-blocks-pro-cta-link {
+        @extend %size-full;
+        display: block;
+      }
+    }
+
+    .wp-block-ub-tabbed-content-tab-title-wrap {
+      grid-area: overlay;
+    }
+  }
+
+  .wp-block-ub-tabbed-content-tab-title-wrap {
+    display: grid;
+    grid-template-areas: "tabIcon title" "subTitle subTitle";
+    gap: 5px;
+  }
+
+  &[data-title-sub-text-status="false"] .tab-sub-title {
+    display: none;
+  }
+
+  .ub-pro-tab-title-icon {
+    grid-area: tabIcon;
+    margin-right: 5px;
+  }
+
+  .wp-block-ub-tabbed-content-tab-title {
+    grid-area: title;
+  }
+
+  .ub-tabbed-content-with-sub-title {
+    flex-direction: column;
+
+    .tab-sub-title {
+      grid-area: subTitle;
+      display: block !important;
+      font-size: 70%;
+    }
+  }
+}
+
+.ub-pro-tab-title-image {
+  width: 30px;
+  height: 30px;
+  figure {
+    width: 100%;
+    height: 100%;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}

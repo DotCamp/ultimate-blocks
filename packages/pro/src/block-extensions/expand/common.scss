@@ -1,0 +1,28 @@
+.is-style-ub-expand-button {
+  .ub-expand-portion {
+    .ub-expand-toggle-button {
+      width: max-content;
+      text-decoration: none;
+      padding-top: var(--ub-expand-button-padding-top, 8px) !important;
+      padding-right: var(--ub-expand-button-padding-right, 30px) !important;
+      padding-bottom: var(--ub-expand-button-padding-bottom, 8px) !important;
+      padding-left: var(--ub-expand-button-padding-left, 30px) !important;
+      border-top: var(--ub-expand-button-border-top);
+      border-right: var(--ub-expand-button-border-right);
+      border-bottom: var(--ub-expand-button-border-bottom);
+      border-left: var(--ub-expand-button-border-left);
+      border-top-left-radius: var(--ub-expand-button-top-left-radius, 50px);
+      border-top-right-radius: var(--ub-expand-button-top-right-radius, 50px);
+      border-bottom-left-radius: var(
+        --ub-expand-button-bottom-left-radius,
+        50px
+      );
+      border-bottom-right-radius: var(
+        --ub-expand-button-bottom-right-radius,
+        50px
+      );
+      color: var(--ub-expand-button-color, #000000);
+      background: var(--ub-expand-button-bg-color, #eeeeee);
+    }
+  }
+}

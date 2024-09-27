@@ -1,0 +1,15 @@
+@import './frontend';
+
+.ub-content-toggle-search {
+
+  .ub-content-toggle-search-component-wrapper {
+    width: 215px;
+    max-width: 215px;
+  }
+
+  .search-input-wrapper {
+    @extend %no-pointer-events;
+    color: $gray-300;
+    font-size: 14px !important;
+  }
+}

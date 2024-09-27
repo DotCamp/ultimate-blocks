@@ -1,0 +1,52 @@
+@import 'colors';
+
+$default_transition_duration: 0.2s;
+
+%border-box {
+  box-sizing: border-box;
+}
+
+%center-all {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+%default-transition {
+  transition: all $default_transition_duration ease-out;
+}
+
+%border-xs {
+  border-radius: 2px;
+}
+
+%border-sm {
+  border-radius: 5px;
+}
+
+%border-full {
+  border-radius: 100%;
+}
+
+%size-full {
+  width: 100%;
+  height: 100%;
+}
+
+%no-pointer-events {
+  pointer-events: none;
+}
+
+%click-target {
+  pointer-events: all;
+  cursor: pointer;
+}
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin custom-transition($transition_target:all) {
+  transition: $transition_target $default_transition_duration ease-out;
+}

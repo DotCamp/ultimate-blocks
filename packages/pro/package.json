@@ -1,0 +1,13 @@
+{
+    "name": "ultimate-blocks-pro",
+    "version": "3.2.2",
+    "private": true,
+    "scripts": {
+        "start": "concurrently \"wp-scripts start\" \"npm run extra:bundler:watch\"",
+        "build": "wp-scripts build && npm run extra:bundler:build && npm run compress-plugin-prod",
+        "extra:bundler:watch": "cross-env NODE_ENV=development node extraBundleWatch.js",
+        "extra:bundler:build": "cross-env NODE_ENV=production node extraBundleBuild.js",
+        "compress-plugin-dev": "cross-env NODE_ENV=development node ./pluginCompress.js ultimate-blocks-pro.zip",
+        "compress-plugin-prod": "cross-env NODE_ENV=production node ./pluginCompress.js ultimate-blocks-pro.zip"
+    }
+}

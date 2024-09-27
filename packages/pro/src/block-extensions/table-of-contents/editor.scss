@@ -1,0 +1,37 @@
+@import './style.scss';
+.ub_toc_button_container {
+	margin-left: auto;
+	white-space: nowrap;
+}
+
+#ub_toc_list_icon_select {
+	min-width: 54px;
+	min-height: 54px;
+	padding: 8px;
+	border: 1px solid #8d96a0;
+	justify-content: center;
+}
+
+.ub_table-of-contents-container {
+	ol {
+		grid-area: extra;
+	}
+	ol > li {
+		display: grid;
+		grid-template-areas:
+			'listicon content buttons'
+			'extra extra extra';
+		grid-template-columns: minmax(0, min-content) auto auto;
+		&::before {
+			grid-area: listicon;
+			white-space: nowrap;
+		}
+		> a {
+			grid-area: content;
+		}
+		> .ub_toc_button_container {
+			grid-area: buttons;
+			margin-left: auto;
+		}
+	}
+}

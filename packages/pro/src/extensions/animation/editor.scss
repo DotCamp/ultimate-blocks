@@ -1,0 +1,22 @@
+@import "./common.scss";
+.ub-animations-control__popover {
+  display: block;
+  .ub-animations-control__button {
+    flex-direction: row-reverse;
+    width: 100%;
+    justify-content: space-between !important;
+    color: #000000;
+    border: 1px solid;
+  }
+}
+.ub-animations-content {
+  .components-popover__content {
+    width: 246px;
+  }
+  .ub-animations-control__category {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+}

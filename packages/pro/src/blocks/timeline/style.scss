@@ -1,0 +1,109 @@
+@import "./common.scss";
+.ub-timeline-horizontal {
+  .ub-timeline-item {
+    .ub-timeline-item-content {
+      > .alignright {
+        float: right;
+        margin-inline-start: 2em;
+        margin-inline-end: 0;
+      }
+
+      > .alignleft {
+        float: left;
+        margin-inline-start: 0;
+        margin-inline-end: 2em;
+      }
+
+      > .aligncenter {
+        margin-inline-start: auto;
+        margin-inline-end: auto;
+      }
+    }
+  }
+}
+.ub-timeline-vertical {
+  &.ub-timeline-wrapper {
+    &.ub-timeline-frontend {
+      &.ub-timeline-items-align-center {
+        &.ub-timeline-items-starts-from-left {
+          .ub-timeline-item:nth-child(2n) {
+            .ub-timeline-item-connector {
+              .ub-timeline-item-opposite-text {
+                color: var(
+                  --ub-timeline-opposite-text-color,
+                  #000000
+                ) !important;
+                position: absolute;
+                left: 50px;
+              }
+            }
+          }
+          .ub-timeline-item:nth-child(odd) {
+            .ub-timeline-item-connector {
+              .ub-timeline-item-opposite-text {
+                color: var(
+                  --ub-timeline-opposite-text-color,
+                  #000000
+                ) !important;
+                position: absolute;
+                right: 50px;
+              }
+            }
+            .ub-timeline-item-content {
+              margin: 0 0 0 auto;
+            }
+          }
+        }
+        &.ub-timeline-items-starts-from-right {
+          .ub-timeline-item:nth-child(odd) {
+            .ub-timeline-item-connector {
+              .ub-timeline-item-opposite-text {
+                color: var(
+                  --ub-timeline-opposite-text-color,
+                  #000000
+                ) !important;
+                position: absolute;
+                left: 50px;
+              }
+            }
+          }
+          .ub-timeline-item:nth-child(2n) {
+            .ub-timeline-item-connector {
+              .ub-timeline-item-opposite-text {
+                color: var(
+                  --ub-timeline-opposite-text-color,
+                  #000000
+                ) !important;
+                position: absolute;
+                right: 50px;
+              }
+            }
+            .ub-timeline-item-content {
+              margin: 0 0 0 auto;
+            }
+          }
+        }
+      }
+    }
+    .ub-timeline-item {
+      .ub-timeline-item-content {
+        > .alignright {
+          float: right;
+          margin-inline-start: 2em;
+          margin-inline-end: 0;
+        }
+
+        > .alignleft {
+          float: left;
+          margin-inline-start: 0;
+          margin-inline-end: 2em;
+        }
+
+        > .aligncenter {
+          margin-inline-start: auto;
+          margin-inline-end: auto;
+        }
+      }
+    }
+  }
+}

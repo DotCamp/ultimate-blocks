@@ -1,0 +1,9 @@
+@import "./common.scss";
+@import "./style.scss";
+
+#ub_expand_fade_option_container {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}

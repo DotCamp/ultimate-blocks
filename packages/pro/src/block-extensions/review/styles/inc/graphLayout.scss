@@ -1,0 +1,119 @@
+@import '../../../../base/styles/common';
+
+.ub-pros-cons-graph-layout-wrapper {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+
+  & * {
+    box-sizing: border-box;
+  }
+
+  .ub-pros-cons-graph-column-table {
+    height: fit-content;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 1fr;
+
+    &[data-column-position='right'] {
+      grid-template-areas: 'value label' 'value label';
+
+      & .ub-base-cell:first-of-type {
+        border-radius: 0 5px 0 0;
+      }
+
+      .ub-graph-label-cell {
+        justify-content: flex-end !important;
+        border-right: 0 !important;
+      }
+
+      .ub-graph-value-cell {
+        justify-content: flex-start !important;
+      }
+
+      .ub-graph-cell {
+        padding-left: 0 !important;
+
+        .ub-graph-line {
+          justify-content: flex-start;
+          border-radius: 0 5px 5px 0;
+        }
+      }
+    }
+
+    &[data-column-position='left'] {
+      grid-template-areas: 'label value';
+
+      & .ub-base-cell:first-of-type {
+        border-radius: 5px 0 0 0;
+      }
+
+      .ub-graph-cell {
+        padding-right: 0 !important;
+
+        .ub-graph-line {
+          justify-content: flex-end;
+          border-radius: 5px 0 0 5px;
+        }
+      }
+
+    }
+
+    .ub-base-cell:first-of-type, .ub-base-cell:nth-child(2) {
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .ub-base-cell {
+      @extend %size-full;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+
+      &:nth-child(n+2) {
+        border-bottom: 1px solid $gray-200;
+        border-right: 1px solid $gray-200;
+      }
+    }
+
+    .ub-graph-odd-row {
+      background-color: $gray-100;
+    }
+
+    .ub-graph-label-cell {
+      grid-area: label;
+      justify-content: flex-start;
+    }
+
+    .ub-graph-value-cell {
+      grid-area: value;
+      justify-content: flex-end;
+    }
+
+    .ub-graph-line {
+      width: 0;
+      transition: width 0.5s ease-out;
+      color: $white;
+      padding: 0 5px;
+      display: flex;
+      align-items: center;
+    }
+
+    @media (max-width: 480px) {
+      border: 1px solid rgba(0, 0, 0, 0);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    grid-gap: 15px;
+    .ub-pros-cons-graph-column-table {
+      &[data-column-position='right'] {
+      }
+    }
+  }
+}
+

@@ -1,0 +1,146 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ub/timeline",
+  "title": "Timeline",
+  "category": "ultimateblocks",
+  "description": "Effortlessly create and customize interactive timelines to showcase your story or project milestones.",
+  "keywords": [
+    "timeline",
+    "ultimate coupon"
+  ],
+  "attributes": {
+    "icon": {
+      "type": "object",
+      "default": {}
+    },
+    "showArrow": {
+      "type": "boolean",
+      "default": true
+    },
+    "arrowColor": {
+      "type": "string",
+      "default": null
+    },
+    "enableDragging": {
+      "type": "boolean",
+      "default": true
+    },
+    "timelineAlignment": {
+      "type": "string",
+      "default": "center"
+    },
+    "itemsPerView": {
+      "type": "number",
+      "default": 2
+    },
+    "timelineType": {
+      "type": "string",
+      "default": "vertical"
+    },
+    "connectorPosition": {
+      "type": "string",
+      "default": "top"
+    },
+    "timelineItemStartsFrom": {
+      "type": "string",
+      "default": "left"
+    },
+    "connectorSize": {
+      "type": "number",
+      "default": 25
+    },
+    "connectorIconSize": {
+      "type": "number",
+      "default": 20
+    },
+    "connectorIconColor": {
+      "type": "string",
+      "default": null
+    },
+    "oppositeTextColor": {
+      "type": "string",
+      "default": null
+    },
+    "progressLineColor": {
+      "type": "string",
+      "default": null
+    },
+    "lineColor": {
+      "type": "string",
+      "default": null
+    },
+    "connectorBackground": {
+      "type": "string",
+      "default": null
+    },
+    "connectorColor": {
+      "type": "string",
+      "default": null
+    },
+    "contentColor": {
+      "type": "string",
+      "default": null
+    },
+    "contentBackground": {
+      "type": "string",
+      "default": null
+    },
+    "contentGradient": {
+      "type": "string",
+      "default": null
+    },
+    "contentPadding": {
+      "type": "object",
+      "default": {}
+    },
+    "contentBorder": {
+      "type": "object",
+      "default": {}
+    },
+    "contentBorderRadius": {
+      "type": "object",
+      "default": {}
+    },
+    "showConnectors": {
+      "type": "boolean",
+      "default": true
+    },
+    "showOppositeText": {
+      "type": "boolean",
+      "default": false
+    },
+    "showTimelineProgress": {
+      "type": "boolean",
+      "default": true
+    },
+    "iconConnector": {
+      "type": "boolean",
+      "default": false
+    },
+    "numberedConnector": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "align": [
+      "full",
+      "wide"
+    ]
+  },
+  "providesContext": {
+    "showOppositeText": "showOppositeText",
+    "iconConnector": "iconConnector",
+    "icon": "icon"
+  },
+  "editorScript": [
+    "./index.js",
+    "ub-timeline-frontend-script"
+  ],
+  "editorStyle": "file:./index.css",
+  "style": "file:./style.css",
+  "viewScript": [
+    "ub-timeline-frontend-script"
+  ]
+}

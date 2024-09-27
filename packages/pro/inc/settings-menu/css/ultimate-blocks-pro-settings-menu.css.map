@@ -1,0 +1,1 @@
+{"version":3,"file":"settings-menu/css/ultimate-blocks-pro-settings-menu.css","mappings":";;;AACA;EACE;AAAF,C","sources":["webpack://ultimate-blocks-pro/./src/styles/settingsMenu.sass"],"sourcesContent":["\n.ub-pro-menu-container\n  margin-top: 50px\n"],"names":[],"sourceRoot":""}

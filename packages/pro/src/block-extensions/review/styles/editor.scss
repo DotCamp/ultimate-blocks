@@ -1,0 +1,116 @@
+@import 'frontend.scss';
+
+
+.block-editor-block-list__block:has(div.ub-pros-cons-wrapper) {
+  position: relative;
+
+  &:after {
+    box-shadow: none !important;
+  }
+
+  .overlay-control {
+    @extend %border-xs;
+    @extend %center-all;
+    @extend %no-pointer-events;
+
+    display: none;
+    position: absolute;
+    z-index: 11;
+    border: 1px solid $wp_admin_theme;
+
+    &[data-visibility=true] {
+      display: flex;
+    }
+
+    .inner-wrapper {
+      @extend %size-full;
+      @extend %no-pointer-events;
+      position: relative;
+    }
+
+    .overlay-control-layout-position {
+      position: absolute;
+
+      &[data-pos=bottom-center] {
+        @extend %size-full;
+        @extend %center-all;
+        bottom: -50%;
+      }
+
+      &[data-pos=right-center] {
+        @extend %size-full;
+        @extend %center-all;
+        right: -50%;
+      }
+
+      .overlay-button {
+        @extend %click-target;
+        @extend %center-all;
+        @extend %border-xs;
+        @extend %default-transition;
+        @include size(16px, 16px);
+        color: $white;
+        background-color: $wp_gutenberg_black;
+        line-height: 100%;
+
+        &:hover {
+          background-color: $wp_admin_theme;
+        }
+
+        &[data-button-type=negative]:hover {
+          background-color: $red-500;
+        }
+
+        & svg {
+          @include size(14px, 14px);
+        }
+      }
+    }
+  }
+}
+
+.block-editor-block-list__block.is-selected {
+  .ub-pros-cons-column {
+    &[data-selected='true'] {
+      border-color: var(--wp-admin-theme-color);
+    }
+  }
+}
+
+.ub-pros-cons-wrapper {
+  position: relative;
+
+  .ub-pros-cons-column {
+    cursor: pointer;
+    border: 2px solid transparent;
+
+    .column-title {
+      @extend %default-transition;
+    }
+
+    .column-content {
+      @extend %default-transition;
+
+      .content-row {
+        @include custom-transition(transform);
+        position: relative;
+
+        &[data-remove=true] {
+          transform: translateX(-50px);
+          opacity: 0;
+        }
+
+        .content-line {
+          overflow: hidden;
+        }
+      }
+    }
+  }
+}
+
+.icon-component {
+  svg {
+    @extend %default-transition;
+  }
+}
+

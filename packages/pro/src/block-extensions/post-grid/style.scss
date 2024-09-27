@@ -1,0 +1,109 @@
+.ub-post-grid-pagination {
+  display: flex;
+  justify-content: left;
+  margin-top: 30px;
+  &.ub-pagination-justify-left {
+    justify-content: left;
+  }
+  &.ub-pagination-justify-center {
+    justify-content: center;
+  }
+  &.ub-pagination-justify-right {
+    justify-content: right;
+  }
+  &.ub-load-more {
+    .ub-load-more-button {
+      cursor: pointer;
+      color: var(--ub-pagination-color, #ffffff);
+      background: var(--ub-pagination-background, #337ab7);
+      &:hover {
+        color: var(--ub-hover-pagination-color, #ffffff);
+        background: var(--ub-hover-pagination-background, #337ab7);
+      }
+      border-top-right-radius: var(--ub-load-more-top-right-radius);
+      border-top-left-radius: var(--ub-load-more-top-left-radius);
+      border-bottom-left-radius: var(--ub-load-more-bottom-left-radius);
+      border-bottom-right-radius: var(--ub-load-more-bottom-right-radius);
+      border-left: var(--ub-load-more-border-left);
+      border-right: var(--ub-load-more-border-right);
+      border-top: var(--ub-load-more-border-top);
+      border-bottom: var(--ub-load-more-border-bottom);
+      padding: 12px 20px;
+    }
+  }
+  &.ub-number-pagination {
+    .page-numbers {
+      &:first-child {
+        border-left-width: 2px;
+      }
+      padding: 5px 13px;
+      border-width: 2px 2px 2px 0px;
+      border-style: solid;
+      border-color: var(--ub-pagination-background, #cccccc);
+      color: var(--ub-pagination-color, #337ab7);
+      background: var(--ub-pagination-background, transparent);
+      &.current {
+        border-color: var(
+          --ub-active-pagination-background,
+          #337ab7
+        ) !important;
+        color: var(--ub-active-pagination-color, #ffffff) !important;
+        background: var(--ub-active-pagination-background, #337ab7) !important;
+      }
+    }
+  }
+}
+.ub-block-post-grid {
+  .ub-block-post-grid-taxonomies {
+    &.ub-taxonomies-above-title {
+      margin-bottom: 10px;
+    }
+    &.ub-taxonomies-with-meta {
+      margin-top: 10px;
+    }
+    .ub-block-post-grid-taxonomy {
+      color: var(--ub-post-grid-taxonomy-color);
+      background: var(--ub-post-grid-taxonomy-background);
+      padding: 3px 5px;
+      font-size: 13px;
+      margin-right: 5px;
+      text-decoration: none;
+    }
+  }
+
+  &.is-loading {
+    .ub-post-grid-items {
+      opacity: 0.5;
+    }
+  }
+}
+.ub-post-grid-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  &::before {
+    content: "";
+    width: 70px;
+    height: 70px;
+    display: inline-block;
+    padding: 0px;
+    border-radius: 100%;
+    border: 8px solid;
+    border-top-color: #e11b4c;
+    border-bottom-color: rgb(220, 220, 220);
+    border-left-color: #e11b4c;
+    border-right-color: rgb(220, 220, 220);
+    -webkit-animation: postGridLoader 0.4s linear infinite;
+    animation: postGridLoader 0.4s linear infinite;
+  }
+
+  @keyframes postGridLoader {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

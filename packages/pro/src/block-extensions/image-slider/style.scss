@@ -1,0 +1,8 @@
+.ub_image_slider_thumbs .swiper-slide {
+	max-height: 50px;
+	display: block;
+	margin: auto;
+	object-fit: contain;
+}
+
+@import '../../../../../node_modules/swiper/components/thumbs/thumbs';

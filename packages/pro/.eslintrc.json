@@ -1,0 +1,28 @@
+{
+  "extends": [
+    "plugin:@wordpress/eslint-plugin/recommended"
+  ],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false,
+    "babelOptions": {
+      "presets": [
+        "@babel/preset-react"
+      ]
+    }
+  },
+  "rules": {
+    "import/no-unresolved": "off",
+    "no-shadow": "off"
+  },
+  "globals": {
+    "self": true,
+    "FormData": true,
+    "UB_PRO_IS_PROD": true,
+    "UB_PRO_ENV": true,
+    "getComputedStyle": true,
+    "requestAnimationFrame": true,
+    "cancelAnimationFrame": true,
+    "MutationObserver": true
+  }
+}

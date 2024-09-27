@@ -1,0 +1,133 @@
+.ub_sticky-toc-wrapper {
+  position: fixed;
+  top: 50%;
+  height: 100%;
+  left: 75%;
+  transform: translate(0%, -50%);
+  z-index: 999999;
+  &.ub_sticky-toc-right {
+    left: auto;
+  }
+  .ub_sticky-toc-zoom-in {
+    animation: zoomIn 500ms;
+  }
+  .ub_sticky-toc-zoom-out {
+    animation: zoomOut 500ms;
+  }
+  .ub_sticky-toc-button {
+    position: absolute;
+    top: 50%;
+    cursor: pointer;
+    padding: 5px;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(243, 243, 243, 0.95);
+    border-color: rgba(51, 51, 51, 0.95);
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 7px;
+    display: none;
+    .ub_sticky-toc-open-button-icon {
+      vertical-align: middle;
+    }
+  }
+  .ub_table-of-contents {
+    height: 100%;
+    margin-top: 0;
+    grid-template-rows: 63px 1fr;
+    .ub_close-sticky-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+    }
+  }
+}
+
+.ub_table-of-contents-container {
+  .fa-ul > li {
+    list-style: none;
+  }
+  ol {
+    list-style-type: none;
+    counter-reset: item;
+    margin: 0;
+    padding: 0;
+    > li {
+      display: table;
+      counter-increment: item;
+      &:before {
+        content: counters(item, ".") ". ";
+        display: table-cell;
+        padding-right: 0.6em;
+      }
+    }
+  }
+  li ol > li {
+    margin: 0;
+    &:before {
+      content: counters(item, ".") " ";
+    }
+  }
+}
+
+.ub_table-of-contents-toggle-icon-container {
+  height: 30px;
+  width: 30px;
+  position: relative;
+  cursor: pointer;
+}
+
+.ub_table-of-contents-chevron-right {
+  right: 0;
+}
+
+.ub_table-of-contents-chevron-left,
+.ub_table-of-contents-chevron-right {
+  height: 4px;
+  width: 18px;
+  position: absolute;
+  bottom: 11px;
+  transition: all linear 0.1s;
+}
+.ub_table-of-contents-plus-part {
+  height: 4px;
+  width: 20px;
+  left: 5px;
+  bottom: 11px;
+  transition: all linear 0.1s;
+  position: absolute;
+}
+
+.ub_vertical_bar {
+  transform: rotate(90deg);
+}
+
+.ub_horizontal_bar {
+  transform: rotate(180deg);
+}
+
+.ub_asc_diagonal_bar {
+  transform: rotate(135deg);
+}
+
+.ub_desc_diagonal_bar {
+  transform: rotate(225deg);
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
+}
+@keyframes zoomOut {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
