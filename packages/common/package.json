@@ -1,0 +1,46 @@
+{
+  "name": "ub-common",
+  "version": "1.1.2",
+  "description": "Common components for Ultimate Blocks.",
+  "main": "./dist/Components/index.js",
+  "type": "commonjs",
+  "files": [
+    "./dist/**/*.{js,css}"
+  ],
+  "scripts": {
+    "dev": "vite build -m development --watch",
+    "build": "vite -m production build"
+  },
+  "author": "DotCamp (https://github.com/DotCamp)",
+  "contributors": [
+    "Erdem Bircan <erdem.erdembircan@gmail.com>"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.2.1",
+    "@fortawesome/free-brands-svg-icons": "^6.2.1",
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "@wordpress/block-editor": "^11.5.0",
+    "@wordpress/blocks": "^12.7.0",
+    "@wordpress/components": "^23.2.0",
+    "@wordpress/compose": "^6.5.0",
+    "@wordpress/data": "^8.5.0",
+    "@wordpress/hooks": "^3.29.0",
+    "@wordpress/i18n": "^4.25.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.2.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 safari version",
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 edge version"
+    ]
+  }
+}

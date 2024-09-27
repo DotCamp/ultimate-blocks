@@ -1,0 +1,42 @@
+{
+  "extends": [
+    "plugin:@wordpress/eslint-plugin/recommended"
+  ],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false,
+    "babelOptions": {
+      "presets": [
+        "@babel/preset-react"
+      ]
+    }
+  },
+  "rules": {
+    "import/no-extraneous-dependencies": 0
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          [
+            "@Containers",
+            "./src/containers"
+          ],
+          [
+            "@Inc",
+            "./src/inc"
+          ]
+        ]
+      }
+    }
+  },
+  "globals": {
+    "IntersectionObserver": true,
+    "sessionStorage": true,
+    "self": true,
+    "beforeEach": true,
+    "afterEach": true,
+    "beforeAll": true,
+    "afterAll": true
+  }
+}
