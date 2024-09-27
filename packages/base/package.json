@@ -1,0 +1,36 @@
+{
+	"name": "ultimate-blocks",
+	"version": "3.2.2",
+	"private": true,
+	"scripts": {
+		"start": "node recompile.js && concurrently -k -c 'blue,yellow,green' -n 'gutenberg,recompile,bundle' \"wp-scripts start\" \"node recompileOnChange.js\" \"npm run bundle_additional_watch\"",
+		"bundle_additional_watch": "parcel watch ./admin/js/src/*.js --dist-dir ./bundle-dist --no-hmr",
+		"bundle_additional_build": "parcel build ./admin/js/src/*.js --dist-dir ./bundle-dist --no-cache --no-source-maps",
+		"build": "wp-scripts build && node recompile.js && npm run bundle_additional_build && npm run compress-plugin-prod",
+		"compress-plugin-dev": "cross-env NODE_ENV=development node ./pluginCompress.js ultimate-blocks.zip",
+		"compress-plugin-prod": "cross-env NODE_ENV=production node ./pluginCompress.js ultimate-blocks.zip",
+		"lint:settings-menu": "eslint ./admin/js/src/ --fix",
+		"lint:tests": "eslint ./__tests__/js --fix",
+		"lint:styles": "stylelint \"./admin/css/src/**/*.scss\" --fix",
+		"lint": "concurrently \"npm run lint:settings-menu\" \"npm run lint:tests\" \"npm run lint:styles\""
+	},
+	"alias": {
+		"$Containers": "./admin/js/src/containers",
+		"$Components": "./admin/js/src/components",
+		"$Data": "./admin/js/src/data",
+		"$AdminInc": "./admin/js/src/inc",
+		"$HOC": "./admin/js/src/hoc",
+		"$Stores": "./admin/js/src/stores",
+		"$Styles": "./admin/css/src/",
+		"$Library": "./library",
+		"$EditorComponents": "./src/inc/components"
+	},
+	"lint-staged": {
+		"./admin/js/src/**/*.js": "eslint --fix",
+		"./__tests__/js/**/*.js": "eslint --fix",
+		"./admin/css/src/**/*.scss": "stylelint --fix"
+	},
+	"dependencies": {
+		"react": "^18.3.1"
+	}
+}

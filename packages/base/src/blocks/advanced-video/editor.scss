@@ -1,0 +1,154 @@
+.ub-advanced-video-input-choices {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.wp-block > .ub-advanced-video-container {
+	width: initial;
+	&.ub-advanced-video-autofit-youtube {
+		width: 100%;
+		> iframe {
+			width: 100%;
+		}
+	}
+	&.ub-advanced-video-autofit-vimeo,
+	&.ub-advanced-video-autofit-dailymotion {
+		position: relative;
+		> iframe {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+	}
+	&.ub-advanced-video-autofit-dailymotion {
+		height: 0;
+		overflow: hidden;
+		> iframe {
+			overflow: hidden;
+		}
+	}
+}
+
+.ub-labelled-toggle {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: space-between;
+	> p {
+		flex: 1 1 75%;
+	}
+	> .components-toggle-control {
+		flex: 1 1 25%;
+	}
+}
+
+$fixed-border-style: 1px dashed gray;
+
+.ub-indicator-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	width: 60px;
+	margin-bottom: 20px;
+	&-cell {
+		width: 20px;
+		height: 20px;
+	}
+	&-top-border {
+		border-top: $fixed-border-style;
+	}
+	&-bottom-border {
+		border-bottom: $fixed-border-style;
+	}
+	&-left-border {
+		border-left: $fixed-border-style;
+	}
+	&-right-border {
+		border-right: $fixed-border-style;
+	}
+}
+
+.ub-advanced-video-url-input {
+	display: flex;
+	justify-content: center;
+	margin-top: 10px;
+	> input,
+	> button {
+		display: block;
+	}
+}
+.wp-block-ub-advanced-video {
+	&.alignright {
+		.ub-advanced-video-container {
+			float: right;
+			video {
+				float: right;
+			}
+			.ub-advanced-video-channel-details {
+				clear: both;
+				text-align: right;
+			}
+		}
+	}
+
+	&.alignleft {
+		.ub-advanced-video-container {
+			float: left;
+			video {
+				float: left;
+			}
+			.ub-advanced-video-channel-details {
+				clear: both;
+				text-align: left;
+			}
+		}
+	}
+
+	&.aligncenter {
+		.ub-advanced-video-container {
+			margin-inline-start: auto;
+			text-align: center;
+			margin-inline-end: auto;
+			.ub-advanced-video-channel-details {
+				text-align: center;
+			}
+		}
+	}
+	// Show Placeholder style on-select.
+	.ub-advanced-video__interactive-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		opacity: 0;
+	}
+	&.is-selected .components-placeholder {
+		// Block UI appearance.
+		border: none;
+
+		// @todo: this should eventually be overridden by a custom border-radius set in the inspector.
+
+		> svg {
+			opacity: 0;
+		}
+
+		.components-placeholder__illustration {
+			display: none;
+		}
+
+		&::before {
+			opacity: 0;
+		}
+	}
+
+	// Remove the transition while we still have a legacy placeholder style.
+	// Otherwise the content jumps between the 1px placeholder border, and any inherited custom
+	// parent border that may get applied when you deselect.
+	.components-placeholder__label,
+	.components-placeholder__instructions,
+	.components-button {
+		transition: none;
+	}
+}
