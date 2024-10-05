@@ -14,7 +14,7 @@ import { IconControl } from "../../../library/ub-common/Components";
 
 import {
 	BlockControls,
-	BlockAlignmentToolbar,
+	BlockAlignmentControl,
 	InspectorControls,
 	URLInput,
 	RichText,
@@ -108,8 +108,8 @@ export const blockControls = (props) => {
 
 	return (
 		buttons.length > 0 && (
-			<BlockControls>
-				<BlockAlignmentToolbar
+			<BlockControls group="block">
+				<BlockAlignmentControl
 					value={align}
 					onChange={(newAlignment) => setAttributes({ align: newAlignment })}
 					controls={["left", "center", "right"]}

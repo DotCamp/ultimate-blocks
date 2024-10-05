@@ -23,7 +23,7 @@ import {
 	mediaUpload,
 	RichText,
 	useBlockProps,
-	BlockAlignmentToolbar,
+	BlockAlignmentControl,
 } from "@wordpress/block-editor";
 import {
 	Icon,
@@ -227,8 +227,8 @@ function ImageSliderMain(props) {
 	return (
 		<>
 			{isSelected && (
-				<BlockControls>
-					<BlockAlignmentToolbar
+				<BlockControls group="block">
+					<BlockAlignmentControl
 						value={align}
 						controls={["full", "wide"]}
 						onChange={(newAlign) => setAttributes({ align: newAlign })}

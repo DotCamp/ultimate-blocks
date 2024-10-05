@@ -10,7 +10,7 @@ import Inspector from "./inspector";
 import { useSelect } from "@wordpress/data";
 import {
 	BlockControls,
-	BlockAlignmentToolbar,
+	BlockAlignmentControl,
 	useBlockProps,
 } from "@wordpress/block-editor";
 import {
@@ -158,8 +158,8 @@ export default registerBlockType(metadata.name, {
 		return (
 			<div {...blockProps}>
 				<Inspector {...postGridProps} />
-				<BlockControls>
-					<BlockAlignmentToolbar
+				<BlockControls group="block">
+					<BlockAlignmentControl
 						value={wrapAlignment}
 						controls={["center", "wide", "full"]}
 						onChange={(value) => setAttributes({ wrapAlignment: value })}

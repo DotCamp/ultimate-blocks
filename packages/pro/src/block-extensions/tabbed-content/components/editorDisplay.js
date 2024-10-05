@@ -8,12 +8,17 @@ import { __ } from "@wordpress/i18n";
 import { createBlock } from "@wordpress/blocks";
 import Inspector from "./inspector";
 import { Component } from "react";
-import { BlockControls, InnerBlocks } from "@wordpress/block-editor";
+import {
+  BlockControls,
+  InnerBlocks,
+  BlockAlignmentControl,
+} from "@wordpress/block-editor";
 import { ToolbarButton, ToolbarGroup } from "@wordpress/components";
 import TabTitle from "./TabTitle";
 import IndexDataRegistry from "../inc/js/IndexDataRegistry";
 import { getStyles } from "../get-styles";
 import { getParentBlock } from "../../../common";
+
 export class TabHolder extends Component {
   constructor(props) {
     super(props);
@@ -104,6 +109,7 @@ export class TabHolder extends Component {
       tabsIconStatus,
       tabIcons,
       tabIconSize,
+      align,
     } = attributes;
     const rootBlock = getParentBlock(rootBlockClientId, "core/block");
 
@@ -345,6 +351,13 @@ export class TabHolder extends Component {
     return [
       isSelected && (
         <BlockControls>
+          <BlockControls group="block">
+            <BlockAlignmentControl
+              value={align}
+              controls={["wide", "full"]}
+              onChange={(value) => setAttributes({ align: value })}
+            />
+          </BlockControls>
           <ToolbarGroup>
             {["left", "center", "right"].map((a) => (
               <ToolbarButton

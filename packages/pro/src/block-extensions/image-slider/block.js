@@ -10,7 +10,7 @@ import {
   InspectorControls,
   mediaUpload,
   RichText,
-  BlockAlignmentToolbar,
+  BlockAlignmentControl,
 } from "@wordpress/block-editor";
 import {
   Icon,
@@ -206,8 +206,8 @@ export class NewImageSlider extends Component {
     const captionArray = descriptions;
     const styles = getStyles(this.props.attributes);
     return [
-      <BlockControls>
-        <BlockAlignmentToolbar
+      <BlockControls group="block">
+        <BlockAlignmentControl
           value={align}
           controls={["full", "wide"]}
           onChange={(newAlign) => setAttributes({ align: newAlign })}

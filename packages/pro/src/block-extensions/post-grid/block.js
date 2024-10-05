@@ -5,7 +5,7 @@ import PostGridBlock from "./editor";
 import Inspector from "./inspector";
 
 import { useSelect } from "@wordpress/data";
-import { BlockControls, BlockAlignmentToolbar } from "@wordpress/block-editor";
+import { BlockControls, BlockAlignmentControl } from "@wordpress/block-editor";
 import {
   Placeholder,
   Spinner,
@@ -130,8 +130,8 @@ export default function NewPostGrid(props) {
   return (
     <>
       <Inspector {...postGridProps} />
-      <BlockControls>
-        <BlockAlignmentToolbar
+      <BlockControls group="block">
+        <BlockAlignmentControl
           value={wrapAlignment}
           controls={["center", "wide", "full"]}
           onChange={(value) => setAttributes({ wrapAlignment: value })}

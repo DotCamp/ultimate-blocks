@@ -50,7 +50,7 @@ import {
   PanelColorSettings,
   RichText,
   AlignmentToolbar,
-  BlockAlignmentToolbar,
+  BlockAlignmentControl,
 } from "@wordpress/block-editor";
 import { select, dispatch, subscribe } from "@wordpress/data";
 import { __ } from "@wordpress/i18n";
@@ -745,8 +745,8 @@ const blockControls = (props) => {
   const { setAttributes } = props;
   const { numColumns, titleAlignment, listStyle, align } = props.attributes;
   return (
-    <BlockControls>
-      <BlockAlignmentToolbar
+    <BlockControls group="block">
+      <BlockAlignmentControl
         value={align}
         controls={["wide", "full"]}
         onChange={(newAlign) => setAttributes({ align: newAlign })}
@@ -953,12 +953,12 @@ const editorDisplay = (props, _, setState) => {
 									background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 ${
                     allIcons[`fa${dashesToCamelcase(listIcon)}`].icon[0]
                   } ${
-                  allIcons[`fa${dashesToCamelcase(listIcon)}`].icon[1]
-                }' color='${
-                  listIconColor ? `%23${listIconColor.slice(1)}` : "inherit"
-                }'><path fill='currentColor' d='${
-                  allIcons[`fa${dashesToCamelcase(listIcon)}`].icon[4]
-                }'></path></svg>");
+                    allIcons[`fa${dashesToCamelcase(listIcon)}`].icon[1]
+                  }' color='${
+                    listIconColor ? `%23${listIconColor.slice(1)}` : "inherit"
+                  }'><path fill='currentColor' d='${
+                    allIcons[`fa${dashesToCamelcase(listIcon)}`].icon[4]
+                  }'></path></svg>");
 								}
 								#ub_table-of-contents-${blockID} .ub_table-of-contents-container .fa-ul {
 									margin-left: -1em;
