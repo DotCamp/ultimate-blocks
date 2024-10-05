@@ -21,9 +21,9 @@ function UpsellModalContent({ ssUrl, description }) {
 			<div>
 				{__("Limited Time: Use code ", "ultimate-blocks")}
 				<strong style={{ backgroundColor: "#eeeeee", padding: "1px 4px" }}>
-					{__("UB10", "ultimate-blocks")}
+					{__("UB20", "ultimate-blocks")}
 				</strong>
-				{__(" to get a 10% discount.", "ultimate-blocks")}
+				{__(" to get a 20% discount.", "ultimate-blocks")}
 			</div>
 		</div>
 	);
