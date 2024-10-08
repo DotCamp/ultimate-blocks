@@ -4,7 +4,7 @@ import {
 	accordionIcon,
 } from "../icons/icon";
 import SavedStylesInspector from "$Inc/components/SavedStyles/SavedStylesInspector";
-import { ColorSettings, SpacingControl } from "../../components";
+import { BorderControl, ColorSettings, SpacingControl } from "../../components";
 const { __ } = wp.i18n;
 const { Component } = wp.element;
 const { InspectorControls } = wp.blockEditor || wp.editor;
@@ -349,6 +349,26 @@ export default class Inspector extends Component {
 					<ColorSettings
 						attrKey="contentBackground"
 						label={__("Content Background", "ultimate-blocks")}
+					/>
+				</InspectorControls>
+				<InspectorControls group="border">
+					<BorderControl
+						isShowBorder={false}
+						showDefaultBorderRadius
+						attrBorderRadiusKey="tabButtonsBorderRadius"
+						borderRadiusLabel={__(
+							"Tab Buttons Border Radius",
+							"ultimate-blocks",
+						)}
+					/>
+					<BorderControl
+						isShowBorder={false}
+						showDefaultBorderRadius
+						attrBorderRadiusKey="tabContentsBorderRadius"
+						borderRadiusLabel={__(
+							"Tab Contents Border Radius",
+							"ultimate-blocks",
+						)}
 					/>
 				</InspectorControls>
 			</>

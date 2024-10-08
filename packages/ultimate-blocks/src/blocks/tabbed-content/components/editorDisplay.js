@@ -23,6 +23,7 @@ import {
 
 import { ToolbarGroup, ToolbarButton } from "@wordpress/components";
 import { getStyles } from "../get-style";
+import { generateStyles } from "../../utils/styling-helpers";
 export class OldTabHolder extends Component {
 	constructor(props) {
 		super(props);
@@ -407,7 +408,7 @@ export const TabHolder = (props) => {
 					}wrap SortableItem${
 						propz.attributes.activeTab === i ? " active" : ""
 					}`}
-					style={{
+					style={generateStyles({
 						textAlign: propz.attributes.tabsTitleAlignment[i],
 						backgroundColor:
 							propz.attributes.tabStyle === "underline"
@@ -424,7 +425,15 @@ export const TabHolder = (props) => {
 							propz.attributes.tabStyle === "underline"
 								? `5px solid ${propz.attributes.titleColor || "inherit"}`
 								: null,
-					}}
+						borderTopLeftRadius:
+							propz.attributes.tabButtonsBorderRadius?.topLeft,
+						borderTopRightRadius:
+							propz.attributes.tabButtonsBorderRadius?.topRight,
+						borderBottomLeftRadius:
+							propz.attributes.tabButtonsBorderRadius?.bottomLeft,
+						borderBottomRightRadius:
+							propz.attributes.tabButtonsBorderRadius?.bottomRight,
+					})}
 					onClick={() => toggleTitle("tab-title", i)}
 				>
 					<RichText
@@ -564,6 +573,13 @@ export const TabHolder = (props) => {
 		className: `${className}${tabStyle === "tabs" ? "" : `-${tabStyle}`}`,
 		style: getStyles(attributes),
 	});
+	const tabContentsStyles = generateStyles({
+		borderTopLeftRadius: attributes.tabContentsBorderRadius?.topLeft,
+		borderTopRightRadius: attributes.tabContentsBorderRadius?.topRight,
+		borderBottomLeftRadius: attributes.tabContentsBorderRadius?.bottomLeft,
+		borderBottomRightRadius: attributes.tabContentsBorderRadius?.bottomRight,
+	});
+
 	return [
 		isSelected && (
 			<BlockControls>
@@ -680,6 +696,7 @@ export const TabHolder = (props) => {
 					className={`${className}-tabs-content ${
 						props.attributes.tabVertical ? "vertical-content-width" : ""
 					}`}
+					style={tabContentsStyles}
 				>
 					<InnerBlocks
 						templateLock={false}

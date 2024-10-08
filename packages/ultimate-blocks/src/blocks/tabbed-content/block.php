@@ -27,7 +27,7 @@ function ub_register_tab_block(){
     }
 }
 
-function ub_render_tabbed_content_block($attributes, $contents){
+function ub_render_tabbed_content_block($attributes, $contents, $block){
     extract($attributes);
     $blockName = 'wp-block-ub-tabbed-content';
 
@@ -37,8 +37,15 @@ function ub_render_tabbed_content_block($attributes, $contents){
                     ->find('#tabarray > .wp-block-ub-tabbed-content-tab-content-wrap');
 
     $tabContents = [];
+	$block_attrs = $block->parsed_block['attrs'];
+	$tab_contents_styles = array(
+		'border-top-left-radius' => !empty( $block_attrs['tabContentsBorderRadius']['topLeft'] ) ? esc_attr($block_attrs['tabContentsBorderRadius']['topLeft']) . ';': "",
+		'border-top-right-radius' => !empty( $block_attrs['tabContentsBorderRadius']['topRight'] ) ?  esc_attr($block_attrs['tabContentsBorderRadius']['topRight']) . ';': "",
+		'border-bottom-left-radius' => !empty( $block_attrs['tabContentsBorderRadius']['bottomLeft'] ) ?  esc_attr($block_attrs['tabContentsBorderRadius']['bottomLeft']) . ';': "",
+		'border-bottom-right-radius' => !empty( $block_attrs['tabContentsBorderRadius']['bottomRight'] ) ?  esc_attr($block_attrs['tabContentsBorderRadius']['bottomRight']) . ';': "",
+	);
 
-    foreach ($contents as $key => $content) {
+	foreach ($contents as $key => $content) {
         if($useAnchors){
             if(isset($tabsAnchor[$key]) && $tabsAnchor[$key] !== ''){
                 $content->{'data-tab-anchor'} = esc_attr($tabsAnchor[$key]);
@@ -65,40 +72,68 @@ function ub_render_tabbed_content_block($attributes, $contents){
         }
     }
 
-    foreach($tabsTitle as $key=>$title){
-        $tabs .= '<div role="tab" id="ub-tabbed-content-' . esc_attr($blockID) . '-tab-' . esc_attr($key) . '" aria-controls="ub-tabbed-content-' . esc_attr($blockID) . '-panel-' . esc_attr($key) . '"
-            aria-selected="' . json_encode($activeTab === $key) . '" class = "' . $blockName . '-tab-title-' . ($tabVertical ? 'vertical-' : '') . 'wrap'
-        . ($mobileTabDisplay === 'verticaltab' ? ' ' . $blockName . '-tab-title-mobile-vertical-wrap' : '')
-        . ($tabletTabDisplay === 'verticaltab' ? ' ' . $blockName . '-tab-title-tablet-vertical-wrap' : '')
-            .($activeTab === $key ? ' active' : '') . '"'.
-            ($blockID === '' ? ' style="background-color: ' . ($activeTab === $key ? esc_attr($theme) : 'initial')
-            . '; border-color: ' . ($activeTab === $key ? esc_attr($theme) : 'lightgrey') .
-            '; color: ' . ($activeTab === $key ? esc_attr($titleColor) : '#000000') . ';"' : '' ). ' tabindex="-1">
-            <div class="' . $blockName . '-tab-title">' . wp_kses_post($title) . '</div></div>';
-    }
+	foreach($tabsTitle as $key=>$title){
+
+		$tab_buttons_styles = array(
+			'background-color' => ($tabStyle === 'underline' ? 'inherit' : ($activeTab === $key ? esc_attr($theme) : (isset($normalColor) ? esc_attr($normalColor) : 'inherit'))),
+			'border-color' => ($activeTab === $key ? esc_attr($theme) : 'lightgrey'),
+			'color' => ($activeTab === $key ? esc_attr($titleColor) : '#000000'),
+			'border-top-left-radius' => !empty( $block_attrs['tabButtonsBorderRadius']['topLeft'] ) ? esc_attr($block_attrs['tabButtonsBorderRadius']['topLeft']) . ';': "",
+			'border-top-right-radius' => !empty( $block_attrs['tabButtonsBorderRadius']['topRight'] ) ?  esc_attr($block_attrs['tabButtonsBorderRadius']['topRight']) . ';': "",
+			'border-bottom-left-radius' => !empty( $block_attrs['tabButtonsBorderRadius']['bottomLeft'] ) ?  esc_attr($block_attrs['tabButtonsBorderRadius']['bottomLeft']) . ';': "",
+			'border-bottom-right-radius' => !empty( $block_attrs['tabButtonsBorderRadius']['bottomRight'] ) ?  esc_attr($block_attrs['tabButtonsBorderRadius']['bottomRight']) . ';': "",
+		);
+
+		$tabs .= sprintf(
+			'<div role="tab" id="ub-tabbed-content-%1$s-tab-%2$s" aria-controls="ub-tabbed-content-%1$s-panel-%2$s" aria-selected="%3$s" class="%4$s-tab-title-%5$swrap%6$s%7$s%8$s" style="%9$s" tabindex="-1">
+				<div class="%4$s-tab-title">%10$s</div>
+			</div>',
+			esc_attr($blockID), // 1
+			esc_attr($key), // 2
+			json_encode($activeTab === $key), // 3
+			$blockName, // 4
+			($tabVertical ? 'vertical-' : ''), // 5
+			($mobileTabDisplay === 'verticaltab' ? ' ' . $blockName . '-tab-title-mobile-vertical-wrap' : ''), // 6
+			($tabletTabDisplay === 'verticaltab' ? ' ' . $blockName . '-tab-title-tablet-vertical-wrap' : ''), // 7
+			($activeTab === $key ? ' active' : ''), // 8
+			Ultimate_Blocks\includes\generate_css_string($tab_buttons_styles), //9
+			wp_kses_post($title), // 10
+		);
+	}
 
     $mobileTabStyle = substr($mobileTabDisplay, 0, strlen($mobileTabDisplay) - 3);
     $tabletTabStyle = substr($tabletTabDisplay, 0, strlen($tabletTabDisplay) - 3);
 
-    return '<div class="wp-block-ub-tabbed-content-block ' . $blockName . ($tabStyle !== 'tabs' ? '-' . esc_attr($tabStyle) : '') . ' ' . $blockName . '-holder' . ($tabVertical ? ' vertical-holder' : '')
-            . (isset($className) ? ' ' . esc_attr($className) : '') . (isset($align) ? ' align' . $align : '')
-            . ($mobileTabDisplay !== 'accordion' ? ' ' . $blockName . '-' . $mobileTabStyle . '-holder-mobile' : '')
-            . ($tabletTabDisplay !== 'accordion' ? ' ' . $blockName . '-' . $tabletTabStyle . '-holder-tablet' : '')
-            . '"' .($blockID === '' ? '' : ' id="ub-tabbed-content-' . esc_attr($blockID) . '"')
-             . ($mobileTabDisplay === 'accordion' || $tabletTabDisplay === 'accordion' ? ' data-active-tabs="[' . esc_attr($activeTab) . ']"' : '') . '>
-                <div class="' . $blockName . '-tab-holder' . ($tabVertical ? ' vertical-tab-width' : '')
-                . ($mobileTabDisplay !== 'accordion' ? ' ' . $mobileTabStyle. '-tab-width-mobile' : '')
-                . ($tabletTabDisplay !== 'accordion' ? ' ' . $tabletTabStyle . '-tab-width-tablet' : '') . '">
-                    <div role="tablist" class="' . $blockName . '-tabs-title' . ($tabVertical ? '-vertical-tab' : '')
-                    . ($mobileTabDisplay === 'accordion' ? ' ub-mobile-hide' : ' ' . $blockName . '-tabs-title-mobile-' . $mobileTabStyle . '-tab' )
-                    . ($tabletTabDisplay === 'accordion' ? ' ub-tablet-hide' : ' ' . $blockName . '-tabs-title-tablet-' . $tabletTabStyle . '-tab') . '">' .
-                    $tabs . '</div></div>
-                <div class="' . $blockName . '-tabs-content' . ($tabVertical ? ' vertical-content-width ' : '')
-                . ($mobileTabDisplay === 'verticaltab' ? ' vertical-content-width-mobile' : ($mobileTabDisplay === 'accordion' ? ' ub-tabbed-content-mobile-accordion' : ''))
-                . ($tabletTabDisplay === 'verticaltab' ? ' vertical-content-width-tablet' : ($tabletTabDisplay === 'accordion' ? ' ub-tabbed-content-tablet-accordion' : ''))
-                . '">' .
-                implode($tabContents) . '</div>
-            </div>';
+	return sprintf(
+		'<div class="wp-block-ub-tabbed-content-block %1$s%2$s %3$s-holder%4$s%5$s%6$s%7$s%8$s"%9$s%10$s>
+			<div class="%3$s-tab-holder%11$s%12$s%13$s">
+				<div role="tablist" class="%3$s-tabs-title%14$s%15$s%16$s">%17$s</div>
+			</div>
+			<div class="%3$s-tabs-content%18$s%19$s%20$s" style="%22$s">%21$s</div>
+		</div>',
+		$blockName, // 1
+		($tabStyle !== 'tabs' ? '-' . esc_attr($tabStyle) : ''), // 2
+		$blockName, // 3
+		($tabVertical ? ' vertical-holder' : ''), // 4
+		(isset($className) ? ' ' . esc_attr($className) : ''), // 5
+		(isset($align) ? ' align' . $align : ''), // 6
+		($mobileTabDisplay !== 'accordion' ? ' ' . $blockName . '-' . $mobileTabStyle . '-holder-mobile' : ''), // 7
+		($tabletTabDisplay !== 'accordion' ? ' ' . $blockName . '-' . $tabletTabStyle . '-holder-tablet' : ''), // 8
+		($blockID === '' ? '' : ' id="ub-tabbed-content-' . esc_attr($blockID) . '"'), // 9
+		($mobileTabDisplay === 'accordion' || $tabletTabDisplay === 'accordion' ? ' data-active-tabs="[' . esc_attr($activeTab) . ']"' : ''), // 10
+		($tabVertical ? ' vertical-tab-width' : ''), // 11
+		($mobileTabDisplay !== 'accordion' ? ' ' . $mobileTabStyle . '-tab-width-mobile' : ''), // 12
+		($tabletTabDisplay !== 'accordion' ? ' ' . $tabletTabStyle . '-tab-width-tablet' : ''), // 13
+		($tabVertical ? '-vertical-tab' : ''), // 14
+		($mobileTabDisplay === 'accordion' ? ' ub-mobile-hide' : ' ' . $blockName . '-tabs-title-mobile-' . $mobileTabStyle . '-tab'), // 15
+		($tabletTabDisplay === 'accordion' ? ' ub-tablet-hide' : ' ' . $blockName . '-tabs-title-tablet-' . $tabletTabStyle . '-tab'), // 16
+		$tabs, // 17
+		($tabVertical ? ' vertical-content-width ' : ''), // 18
+		($mobileTabDisplay === 'verticaltab' ? ' vertical-content-width-mobile' : ($mobileTabDisplay === 'accordion' ? ' ub-tabbed-content-mobile-accordion' : '')), // 19
+		($tabletTabDisplay === 'verticaltab' ? ' vertical-content-width-tablet' : ($tabletTabDisplay === 'accordion' ? ' ub-tabbed-content-tablet-accordion' : '')), // 20
+		implode($tabContents), // 21
+		Ultimate_Blocks\includes\generate_css_string($tab_contents_styles), // 22
+	);
 }
 
 function ub_register_tabbed_content_block(){

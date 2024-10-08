@@ -152,6 +152,8 @@ That's it. You're done!
 
 = 3.2.3 =
 
+* NEW: Add alignment control in tabbed content block.
+* NEW: Border radius option for tab title and tab content.
 * NEW: Alignment option for the divider block.
 * NEW: Add navigation and pagination color option in image slider.
 * FIX: Editor breaks when changing the styled block mode to bordered.

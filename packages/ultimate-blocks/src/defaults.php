@@ -2657,6 +2657,14 @@ $defaultValues = array(
                 'type' => 'string',
                 'default' => ''
             ),
+		'tabButtonsBorderRadius' => array(
+			'type'    => 'array',
+			'default' => array()
+		),
+		'tabContentsBorderRadius' => array(
+			'type'    => 'array',
+			'default' => array()
+		),
             'contentColor' => array(
                 'type' => 'string',
                 'default' => null
