@@ -3,6 +3,7 @@ import { __ } from "@wordpress/i18n";
 import { RichText } from "@wordpress/block-editor";
 import TabTitleIcon from "./tabIcon/TabTitleIcon";
 import TabTitleImage from "./tabImage/TabImage";
+import { generateStyles } from "../../../utils/styling-helpers";
 
 /**
  * Tab title component.
@@ -73,6 +74,7 @@ function TabTitle({
   imageIsSelected,
   tabImageWidth,
   tabImageHeight,
+  borderRadius,
 }) {
   /**
    * Active status of this tab title component.
@@ -102,8 +104,8 @@ function TabTitle({
         tabStyle === "underline"
           ? "inherit"
           : isTabActive()
-          ? theme
-          : normalBgColor || "inherit",
+            ? theme
+            : normalBgColor || "inherit",
       color: isTabActive()
         ? textColor || "inherit"
         : normalTextColor || "inherit",
@@ -111,6 +113,10 @@ function TabTitle({
         isTabActive() && tabStyle === "underline"
           ? `5px solid ${textColor || "inherit"}`
           : null,
+      borderTopLeftRadius: borderRadius?.topLeft,
+      borderTopRightRadius: borderRadius?.topRight,
+      borderBottomLeftRadius: borderRadius?.bottomLeft,
+      borderBottomRightRadius: borderRadius?.bottomRight,
     };
   };
 
@@ -133,7 +139,7 @@ function TabTitle({
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div
       className={componentWrapperClass()}
-      style={prepareWrapperStyles()}
+      style={generateStyles(prepareWrapperStyles())}
       onClick={(e) => {
         toggleTitle("tab-title", tabIndex);
         onClick(e);

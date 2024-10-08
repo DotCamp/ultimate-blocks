@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { isEmpty } from "lodash";
+import { omitBy, isUndefined, trim, isEmpty } from "lodash";
 function hasSplitBorders(border = {}) {
   const sides = ["top", "right", "bottom", "left"];
 
@@ -37,11 +37,11 @@ export function getSingleSideBorderValue(border, side) {
   return `${border[side]?.width ?? ""} ${
     hasWidth && isEmpty(border[side]?.style)
       ? "solid"
-      : border[side]?.style ?? ""
+      : (border[side]?.style ?? "")
   } ${
     hasWidth && isEmpty(border[side]?.color)
       ? "#000000"
-      : border[side]?.color ?? ""
+      : (border[side]?.color ?? "")
   }`;
 }
 
@@ -122,6 +122,19 @@ export function getSpacingCss(object) {
   }
   return css;
 }
+
+export function generateStyles(styles) {
+  return omitBy(
+    styles,
+    (value) =>
+      value === false ||
+      isEmpty(value) ||
+      isUndefined(value) ||
+      trim(value) === "" ||
+      trim(value) === "undefined undefined undefined"
+  );
+}
+
 export function getBackgroundColorVar(
   attributes,
   bgColorAttrKey,

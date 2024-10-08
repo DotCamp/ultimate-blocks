@@ -18,6 +18,7 @@ import TabTitle from "./TabTitle";
 import IndexDataRegistry from "../inc/js/IndexDataRegistry";
 import { getStyles } from "../get-styles";
 import { getParentBlock } from "../../../common";
+import { generateStyles } from "../../../utils/styling-helpers";
 
 export class TabHolder extends Component {
   constructor(props) {
@@ -206,10 +207,13 @@ export class TabHolder extends Component {
               tabImages,
               tabImageWidth,
               tabImageHeight,
+              tabButtonsBorderRadius,
             },
           } = propz;
+
           return (
             <TabTitle
+              borderRadius={tabButtonsBorderRadius}
               masterClassName={className}
               titleAlignment={tabsTitleAlignment[i]}
               tabIndex={i}
@@ -348,6 +352,13 @@ export class TabHolder extends Component {
       setAttributes({ blockID: this.props.block.clientId });
     }
     const styles = getStyles(attributes);
+
+    const tabContentsStyles = generateStyles({
+      borderTopLeftRadius: attributes.tabContentsBorderRadius?.topLeft,
+      borderTopRightRadius: attributes.tabContentsBorderRadius?.topRight,
+      borderBottomLeftRadius: attributes.tabContentsBorderRadius?.bottomLeft,
+      borderBottomRightRadius: attributes.tabContentsBorderRadius?.bottomRight,
+    });
     return [
       isSelected && (
         <BlockControls>
@@ -541,6 +552,7 @@ export class TabHolder extends Component {
             className={`${className}-tabs-content ${
               this.props.attributes.tabVertical ? "vertical-content-width" : ""
             }`}
+            style={tabContentsStyles}
           >
             {this.isCTAEnabled() ? (
               <i className={"ub-pro-cta-editor-message"}>

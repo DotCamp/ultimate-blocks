@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { __ } from "@wordpress/i18n";
 import { Component } from "@wordpress/element";
 import {
+  BorderControl,
   ColorSettings,
   SpacingControl,
 } from "../../../components/StylingControls";
@@ -518,6 +519,26 @@ export default class Inspector extends Component {
             </InspectorControls>
           </Fragment>
         )}
+        <InspectorControls group="border">
+          <BorderControl
+            isShowBorder={false}
+            showDefaultBorderRadius
+            attrBorderRadiusKey="tabButtonsBorderRadius"
+            borderRadiusLabel={__(
+              "Tab Buttons Border Radius",
+              "ultimate-blocks"
+            )}
+          />
+          <BorderControl
+            isShowBorder={false}
+            showDefaultBorderRadius
+            attrBorderRadiusKey="tabContentsBorderRadius"
+            borderRadiusLabel={__(
+              "Tab Contents Border Radius",
+              "ultimate-blocks"
+            )}
+          />
+        </InspectorControls>
       </>
     );
   }
