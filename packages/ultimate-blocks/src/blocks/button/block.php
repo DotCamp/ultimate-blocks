@@ -184,15 +184,15 @@ function ub_single_button_parse($b) {
 	);
 }
 
-function ub_render_button_block($attributes){
+function ub_render_button_block($attributes, $_, $block){
     require_once dirname(dirname(__DIR__)) . '/common.php';
     extract($attributes);
+	$block_attrs = $block->parsed_block['attrs'];
 
 	$multiButton = isset($buttons) && count($buttons) > 0;
 
-    $classes = array();
-
-	$styles = ub_get_spacing_styles($attributes);
+    	$classes = array();
+	$styles = '';
 	$styles .= !Ultimate_Blocks\includes\is_undefined( $blockSpacing ) ? '--ub-button-improved-block-spacing:' . Ultimate_Blocks\includes\spacing_preset_css_var($blockSpacing['all'])  . ';': "";
 
 	if ($multiButton) {
@@ -204,8 +204,8 @@ function ub_render_button_block($attributes){
 		$classes[] = $align === '' ? 'align-button-center' : 'align-button-' . esc_attr($align);
 		$classes[] = 'ub-buttons';
 
-		$spacing = !Ultimate_Blocks\includes\is_undefined( $attributes['blockSpacing'] ) ?
-			Ultimate_Blocks\includes\spacing_preset_css_var($attributes['blockSpacing']['all']) :
+		$spacing = !Ultimate_Blocks\includes\is_undefined( $block_attrs['blockSpacing'] ) ?
+			Ultimate_Blocks\includes\spacing_preset_css_var($block_attrs['blockSpacing']['all']) :
 			'20px';
 		$styles .= sprintf('gap: %1$s;', $spacing);
 	} else {
@@ -213,7 +213,21 @@ function ub_render_button_block($attributes){
 		$classes[] = 'ub-button';
 	}
 
-    $classes[] = 'orientation-button-' . esc_attr($orientation) . '';
+	$padding = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['padding']) ? $block_attrs['padding'] : array() );
+	$margin  = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['margin']) ? $block_attrs['margin'] : array() );
+
+	$wrapper_padding = array(
+		'padding-top'        => isset($padding['top']) ? $padding['top'] : "",
+		'padding-left'       => isset($padding['left']) ? $padding['left'] : "",
+		'padding-right'      => isset($padding['right']) ? $padding['right'] : "",
+		'padding-bottom'     => isset($padding['bottom']) ? $padding['bottom'] : "",
+		'margin-top'         => !empty($margin['top']) ? $margin['top']  : "",
+		'margin-left'        => !empty($margin['left']) ? $margin['left']  : "",
+		'margin-right'       => !empty($margin['right']) ? $margin['right']  : "",
+		'margin-bottom'      => !empty($margin['bottom']) ? $margin['bottom']  : "",
+	);
+	$styles .= Ultimate_Blocks\includes\generate_css_string($wrapper_padding);
+    	$classes[] = 'orientation-button-' . esc_attr($orientation) . '';
 	$classes[] = $isFlexWrap ?? 'ub-flex-wrap';
 
     $block_attributes = get_block_wrapper_attributes(
