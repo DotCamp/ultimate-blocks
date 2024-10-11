@@ -44,15 +44,17 @@ export default function PostGridBlock(props) {
 			dateColorHover,
 			excerptColor,
 			excerptColorHover,
+			imageBorderRadius,
 			postTitleColor,
 			postTitleColorHover,
 			rowGap,
 			columnGap,
+			postPadding,
 		},
 		className,
 		posts,
 	} = props;
-	const postPadding = getSpacingCss(postPadding ?? {});
+	const postPaddingObj = getSpacingCss(postPadding ?? {});
 	const sectionPadding = getSpacingCss(padding ?? {});
 	const sectionMargin = getSpacingCss(margin ?? {});
 	const linkPaddingObj = getSpacingCss(linkPadding ?? {});
@@ -75,12 +77,11 @@ export default function PostGridBlock(props) {
 		"--ub-post-grid-post-hover-background": !isEmpty(postBackgroundColorHover)
 			? postBackgroundColorHover
 			: postBackgroundGradientHover,
-		"padding-top": postPadding?.top,
-		"padding-right": postPadding?.right,
-		"padding-bottom": postPadding?.bottom,
-		"padding-left": postPadding?.left,
+		"padding-top": postPaddingObj?.top,
+		"padding-right": postPaddingObj?.right,
+		"padding-bottom": postPaddingObj?.bottom,
+		"padding-left": postPaddingObj?.left,
 	};
-
 	const sectionStyles = {
 		paddingTop: sectionPadding?.top,
 		paddingRight: sectionPadding?.right,
@@ -110,12 +111,10 @@ export default function PostGridBlock(props) {
 		"padding-left": linkPaddingObj?.left,
 	};
 	const imageStyles = {
-		"--ub-post-grid-image-top-left-radius": props.imageBorderRadius?.topLeft,
-		"--ub-post-grid-image-top-right-radius": props.imageBorderRadius?.topRight,
-		"--ub-post-grid-image-bottom-left-radius":
-			props.imageBorderRadius?.bottomLeft,
-		"--ub-post-grid-image-bottom-right-radius":
-			props.imageBorderRadius?.bottomRight,
+		"--ub-post-grid-image-top-left-radius": imageBorderRadius?.topLeft,
+		"--ub-post-grid-image-top-right-radius": imageBorderRadius?.topRight,
+		"--ub-post-grid-image-bottom-left-radius": imageBorderRadius?.bottomLeft,
+		"--ub-post-grid-image-bottom-right-radius": imageBorderRadius?.bottomRight,
 	};
 	const titleStyles = {
 		"--ub-post-grid-title-color": postTitleColor,

@@ -52,6 +52,7 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
     /* Start the loop */
 
     $post_grid = '';
+	$block_attrs = $block->parsed_block['attrs'];
 
     if ( $post_query->have_posts() ) {
 
@@ -70,16 +71,17 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
             /* Join classes together */
             $post_classes = join( ' ', get_post_class( $post_classes, $post_id ) );
 
-			$post_padding 		= Ultimate_Blocks\includes\get_spacing_css(!empty($attributes['postPadding']) ? $attributes['postPadding'] : array() );
+			$post_padding 		= Ultimate_Blocks\includes\get_spacing_css(!empty($block_attrs['postPadding']) ? $block_attrs['postPadding'] : array() );
+
 			$postBorderRadius = array(
 				"padding-top" 								=> isset($post_padding['top']) ? $post_padding['top'] : '',
 				"padding-left" 								=> isset($post_padding['left']) ? $post_padding['left'] : '',
 				"padding-right" 							=> isset($post_padding['right']) ? $post_padding['right'] : '',
 				"padding-bottom" 							=> isset($post_padding['bottom']) ? $post_padding['bottom'] : '',
-				"border-top-left-radius" 					=> !empty($attributes['postBorderRadius']['topLeft']) ? $attributes['postBorderRadius']['topLeft'] : "",
-				"border-top-right-radius" 					=> !empty($attributes['postBorderRadius']['topRight']) ? $attributes['postBorderRadius']['topRight'] : "",
-				"border-bottom-left-radius"					=> !empty($attributes['postBorderRadius']['bottomLeft']) ? $attributes['postBorderRadius']['bottomLeft'] : "",
-				"border-bottom-right-radius"				=> !empty($attributes['postBorderRadius']['bottomRight']) ? $attributes['postBorderRadius']['bottomRight'] : "",
+				"border-top-left-radius" 					=> !empty($block_attrs['postBorderRadius']['topLeft']) ? $block_attrs['postBorderRadius']['topLeft'] : "",
+				"border-top-right-radius" 					=> !empty($block_attrs['postBorderRadius']['topRight']) ? $block_attrs['postBorderRadius']['topRight'] : "",
+				"border-bottom-left-radius"					=> !empty($block_attrs['postBorderRadius']['bottomLeft']) ? $block_attrs['postBorderRadius']['bottomLeft'] : "",
+				"border-bottom-right-radius"				=> !empty($block_attrs['postBorderRadius']['bottomRight']) ? $block_attrs['postBorderRadius']['bottomRight'] : "",
 				"--ub-post-grid-post-background" 			=> Ultimate_Blocks\includes\get_background_color_var($attributes,'postBackgroundColor', 'postBackgroundGradient'),
 				"--ub-post-grid-post-hover-background" 		=> Ultimate_Blocks\includes\get_background_color_var($attributes,'postBackgroundColorHover', 'postBackgroundGradientHover'),
 			);
@@ -96,10 +98,10 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
             if ( isset( $attributes['checkPostImage'] ) && $attributes['checkPostImage'] && $post_thumb_id ) {
 
 				$styles = array(
-					"--ub-post-grid-image-top-left-radius" 		=> !empty($attributes['imageBorderRadius']['topLeft']) ? $attributes['imageBorderRadius']['topLeft'] : "",
-					"--ub-post-grid-image-top-right-radius"		=> !empty($attributes['imageBorderRadius']['topRight']) ? $attributes['imageBorderRadius']['topRight'] : "",
-					"--ub-post-grid-image-bottom-left-radius" 	=> !empty($attributes['imageBorderRadius']['bottomLeft']) ? $attributes['imageBorderRadius']['bottomLeft'] : "",
-					"--ub-post-grid-image-bottom-right-radius" 	=> !empty($attributes['imageBorderRadius']['bottomRight']) ? $attributes['imageBorderRadius']['bottomRight'] : "",
+					"--ub-post-grid-image-top-left-radius" 		=> !empty($block_attrs['imageBorderRadius']['topLeft']) ? $block_attrs['imageBorderRadius']['topLeft'] : "",
+					"--ub-post-grid-image-top-right-radius"		=> !empty($block_attrs['imageBorderRadius']['topRight']) ? $block_attrs['imageBorderRadius']['topRight'] : "",
+					"--ub-post-grid-image-bottom-left-radius" 	=> !empty($block_attrs['imageBorderRadius']['bottomLeft']) ? $block_attrs['imageBorderRadius']['bottomLeft'] : "",
+					"--ub-post-grid-image-bottom-right-radius" 	=> !empty($block_attrs['imageBorderRadius']['bottomRight']) ? $block_attrs['imageBorderRadius']['bottomRight'] : "",
 				);
 
                 /* Output the featured image */
@@ -111,7 +113,7 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
                 );
             }
 
-			$content_padding 	= Ultimate_Blocks\includes\get_spacing_css(!empty($attributes['contentPadding']) ? $attributes['contentPadding'] : array());
+			$content_padding 	= Ultimate_Blocks\includes\get_spacing_css(!empty($block_attrs['contentPadding']) ? $block_attrs['contentPadding'] : array());
 			$styles = [
 				"padding-top"		=> isset($content_padding['top']) ? $content_padding['top'] : '',
 				"padding-right"		=> isset($content_padding['right']) ? $content_padding['right'] : '',
@@ -245,12 +247,13 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
 				);
             }
 
-			$link_padding 		= Ultimate_Blocks\includes\get_spacing_css(!empty($attributes['linkPadding']) ? $attributes['linkPadding'] : array());
+			$link_padding 		= Ultimate_Blocks\includes\get_spacing_css(!empty($block_attrs['linkPadding']) ? $block_attrs['linkPadding'] : array());
+
 			$styles = array(
-				"border-top-left-radius"					=> !empty($attributes['linkBorderRadius']['topLeft']) ? $attributes['linkBorderRadius']['topLeft'] : "",
-				"border-top-right-radius"					=> !empty($attributes['linkBorderRadius']['topRight']) ? $attributes['linkBorderRadius']['topRight'] : "",
-				"border-bottom-left-radius"					=> !empty($attributes['linkBorderRadius']['bottomLeft']) ? $attributes['linkBorderRadius']['bottomLeft'] : "",
-				"border-bottom-right-radius"				=> !empty($attributes['linkBorderRadius']['bottomRight']) ? $attributes['linkBorderRadius']['bottomRight'] : "",
+				"border-top-left-radius"					=> !empty($block_attrs['linkBorderRadius']['topLeft']) ? $block_attrs['linkBorderRadius']['topLeft'] : "",
+				"border-top-right-radius"					=> !empty($block_attrs['linkBorderRadius']['topRight']) ? $block_attrs['linkBorderRadius']['topRight'] : "",
+				"border-bottom-left-radius"					=> !empty($block_attrs['linkBorderRadius']['bottomLeft']) ? $block_attrs['linkBorderRadius']['bottomLeft'] : "",
+				"border-bottom-right-radius"				=> !empty($block_attrs['linkBorderRadius']['bottomRight']) ? $block_attrs['linkBorderRadius']['bottomRight'] : "",
 				"--ub-post-grid-link-background" 			=> Ultimate_Blocks\includes\get_background_color_var($attributes, 'linkBackgroundColor', 'linkBackgroundGradient'),
 				"--ub-post-grid-link-color" 				=> isset($attributes['linkColor']) ? $attributes['linkColor'] : "",
 				"--ub-post-grid-link-hover-background" 		=> Ultimate_Blocks\includes\get_background_color_var($attributes, 'linkBackgroundColorHover', 'linkBackgroundGradientHover'),
@@ -264,7 +267,7 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
             /* Get the read more link */
             if ( isset( $attributes['checkPostLink'] ) && $attributes['checkPostLink'] ) {
                 $post_grid .= sprintf(
-                    '<p><a class="ub-block-post-grid-more-link style="%4$s" ub-text-link" href="%1$s" rel="bookmark">%2$s <span class="screen-reader-text">%3$s</span></a></p>',
+                    '<p><a class="ub-block-post-grid-more-link ub-text-link" style="%4$s"  href="%1$s" rel="bookmark">%2$s <span class="screen-reader-text">%3$s</span></a></p>',
                     esc_url( get_permalink( $post_id ) ),
                     esc_html( $attributes['readMoreText'] ),
 					esc_html( $title ),
