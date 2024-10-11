@@ -1,7 +1,8 @@
 <?php
 
-function ub_render_advanced_heading_block( $attributes ) {
+function ub_render_advanced_heading_block( $attributes, $_, $block ) {
 	$spacingStyles = ub_get_spacing_styles($attributes);
+	$block_attrs = $block->parsed_block['attrs'];
 
 	$styles = ( $attributes['alignment'] === 'none' ? '' : 'text-align: ' . $attributes['alignment'] . ';' ) .
 		( $attributes['textColor'] ? 'color: ' . $attributes['textColor'] . ';' : '' ) .
@@ -12,7 +13,20 @@ function ub_render_advanced_heading_block( $attributes ) {
 		'font-family: ' . $attributes['fontFamily'] . ';' . $spacingStyles .
 		'font-weight: ' . $attributes['fontWeight'] . ';' .
 		( $attributes['lineHeight'] ? 'line-height: ' . $attributes['lineHeight'] . 'px;' : '' );
+	$padding = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['padding']) ? $block_attrs['padding'] : array() );
+	$margin  = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['margin']) ? $block_attrs['margin'] : array() );
 
+	$wrapper_padding = array(
+		'padding-top'        => isset($padding['top']) ? $padding['top'] : "",
+		'padding-left'       => isset($padding['left']) ? $padding['left'] : "",
+		'padding-right'      => isset($padding['right']) ? $padding['right'] : "",
+		'padding-bottom'     => isset($padding['bottom']) ? $padding['bottom'] : "",
+		'margin-top'         => !empty($margin['top']) ? $margin['top']  : "",
+		'margin-left'        => !empty($margin['left']) ? $margin['left']  : "",
+		'margin-right'       => !empty($margin['right']) ? $margin['right']  : "",
+		'margin-bottom'      => !empty($margin['bottom']) ? $margin['bottom']  : "",
+	);
+	$styles .= Ultimate_Blocks\includes\generate_css_string($wrapper_padding);
 	extract( $attributes );
 	$classes                  = array( 'ub_advanced_heading' );
 	$ids                      = array();
