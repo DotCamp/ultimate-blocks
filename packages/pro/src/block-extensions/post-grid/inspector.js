@@ -259,26 +259,6 @@ export default function Inspector(props) {
   const normalStateColors = (
     <>
       <ColorSettings
-        attrKey="postTitleColor"
-        label={__("Title Color", "ultimate-blocks-pro")}
-      />
-      <ColorSettings
-        attrKey="authorColor"
-        label={__("Author Color", "ultimate-blocks-pro")}
-      />
-      <ColorSettings
-        attrKey="dateColor"
-        label={__("Date Color", "ultimate-blocks-pro")}
-      />
-      <ColorSettings
-        attrKey="excerptColor"
-        label={__("Excerpt Color", "ultimate-blocks-pro")}
-      />
-      <ColorSettings
-        attrKey="linkColor"
-        label={__("Link Color", "ultimate-blocks-pro")}
-      />
-      <ColorSettings
         attrKey="taxonomyColor"
         label={__("Taxonomy Color", "ultimate-blocks-pro")}
       />
@@ -307,16 +287,6 @@ export default function Inspector(props) {
         attrGradientKey="taxonomyBackgroundGradient"
         label={__("Taxonomy Background", "ultimate-blocks-pro")}
       />
-      <ColorSettingsWithGradient
-        attrBackgroundKey="linkBackgroundColor"
-        attrGradientKey="linkBackgroundGradient"
-        label={__("Link Background", "ultimate-blocks-pro")}
-      />
-      <ColorSettingsWithGradient
-        attrBackgroundKey="postBackgroundColor"
-        attrGradientKey="postBackgroundGradient"
-        label={__("Post Background", "ultimate-blocks-pro")}
-      />
       {paginationType === "number-pagination" && (
         <>
           <ColorSettingsWithGradient
@@ -344,26 +314,6 @@ export default function Inspector(props) {
   );
   const hoverStateColors = (
     <>
-      <ColorSettings
-        attrKey="postTitleColorHover"
-        label={__("Title Color", "ultimate-blocks-pro")}
-      />
-      <ColorSettings
-        attrKey="authorColorHover"
-        label={__("Author Color", "ultimate-blocks-pro")}
-      />
-      <ColorSettings
-        attrKey="dateColorHover"
-        label={__("Date Color", "ultimate-blocks-pro")}
-      />
-      <ColorSettings
-        attrKey="excerptColorHover"
-        label={__("Excerpt Color", "ultimate-blocks-pro")}
-      />
-      <ColorSettings
-        attrKey="linkColorHover"
-        label={__("Link Color", "ultimate-blocks-pro")}
-      />
       {paginationType === "load-more" && (
         <>
           <ColorSettings
@@ -372,16 +322,6 @@ export default function Inspector(props) {
           />
         </>
       )}
-      <ColorSettingsWithGradient
-        attrBackgroundKey="linkBackgroundColorHover"
-        attrGradientKey="linkBackgroundGradientHover"
-        label={__("Link Background", "ultimate-blocks-pro")}
-      />
-      <ColorSettingsWithGradient
-        attrBackgroundKey="postBackgroundColorHover"
-        attrGradientKey="postBackgroundGradientHover"
-        label={__("Post Background", "ultimate-blocks-pro")}
-      />
       {paginationType === "load-more" && (
         <>
           <ColorSettingsWithGradient
@@ -396,50 +336,7 @@ export default function Inspector(props) {
   return (
     <>
       <InspectorControls group="settings">
-        <PanelBody title={__("General", "ultimate-blocks-pro")}>
-          {Array.isArray(posts) && posts.length > 0 && (
-            <>
-              <SelectControl
-                label={__("Grid Type", "ultimate-blocks-pro")}
-                options={postTypeOptions}
-                value={postLayout}
-                onChange={(postLayout) => setAttributes({ postLayout })}
-              />
-              {"grid" === postLayout && (
-                <RangeControl
-                  label={__("Columns", "ultimate-blocks-pro")}
-                  value={columns}
-                  onChange={(columns) => setAttributes({ columns })}
-                  min={1}
-                  max={
-                    !hasPosts
-                      ? MAX_POSTS_COLUMNS
-                      : Math.min(MAX_POSTS_COLUMNS, posts.length)
-                  }
-                />
-              )}
-            </>
-          )}
-          <ToggleControl
-            label={__("Equal Height", "ultimate-blocks-pro")}
-            checked={isEqualHeight}
-            onChange={() => setAttributes({ isEqualHeight: !isEqualHeight })}
-          />
-          <HeightControl
-            label={__("Row Gap", "ultimate-blocks-pro")}
-            value={rowGap}
-            onChange={(newValue) => setAttributes({ rowGap: newValue })}
-          />
-          <HeightControl
-            label={__("Column Gap", "ultimate-blocks-pro")}
-            value={columnGap}
-            onChange={(newValue) => setAttributes({ columnGap: newValue })}
-          />
-        </PanelBody>
-        <PanelBody
-          title={__("Query", "ultimate-blocks-pro")}
-          initialOpen={false}
-        >
+        <PanelBody title={__("PRO Settings", "ultimate-blocks-pro")}>
           <SelectControl
             __nextHasNoMarginBottom
             options={postTypesSelectOptions}
@@ -447,191 +344,11 @@ export default function Inspector(props) {
             label={__("Post type", "ultimate-blocks-pro")}
             onChange={onPostTypeChange}
           />
-          <p>{__("Authors")}</p>
-          {authorArray && (
-            <div className="ub-autocomplete-container">
-              {authorsList
-                .filter((t) => authorArray.includes(t.id))
-                .map((t) => (
-                  <span className="ub-autocomplete-selection">
-                    {t.name}
-                    <span
-                      className="dashicons dashicons-dismiss"
-                      onClick={() =>
-                        setAttributes({
-                          authorArray: authorArray.filter(
-                            (sel) => sel !== t.id
-                          ),
-                        })
-                      }
-                    />
-                  </span>
-                ))}
-            </div>
-          )}
-          <Autocomplete
-            className="ub-autocomplete-list"
-            list={authorsList
-              .filter((t) => !authorArray.includes(t.id))
-              .map((t) => ({ label: t.name, value: t.id }))}
-            selection={authorArray}
-            addToSelection={(item) => {
-              if (!authorArray.includes(item.value)) {
-                setAttributes({ authorArray: [...authorArray, item.value] });
-              }
-            }}
+          <ToggleControl
+            label={__("Display Taxonomy", "ultimate-blocks")}
+            checked={displayTaxonomy}
+            onChange={toggleDisplayTaxonomy}
           />
-          <label className="components-truncate components-text components-input-control__label">
-            {__("Tags")}
-          </label>
-          {tagArray && (
-            <div className="ub-autocomplete-container">
-              {tagsList
-                .filter((t) => tagArray.includes(t.id))
-                .map((t) => (
-                  <span className="ub-autocomplete-selection">
-                    {t.name}
-                    <span
-                      className="dashicons dashicons-dismiss"
-                      onClick={() => {
-                        setAttributes({
-                          tagArray: tagArray.filter((sel) => sel !== t.id),
-                        });
-                      }}
-                    />
-                  </span>
-                ))}
-            </div>
-          )}
-          <Autocomplete
-            className="ub-autocomplete-list"
-            list={tagsList
-              .filter((t) => !tagArray.includes(t.id))
-              .map((t) => ({ label: t.name, value: t.id }))}
-            selection={tagArray}
-            addToSelection={(item) => {
-              if (!tagArray.includes(item.value)) {
-                setAttributes({ tagArray: [...tagArray, item.value] });
-              }
-            }}
-          />
-          <SelectControl
-            label={__("Order By", "ultimate-blocks-pro")}
-            options={[
-              __("Newest to oldest"),
-              __("Oldest to newest"),
-              __("A → Z"),
-              __("Z → A"),
-            ].map((a, i) => ({ value: i, label: a }))}
-            value={orderDropdownVal}
-            onChange={(newDropVal) => {
-              setOrderDropdownval(newDropVal);
-              setAttributes({
-                order: newDropVal % 3 === 0 ? "desc" : "asc",
-                orderBy: newDropVal > 1 ? "title" : "date",
-              });
-            }}
-          />
-
-          <label className="components-truncate components-text components-input-control__label">
-            {__("Included Categories")}
-          </label>
-          {categoryArray && (
-            <div className="ub-autocomplete-container">
-              {categoriesList
-                .filter((c) => categoryArray.map((ca) => ca.id).includes(c.id))
-                .map((c) => (
-                  <span className="ub-autocomplete-selection">
-                    {c.name}
-                    <span
-                      className="dashicons dashicons-dismiss"
-                      onClick={() =>
-                        setAttributes({
-                          categoryArray: categoryArray.filter(
-                            (sel) => sel.id !== c.id
-                          ),
-                        })
-                      }
-                    />
-                  </span>
-                ))}
-            </div>
-          )}
-          <Autocomplete
-            className="ub-autocomplete-list"
-            list={categoriesList
-              .filter(
-                (cur) =>
-                  !excludedCategories.some((other) => cur.id === other.id)
-              )
-              .filter(
-                (cur) => !categoryArray.some((other) => cur.id === other.id)
-              )
-              .map((c) => ({ label: c.name, value: c.id }))}
-            selection={categoryArray}
-            addToSelection={(item) => {
-              //use full object for full compatibility with querycontrols
-              if (!categoryArray.includes(item.value)) {
-                setAttributes({
-                  categoryArray: [
-                    ...categoryArray,
-                    ...categoriesList.filter((cat) => cat.id === item.value),
-                  ],
-                });
-              }
-            }}
-          />
-
-          <label className="components-truncate components-text components-input-control__label">
-            {__("Excluded Categories")}
-          </label>
-          {excludedCategories && (
-            <div className="ub-autocomplete-container">
-              {categoriesList
-                .filter((c) =>
-                  excludedCategories.map((ca) => ca.id).includes(c.id)
-                )
-                .map((c) => (
-                  <span className="ub-autocomplete-selection">
-                    {c.name}
-                    <span
-                      className="dashicons dashicons-dismiss"
-                      onClick={() => {
-                        setAttributes({
-                          excludedCategories: excludedCategories.filter(
-                            (sel) => sel.id !== c.id
-                          ),
-                        });
-                      }}
-                    />
-                  </span>
-                ))}
-            </div>
-          )}
-          <Autocomplete
-            className="ub-autocomplete-list"
-            list={categoriesList
-              .filter(
-                (cur) =>
-                  !excludedCategories.some((other) => cur.id === other.id)
-              )
-              .filter(
-                (cur) => !categoryArray.some((other) => cur.id === other.id)
-              )
-              .map((c) => ({ label: c.name, value: c.id }))}
-            selection={excludedCategories}
-            addToSelection={(item) => {
-              if (!excludedCategories.includes(item.value)) {
-                setAttributes({
-                  excludedCategories: [
-                    ...excludedCategories,
-                    ...categoriesList.filter((cat) => cat.id === item.value),
-                  ],
-                });
-              }
-            }}
-          />
-          <br></br>
           {displayTaxonomy && (
             <>
               <SelectControl
@@ -658,14 +375,6 @@ export default function Inspector(props) {
               />
             </>
           )}
-
-          <RangeControl
-            label={__("Number of items")}
-            value={amountPosts}
-            onChange={(amountPosts) => setAttributes({ amountPosts })}
-            min={1}
-            max={100}
-          />
         </PanelBody>
         <PanelBody
           title={__("Pagination", "ultimate-blocks-pro")}
@@ -710,112 +419,6 @@ export default function Inspector(props) {
             </>
           )}
         </PanelBody>
-        {Array.isArray(posts) && posts.length > 0 && (
-          <PanelBody
-            title={__("Display", "ultimate-blocks-pro")}
-            initialOpen={false}
-          >
-            <ToggleControl
-              label={__("Display Featured Image", "ultimate-blocks-pro")}
-              checked={checkPostImage}
-              onChange={(checkPostImage) => setAttributes({ checkPostImage })}
-            />
-            {checkPostImage && (
-              <>
-                <TextControl
-                  label={__("Post Image Width", "ultimate-blocks-pro")}
-                  type="number"
-                  min={1}
-                  value={postImageWidth}
-                  onChange={(val) =>
-                    setAttributes({ postImageWidth: Number(val) })
-                  }
-                />
-                <ToggleControl
-                  label={__("Preserve Aspect Ratio", "ultimate-blocks-pro")}
-                  checked={preservePostImageAspectRatio}
-                  onChange={(preservePostImageAspectRatio) =>
-                    setAttributes({ preservePostImageAspectRatio })
-                  }
-                />
-                {!preservePostImageAspectRatio && (
-                  <TextControl
-                    label={__("Post Image Height", "ultimate-blocks-pro")}
-                    type="number"
-                    min={1}
-                    value={postImageHeight}
-                    onChange={(val) =>
-                      setAttributes({ postImageHeight: Number(val) })
-                    }
-                  />
-                )}
-              </>
-            )}
-            <ToggleControl
-              label={__("Display Author", "ultimate-blocks-pro")}
-              checked={checkPostAuthor}
-              onChange={(checkPostAuthor) => setAttributes({ checkPostAuthor })}
-            />
-            <ToggleControl
-              label={__("Display Date", "ultimate-blocks-pro")}
-              checked={checkPostDate}
-              onChange={(checkPostDate) => setAttributes({ checkPostDate })}
-            />
-            <ToggleControl
-              label={__("Display Excerpt", "ultimate-blocks-pro")}
-              checked={checkPostExcerpt}
-              onChange={(checkPostExcerpt) =>
-                setAttributes({ checkPostExcerpt })
-              }
-            />
-            {checkPostExcerpt && (
-              <RangeControl
-                label={__("Excerpt Length", "ultimate-blocks-pro")}
-                value={excerptLength}
-                onChange={(value) => setAttributes({ excerptLength: value })}
-                min={0}
-                max={200}
-              />
-            )}
-            <ToggleControl
-              label={__("Display Continue Reading Link", "ultimate-blocks-pro")}
-              checked={checkPostLink}
-              onChange={(checkPostLink) => setAttributes({ checkPostLink })}
-            />
-            {checkPostLink && (
-              <TextControl
-                label={__(
-                  "Customize Continue Reading Text",
-                  "ultimate-blocks-pro"
-                )}
-                type="text"
-                value={readMoreText}
-                onChange={(value) => setAttributes({ readMoreText: value })}
-              />
-            )}
-            <ToggleControl
-              label={__("Display Title", "ultimate-blocks-pro")}
-              checked={checkPostTitle}
-              onChange={(checkPostTitle) => setAttributes({ checkPostTitle })}
-            />
-            {checkPostTitle && (
-              <SelectControl
-                label={__("Title tag", "ultimate-blocks-pro")}
-                options={["h2", "h3", "h4"].map((a) => ({
-                  value: a,
-                  label: __(a),
-                }))}
-                value={postTitleTag}
-                onChange={(postTitleTag) => setAttributes({ postTitleTag })}
-              />
-            )}
-            <ToggleControl
-              label={__("Display Taxonomy", "ultimate-blocks")}
-              checked={displayTaxonomy}
-              onChange={toggleDisplayTaxonomy}
-            />
-          </PanelBody>
-        )}
       </InspectorControls>
       <InspectorControls group="color">
         <TabsPanelControl
@@ -833,53 +436,7 @@ export default function Inspector(props) {
           ]}
         />
       </InspectorControls>
-      <InspectorControls group="dimensions">
-        <SpacingControlWithToolsPanel
-          showByDefault
-          attrKey="padding"
-          label={__("Padding", "ultimate-blocks-pro")}
-        />
-        <SpacingControlWithToolsPanel
-          minimumCustomValue={-Infinity}
-          showByDefault
-          attrKey="margin"
-          label={__("Margin", "ultimate-blocks-pro")}
-        />
-        <SpacingControlWithToolsPanel
-          showByDefault
-          attrKey="contentPadding"
-          label={__("Content Padding", "ultimate-blocks-pro")}
-        />
-        <SpacingControlWithToolsPanel
-          showByDefault
-          attrKey="linkPadding"
-          label={__("Link Padding", "ultimate-blocks-pro")}
-        />
-        <SpacingControlWithToolsPanel
-          showByDefault
-          attrKey="postPadding"
-          label={__("Post Padding", "ultimate-blocks-pro")}
-        />
-      </InspectorControls>
       <InspectorControls group="border">
-        <BorderControl
-          isShowBorder={false}
-          showDefaultBorderRadius
-          attrBorderRadiusKey="imageBorderRadius"
-          borderRadiusLabel={__("Image Border Radius", "ultimate-blocks-pro")}
-        />
-        <BorderControl
-          isShowBorder={false}
-          showDefaultBorderRadius
-          attrBorderRadiusKey="postBorderRadius"
-          borderRadiusLabel={__("Post Border Radius", "ultimate-blocks-pro")}
-        />
-        <BorderControl
-          isShowBorder={false}
-          showDefaultBorderRadius
-          attrBorderRadiusKey="linkBorderRadius"
-          borderRadiusLabel={__("Link Border Radius", "ultimate-blocks-pro")}
-        />
         <BorderControl
           showDefaultBorder
           showDefaultBorderRadius

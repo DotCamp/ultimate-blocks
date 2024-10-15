@@ -127,6 +127,7 @@ export default function NewPostGrid(props) {
     posts,
     taxonomies,
   };
+  const BlockEdit = props.BlockEdit;
   return (
     <>
       <Inspector {...postGridProps} />
@@ -138,7 +139,8 @@ export default function NewPostGrid(props) {
         />
         <ToolbarGroup controls={toolBarButton} />
       </BlockControls>
-      <PostGridBlock {...postGridProps} />
+      <BlockEdit {...postGridProps} />
+      {/* <PostGridBlock {...postGridProps} /> */}
     </>
   );
 }
