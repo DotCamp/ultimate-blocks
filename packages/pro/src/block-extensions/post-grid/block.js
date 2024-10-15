@@ -4,109 +4,15 @@ import { __ } from "@wordpress/i18n"; // Import __() from wp.i18n
 import PostGridBlock from "./editor";
 import Inspector from "./inspector";
 
-import { useSelect } from "@wordpress/data";
 import { BlockControls, BlockAlignmentControl } from "@wordpress/block-editor";
-import {
-  Placeholder,
-  Spinner,
-  ToolbarGroup,
-  QueryControls,
-} from "@wordpress/components";
-import { addQueryArgs } from "@wordpress/url";
-import { apiFetch } from "@wordpress/api-fetch";
+import { ToolbarGroup } from "@wordpress/components";
 import { useTaxonomies } from "./hooks/use-taxonomy";
-const canSelectMultipleCategories =
-  QueryControls.toString().includes("selectedCategories");
-
-//function below taken from https://stackoverflow.com/a/37616104
-const filterObjectAttributes = (obj, condition) =>
-  Object.fromEntries(Object.entries(obj).filter(condition));
 
 export default function NewPostGrid(props) {
   const { attributes, setAttributes } = props;
-  const {
-    postLayout,
-    wrapAlignment,
-    categories,
-    order,
-    categoryArray,
-    excludedCategories,
-    orderBy,
-    amountPosts,
-    offset,
-    tagArray,
-    authorArray,
-    postType,
-  } = attributes;
-  const { posts } = useSelect((select) => {
-    const { getEntityRecords } = select("core");
-    const { getCurrentPostId } = select("core/editor");
+  const { postLayout, wrapAlignment, postType } = attributes;
 
-    const getPosts = filterObjectAttributes(
-      {
-        categories: canSelectMultipleCategories
-          ? categoryArray && categoryArray.length > 0
-            ? categoryArray.map((cat) => cat.id)
-            : []
-          : categories,
-        categories_exclude: excludedCategories.map((cat) => cat.id),
-        order,
-        orderby: orderBy,
-        per_page: amountPosts,
-        offset: offset,
-        exclude: [getCurrentPostId()],
-        tags: tagArray,
-        author: authorArray,
-      },
-      (value) => typeof value !== "undefined"
-    );
-
-    return {
-      posts: getEntityRecords("postType", postType, getPosts),
-    };
-  });
   const taxonomies = useTaxonomies(postType);
-  const emptyPosts = Array.isArray(posts) && posts.length;
-
-  if (categories !== "" && canSelectMultipleCategories) {
-    apiFetch({
-      path: addQueryArgs("/wp/v2/categories", {
-        per_page: -1,
-      }),
-    })
-      .then((categoriesList) => {
-        setAttributes({
-          categoryArray: categoriesList.filter(
-            (c) => c.id === Number(categories)
-          ),
-          categories: "",
-        });
-      })
-      .catch(() => {
-        setAttributes({
-          categoryArray: [],
-          categories: "",
-        });
-      });
-  }
-
-  if (!emptyPosts) {
-    return (
-      <Placeholder
-        icon="admin-post"
-        label={__("Ultimate Blocks Post Grid", "ultimate-blocks-pro")}
-      >
-        {!Array.isArray(posts) ? (
-          <Spinner />
-        ) : (
-          <>
-            <Inspector {...{ ...props }} />
-            <div>{__("No posts found.", "ultimate-blocks-pro")}</div>
-          </>
-        )}
-      </Placeholder>
-    );
-  }
 
   const toolBarButton = [
     {
@@ -124,10 +30,8 @@ export default function NewPostGrid(props) {
   ];
   const postGridProps = {
     ...props,
-    posts,
     taxonomies,
   };
-  const BlockEdit = props.BlockEdit;
   return (
     <>
       <Inspector {...postGridProps} />
@@ -139,8 +43,7 @@ export default function NewPostGrid(props) {
         />
         <ToolbarGroup controls={toolBarButton} />
       </BlockControls>
-      <BlockEdit {...postGridProps} />
-      {/* <PostGridBlock {...postGridProps} /> */}
+      <PostGridBlock {...postGridProps} />
     </>
   );
 }

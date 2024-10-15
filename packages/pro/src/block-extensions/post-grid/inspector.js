@@ -113,50 +113,19 @@ Autocomplete.defaultProps = {
 };
 
 export default function Inspector(props) {
-  const [categoriesList, setCategoriesList] = useState([]);
-  const [tagsList, setTagsList] = useState([]);
-  const [authorsList, setAuthorsList] = useState([]);
-  const [stillMounted, setStillMounted] = useState(false);
-  const [orderDropdownVal, setOrderDropdownval] = useState(0);
   const [taxonomiesOptions, setTaxonomyOptions] = useState([]);
 
   const {
     attributes: {
-      checkPostImage,
-      postImageWidth,
-      preservePostImageAspectRatio,
-      postImageHeight,
-      checkPostAuthor,
-      checkPostDate,
-      checkPostExcerpt,
-      checkPostLink,
-      excerptLength,
-      readMoreText,
-      amountPosts,
-      postLayout,
-      columns,
-      categories, //old stringified list
-      excludedCategories,
-      categoryArray,
-      orderBy,
-      order,
-      checkPostTitle,
-      postTitleTag,
-      authorArray,
-      tagArray,
       postType,
       pagination,
-      isEqualHeight,
       displayTaxonomy,
       taxonomyType,
-      rowGap,
-      columnGap,
       loadMoreText,
       paginationType,
     },
     setAttributes,
     taxonomies,
-    posts,
   } = props;
   const { postTypesSelectOptions } = usePostTypes();
 
@@ -165,56 +134,7 @@ export default function Inspector(props) {
       setAttributes({ taxonomyType: taxonomiesOptions[0]?.value });
     }
   }, [taxonomiesOptions]);
-  useEffect(() => {
-    setStillMounted(true);
-    return () => setStillMounted(false);
-  }, []);
 
-  useEffect(() => {
-    if (stillMounted) {
-      apiFetch({ path: addQueryArgs("/wp/v2/categories", { per_page: -1 }) })
-        .then((categoriesList) => {
-          setCategoriesList(categoriesList);
-        })
-        .catch(() => {
-          if (stillMounted) {
-            setCategoriesList([]);
-          }
-        });
-
-      apiFetch({ path: addQueryArgs("/wp/v2/tags", { per_page: -1 }) })
-        .then((tagsList) => {
-          setTagsList(tagsList);
-        })
-        .catch(() => {
-          if (stillMounted) {
-            setTagsList([]);
-          }
-        });
-
-      apiFetch({
-        path: addQueryArgs("/wp/v2/users", { per_page: -1, who: "authors" }),
-      })
-        .then((authorsList) => {
-          setAuthorsList(authorsList);
-        })
-        .catch(() => {
-          if (stillMounted) {
-            setAuthorsList([]);
-          }
-        });
-    }
-  }, [stillMounted]);
-
-  useEffect(() => {
-    //initialize orderDropdownVal
-    if (orderBy === "title") {
-      setOrderDropdownval(order === "asc" ? 2 : 3);
-    }
-    if (orderBy === "date") {
-      setOrderDropdownval(order === "desc" ? 0 : 1);
-    }
-  }, []);
   useEffect(() => {
     if (!isEmpty(taxonomies)) {
       const options = taxonomies.map((option) => {
@@ -226,21 +146,7 @@ export default function Inspector(props) {
       setTaxonomyOptions(options);
     }
   }, [taxonomies]);
-  const hasPosts = Array.isArray(posts) && posts.length;
 
-  // Post type options
-  const postTypeOptions = [
-    { value: "grid", label: __("Grid", "ultimate-blocks-pro") },
-    { value: "list", label: __("List", "ultimate-blocks-pro") },
-  ];
-
-  const categorySuggestions = categoriesList.reduce(
-    (accumulator, category) => ({
-      ...accumulator,
-      [category.name]: category,
-    }),
-    {}
-  );
   const onPostTypeChange = (newValue) => {
     setAttributes({ postType: newValue });
   };
