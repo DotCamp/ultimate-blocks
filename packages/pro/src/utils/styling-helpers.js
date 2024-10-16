@@ -58,6 +58,19 @@ export function getBorderVariablesCss(border, slug) {
 
   return borders;
 }
+export function getBorderStyles(border) {
+  const borderInFourDimension = getBorderCSS(border);
+  const borderSides = ["top", "right", "bottom", "left"];
+  let borders = {};
+  for (let i = 0; i < borderSides.length; i++) {
+    const side = borderSides[i];
+    const sideProperty = [`border-${side}`];
+    const sideValue = getSingleSideBorderValue(borderInFourDimension, side);
+    borders[sideProperty] = sideValue;
+  }
+
+  return borders;
+}
 /**
  *  Check values are mixed.
  * @param {any} values - value string or object
