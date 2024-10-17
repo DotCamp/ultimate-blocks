@@ -6,7 +6,6 @@ import {
   splitArrayIntoChunks,
   splitArray,
 } from "../../global";
-import { getStyles } from "./get-styles";
 import {
   CustomToggleGroupControl,
   SpacingControl,
@@ -52,7 +51,12 @@ const {
 const { __ } = wp.i18n;
 const { loadPromise, models } = wp.api;
 const { select } = wp.data;
-import { splitBorderRadius } from "../../utils/styling-helpers";
+import {
+  generateStyles,
+  splitBorderRadius,
+  getSpacingCss,
+  getSpacingPresetCssVar,
+} from "../../utils/styling-helpers";
 import ButtonColorSettings from "./components/ButtonColorSettings";
 
 const allIcons = Object.assign(fas, fab);
@@ -491,6 +495,9 @@ class NewButtonBlockComponent extends Component {
         orientation,
         isFlexWrap,
         isBorderComponentChanged,
+        padding,
+        margin,
+        blockSpacing,
       },
       clientId,
     } = this.props;
@@ -678,7 +685,21 @@ class NewButtonBlockComponent extends Component {
         )}
       </>
     );
-    const styles = getStyles(this.props.attributes);
+    const paddingObj = getSpacingCss(padding);
+    const marginObj = getSpacingCss(margin);
+    const blockSpacingValue =
+      getSpacingPresetCssVar(blockSpacing?.all) ?? "20px";
+    const styles = {
+      paddingTop: paddingObj?.top,
+      paddingRight: paddingObj?.right,
+      paddingBottom: paddingObj?.bottom,
+      paddingLeft: paddingObj?.left,
+      marginTop: marginObj?.top,
+      marginRight: marginObj?.right,
+      marginBottom: marginObj?.bottom,
+      marginLeft: marginObj?.left,
+      gap: blockSpacingValue,
+    };
     const flexWrapClass = isFlexWrap ? " ub-flex-wrap" : "";
     return [
       isSelected && (
@@ -1285,7 +1306,7 @@ class NewButtonBlockComponent extends Component {
       <>
         <div
           className={`ub-buttons align-button-${align} orientation-button-${orientation}${flexWrapClass}`}
-          style={styles}
+          style={generateStyles(styles)}
         >
           {buttons.map((b, i) => (
             <div
@@ -1322,8 +1343,8 @@ class NewButtonBlockComponent extends Component {
                   b.buttonWidth === "full"
                     ? "ub-button-full-width"
                     : b.buttonWidth === "flex"
-                    ? `ub-button-flex-${b.size}`
-                    : ""
+                      ? `ub-button-flex-${b.size}`
+                      : ""
                 } ${
                   b.animation === "wipe"
                     ? `ub-button-wipe-${b.wipeDirection}`
@@ -1336,16 +1357,16 @@ class NewButtonBlockComponent extends Component {
                   backgroundColor: b.buttonIsTransparent
                     ? "transparent"
                     : hoveredButton === i && b.animation === "fade"
-                    ? b.buttonHoverColor
-                    : b.buttonColor,
+                      ? b.buttonHoverColor
+                      : b.buttonColor,
                   color:
                     hoveredButton === i
                       ? b.buttonIsTransparent
                         ? b.buttonHoverColor
                         : b.buttonTextHoverColor || "inherit"
                       : b.buttonIsTransparent
-                      ? b.buttonColor
-                      : b.buttonTextColor || "inherit",
+                        ? b.buttonColor
+                        : b.buttonTextColor || "inherit",
                   borderTopLeftRadius: b?.borderRadius?.topLeft,
                   borderTopRightRadius: b?.borderRadius?.topRight,
                   borderBottomLeftRadius: b?.borderRadius?.bottomLeft,
