@@ -157,6 +157,7 @@ That's it. You're done!
 * NEW: Alignment option for the divider block.
 * NEW: Add navigation and pagination color option in image slider.
 * FIX: Editor breaks when changing the styled block mode to bordered.
+* FIX: Styling removed when convert content toggle block into group block.
 
 = 3.2.2 =
 
