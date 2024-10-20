@@ -11,6 +11,12 @@
 }
 
 .ub-button-wipe {
+  &-left,
+  &-right,
+  &-up,
+  &-down {
+    overflow: hidden;
+  }
   &-left:hover:after,
   &-right:hover:after,
   &-up:hover:after,

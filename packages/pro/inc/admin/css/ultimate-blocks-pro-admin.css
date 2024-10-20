@@ -49,6 +49,9 @@
   right: 0;
 }
 
+.ub-button-wipe-left, .ub-button-wipe-right, .ub-button-wipe-up, .ub-button-wipe-down {
+  overflow: hidden;
+}
 .ub-button-wipe-left:hover:after, .ub-button-wipe-right:hover:after, .ub-button-wipe-up:hover:after, .ub-button-wipe-down:hover:after {
   width: 100%;
   height: 100%;

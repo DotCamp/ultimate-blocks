@@ -1360,7 +1360,7 @@ class NewButtonBlockComponent extends Component {
                       ? b.buttonHoverColor
                       : b.buttonColor,
                   color:
-                    hoveredButton === i
+                    hoveredButton === i && b.animation === "fade"
                       ? b.buttonIsTransparent
                         ? b.buttonHoverColor
                         : b.buttonTextHoverColor || "inherit"
