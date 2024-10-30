@@ -142,7 +142,25 @@ function get_single_side_border_value( $border, $side ) {
 
      return "{$width} " . ( $width && empty( $border[ $side ]['style'] ) ? 'solid' : $style ) . (!empty($width) && empty($color) ? "#000000" : $color);
 }
+/**
+ * Get border styles for CSS.
+ *
+ * @param array $border - border.
+ * @return array CSS styles for the border.
+ */
+function get_border_styles( $border ) {
+     $border_in_dimensions = get_border_css( $border );
+     $border_sides         = array( 'top', 'right', 'bottom', 'left' );
+     $borders              = array();
 
+     foreach ( $border_sides as $side ) {
+          $side_property             = "border-{$side}";
+          $side_value                = get_single_side_border_value( $border_in_dimensions, $side );
+          $borders[ $side_property ] = $side_value;
+     }
+
+     return $borders;
+}
 /**
  * Get border variables for CSS.
  *
@@ -177,4 +195,29 @@ function get_background_color_var(
 	} else {
 		return "";
 	}
+}
+/**
+ * Get border radius values from attributes.
+ *
+ * @param array  $attributes - The attributes array.
+ * @param string $attr_key - The attribute key for border radius.
+ * @return array Border radius values.
+ */
+function get_border_radius_css( $attributes, $attr_key ) {
+     $border_radius = array(
+          'topLeft'     => '',
+          'topRight'    => '',
+          'bottomRight' => '',
+          'bottomLeft'  => ''
+     );
+
+     if ( isset( $attributes[ $attr_key ] ) && is_array( $attributes[ $attr_key ] ) ) {
+          foreach ( $border_radius as $key => $value ) {
+               if ( isset( $attributes[ $attr_key ][ $key ] ) ) {
+                    $border_radius[ $key ] = $attributes[ $attr_key ][ $key ];
+               }
+          }
+     }
+
+     return $border_radius;
 }

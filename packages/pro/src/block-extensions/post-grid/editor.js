@@ -1,6 +1,5 @@
 import FeaturedImage from "./image";
 import moment from "moment";
-import { getStyles } from "./get-styles";
 import NewPostGridPagination from "./pagination";
 // Setup the block
 import { isEmpty } from "lodash";
@@ -83,7 +82,6 @@ export default function PostGridBlock(props) {
 
   const PostTag = postTitleTag;
 
-  // const styles = getStyles(props.attributes);
   const equalHeightClass = isEqualHeight ? " is-equal-height " : "";
   const isPreservePostImageAspectRatio = preservePostImageAspectRatio
     ? " preserve-post-image-aspect-ratio "

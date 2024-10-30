@@ -1,11 +1,5 @@
 import React from "react";
-import { omitBy, isUndefined, trim, isEmpty } from "lodash";
-import {
-  generateStyles,
-  getBorderCSS,
-  getBorderStyles,
-  getBorderVariablesCss,
-} from "../../utils/styling-helpers";
+import { generateStyles, getBorderStyles } from "../../utils/styling-helpers";
 
 function LoadMorePagination(props) {
   const { attributes } = props;
