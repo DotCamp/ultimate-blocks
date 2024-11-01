@@ -1,5 +1,7 @@
+import { generateStyles } from "../../utils/styling-helpers";
+
 function NewPostGridPagination(props) {
-  const { pagination, paginationAlignment, paginationType } = props.attributes;
+  const { paginationAlignment, paginationType } = props.attributes;
 
   const createPaginationItem = (content, Tag = "a", extraClass = "") => (
     <Tag className={`page-numbers ${extraClass}`}>{content}</Tag>
@@ -20,6 +22,7 @@ function NewPostGridPagination(props) {
 
   return (
     <div
+      style={generateStyles(props.styles)}
       className={`ub-post-grid-pagination ub-pagination-justify-${paginationAlignment} ub-${paginationType}`}
     >
       {previewPaginationNumbers()}

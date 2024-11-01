@@ -219,23 +219,6 @@ registerBlockType(metadata.name, {
 	icon: icon,
 	attributes: metadata.attributes,
 	example: { attributes: { titleLinkColor: "invalid" } }, //indicator for displaying in preview
-	transforms: {
-		to: [
-			{
-				type: "block",
-				blocks: "core/group",
-				transform: (_, innerBlocks) =>
-					createBlock(
-						"core/group",
-						{},
-						innerBlocks.map((i) =>
-							createBlock("core/group", {}, i.innerBlocks),
-						),
-					),
-			},
-		],
-	},
-
 	edit: compose([
 		withSelect((select, ownProps) => {
 			const {

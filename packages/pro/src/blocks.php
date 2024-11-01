@@ -50,10 +50,8 @@ function ubpro_include_block_attribute_css(){
                     //nothing could be done
                     break;
                 case 'ub/button':
-					$styles = ubpro_get_spacing_styles($attributes);
 
                     $prefix = '#ub-button-' . $attributes['blockID'];
-					$blockStylesheets .= $prefix . '{' . PHP_EOL . $styles . PHP_EOL . "}"; 
 
                     $presetIconSize = array('small' => 25, 'medium' => 30, 'large' => 35, 'larger' => 40);
 
