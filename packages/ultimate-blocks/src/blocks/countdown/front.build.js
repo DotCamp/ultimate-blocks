@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         clearInterval(timer[i]);
         if (!isNaN(timeLeft)) {
-          instance.innerHTML = instance.getAttribute("data-expirymessage");
+          instance.innerText = instance.getAttribute("data-expirymessage");
         }
       }
     }, 1000);

@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				const generateValue = (arr) =>
 					arr.reduce(
 						(sum, currDigit, j) => sum + 10 ** (arr.length - j - 1) * currDigit,
-						0
+						0,
 					);
 
 				if (!initialValue[i]) {
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 						.map((unit) =>
 							Array.prototype.slice
 								.call(unit.children)
-								.map((c) => parseInt(c.innerHTML))
+								.map((c) => parseInt(c.innerHTML)),
 						);
 
 					const conversionFactor = [7, 24, 60, 60, 1];
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 							.fill(0)
 							.concat(
 								initialValue[i].map((arr) => generateValue(arr)),
-								Array(4 - timeUnits.indexOf(smallestUnit)).fill(0)
+								Array(4 - timeUnits.indexOf(smallestUnit)).fill(0),
 							);
 
 						if (
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
 										conversionFactor
 											.slice(j, 4)
 											.reduce((curFactor, current) => curFactor * current, 1),
-								0
+								0,
 							)
 						) {
 							animationDirection = "increase";
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
 						const timeUnits = ["week", "day", "hour", "minute", "second"];
 						let maxValues = [0, 6, 23, 59, 59].slice(
 							timeUnits.indexOf(largestUnit),
-							timeUnits.indexOf(smallestUnit) + 1
+							timeUnits.indexOf(smallestUnit) + 1,
 						);
 
 						if (timeUnits.indexOf(largestUnit) < 3) {
@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
 						let replacements = [weeks, days, hours, minutes, seconds]
 							.slice(
 								timeUnits.indexOf(largestUnit),
-								timeUnits.indexOf(smallestUnit) + 1
+								timeUnits.indexOf(smallestUnit) + 1,
 							)
 							.map((r, j) =>
 								breakIntoDigits(
@@ -128,10 +128,10 @@ document.addEventListener("DOMContentLoaded", () => {
 										Math.log10(
 											maxValues[j] ||
 												Math.max(generateValue(initialValue[i][j]), r) ||
-												1
-										) + 1
-									)
-								)
+												1,
+										) + 1,
+									),
+								),
 							);
 
 						let incomingDigits = []; //should also contain digits for other values
@@ -147,9 +147,9 @@ document.addEventListener("DOMContentLoaded", () => {
 								const digitCount = maxValues[j]
 									? Math.floor(Math.log10(maxValues[j])) + 1
 									: currentValue === 0 && newValue === 0
-									? 1
-									: Math.floor(Math.log10(Math.max(currentValue, newValue))) +
-									  1;
+										? 1
+										: Math.floor(Math.log10(Math.max(currentValue, newValue))) +
+											1;
 
 								const addExtraZeroes = (arr, targetLength) =>
 									[].concat(Array(targetLength - arr.length).fill(0), arr);
@@ -179,17 +179,17 @@ document.addEventListener("DOMContentLoaded", () => {
 											if (prevDigits.length > 1) {
 												let prevDigits2 = prevDigits.slice(
 													1,
-													prevDigits.length - 1
+													prevDigits.length - 1,
 												);
 												let cycle = prevDigits2.map((p) =>
 													integerArray(
 														0,
-														maxDigits[k - 1] === p ? maxDigits[k] : 9
-													)
+														maxDigits[k - 1] === p ? maxDigits[k] : 9,
+													),
 												);
 												extraDigits = cycle.reduce(
 													(prev, curr) => prev.concat(curr),
-													[]
+													[],
 												);
 											}
 
@@ -199,8 +199,8 @@ document.addEventListener("DOMContentLoaded", () => {
 														prevDigits.length > 0
 															? integerArray(d, currentMax).concat(
 																	extraDigits,
-																	integerArray(0, d)
-															  )
+																	integerArray(0, d),
+																)
 															: [d];
 												} else {
 													prevDigits = extraDigits.concat(integerArray(0, d));
@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
 												if (prevDigits.length > 1) {
 													prevDigits = integerArray(
 														display[k],
-														currentMax
+														currentMax,
 													).concat(extraDigits, integerArray(0, d));
 												} else {
 													prevDigits = integerArray(display[k], d);
@@ -217,11 +217,11 @@ document.addEventListener("DOMContentLoaded", () => {
 											} else {
 												prevDigits = integerArray(
 													display[k],
-													currentMax
+													currentMax,
 												).concat(extraDigits, integerArray(0, d));
 											}
 											return prevDigits.length > 1 ? prevDigits : d;
-										})
+										}),
 									);
 								} else if (animationDirection === "decrease") {
 									let maxDigits = breakIntoDigits(maxValues[j] || currentValue);
@@ -243,17 +243,17 @@ document.addEventListener("DOMContentLoaded", () => {
 											if (prevDigits.length > 1) {
 												let prevDigits2 = prevDigits.slice(
 													1,
-													prevDigits.length - 1
+													prevDigits.length - 1,
 												);
 												let cycle = prevDigits2.map((p) =>
 													integerArray(
 														0,
-														maxDigits[k - 1] === p ? maxDigits[k] : 9
-													)
+														maxDigits[k - 1] === p ? maxDigits[k] : 9,
+													),
 												);
 												extraDigits = cycle.reduce(
 													(prev, curr) => prev.concat(curr),
-													[]
+													[],
 												);
 											}
 
@@ -263,20 +263,20 @@ document.addEventListener("DOMContentLoaded", () => {
 														prevDigits.length > 0
 															? integerArray(d, currentMax).concat(
 																	extraDigits,
-																	integerArray(0, d)
-															  )
+																	integerArray(0, d),
+																)
 															: [d];
 												} else {
 													prevDigits = integerArray(d, currentMax).concat(
 														extraDigits,
-														integerArray(0, d)
+														integerArray(0, d),
 													);
 												}
 											} else if (display[k] > d) {
 												if (prevDigits.length > 1) {
 													prevDigits = integerArray(d, currentMax).concat(
 														extraDigits,
-														integerArray(0, display[k])
+														integerArray(0, display[k]),
 													);
 												} else {
 													prevDigits = integerArray(d, display[k]);
@@ -284,11 +284,11 @@ document.addEventListener("DOMContentLoaded", () => {
 											} else {
 												prevDigits = integerArray(d, currentMax).concat(
 													extraDigits,
-													integerArray(0, display[k])
+													integerArray(0, display[k]),
 												);
 											}
 											return prevDigits.length > 1 ? prevDigits : d;
-										})
+										}),
 									);
 								}
 							}
@@ -303,7 +303,7 @@ document.addEventListener("DOMContentLoaded", () => {
 						const transitionCount = incomingDigits
 							.reduce(
 								(collection, currentArray) => collection.concat(currentArray),
-								[]
+								[],
 							)
 							.filter((a) => Array.isArray(a)).length;
 
@@ -326,7 +326,7 @@ document.addEventListener("DOMContentLoaded", () => {
 											});
 
 										initialValue[i][j] = initialValue[i][j].slice(
-											initialValue[i][j].length - targetLength
+											initialValue[i][j].length - targetLength,
 										);
 									}
 								}
@@ -337,15 +337,15 @@ document.addEventListener("DOMContentLoaded", () => {
 							arr.forEach((d, k) => {
 								if (Array.isArray(d)) {
 									odometerSlot[j][k].classList.add(
-										"ub-countdown-odometer-digits"
+										"ub-countdown-odometer-digits",
 									);
 									odometerSlot[j][k].classList.remove(
-										"ub-countdown-odometer-digit"
+										"ub-countdown-odometer-digit",
 									);
 
 									odometerSlot[j][k].innerHTML = d
 										.map(
-											(dd) => `<div class="odometer-moving-digit">${dd}</div>`
+											(dd) => `<div class="odometer-moving-digit">${dd}</div>`,
 										)
 										.join("");
 
@@ -372,10 +372,10 @@ document.addEventListener("DOMContentLoaded", () => {
 											() => {
 												//switch to pre-animation style
 												odometerSlot[j][k].classList.add(
-													"ub-countdown-odometer-digit"
+													"ub-countdown-odometer-digit",
 												);
 												odometerSlot[j][k].classList.remove(
-													"ub-countdown-odometer-digits"
+													"ub-countdown-odometer-digits",
 												);
 												odometerSlot[j][k].removeAttribute("style");
 
@@ -389,7 +389,7 @@ document.addEventListener("DOMContentLoaded", () => {
 													removeExtraZeroes();
 												}
 											},
-											{ once: true }
+											{ once: true },
 										);
 									}, 40);
 								}
@@ -414,52 +414,52 @@ document.addEventListener("DOMContentLoaded", () => {
 						if (instance.querySelector(".ub_countdown_circular_container")) {
 							if (instance.querySelector(".ub_countdown_circle_week")) {
 								instance.querySelector(
-									".ub_countdown_circle_week .ub_countdown_circle_path"
+									".ub_countdown_circle_week .ub_countdown_circle_path",
 								).style.strokeDasharray = `${
 									(weeks * 219.911) / 52
 								}px, 219.911px`;
 								instance.querySelector(
-									".ub_countdown_circle_week .ub_countdown_circle_trail"
+									".ub_countdown_circle_week .ub_countdown_circle_trail",
 								).style.strokeLinecap = weeks > 0 ? "round" : "butt";
 							}
 							if (instance.querySelector(".ub_countdown_circle_day")) {
 								instance.querySelector(
-									".ub_countdown_circle_day .ub_countdown_circle_path"
+									".ub_countdown_circle_day .ub_countdown_circle_path",
 								).style.strokeDasharray = `${
 									(days * 219.911) / 7
 								}px, 219.911px`;
 								instance.querySelector(
-									".ub_countdown_circle_day .ub_countdown_circle_trail"
+									".ub_countdown_circle_day .ub_countdown_circle_trail",
 								).style.strokeLinecap = days > 0 ? "round" : "butt";
 							}
 							if (instance.querySelector(".ub_countdown_circle_hour")) {
 								instance.querySelector(
-									".ub_countdown_circle_hour .ub_countdown_circle_path"
+									".ub_countdown_circle_hour .ub_countdown_circle_path",
 								).style.strokeDasharray = `${
 									(hours * 219.911) / 24
 								}px, 219.911px`;
 								instance.querySelector(
-									".ub_countdown_circle_hour .ub_countdown_circle_trail"
+									".ub_countdown_circle_hour .ub_countdown_circle_trail",
 								).style.strokeLinecap = hours > 0 ? "round" : "butt";
 							}
 							if (instance.querySelector(".ub_countdown_circle_minute")) {
 								instance.querySelector(
-									".ub_countdown_circle_minute .ub_countdown_circle_path"
+									".ub_countdown_circle_minute .ub_countdown_circle_path",
 								).style.strokeDasharray = `${
 									(minutes * 219.911) / 60
 								}px, 219.911px`;
 								instance.querySelector(
-									".ub_countdown_circle_minute .ub_countdown_circle_trail"
+									".ub_countdown_circle_minute .ub_countdown_circle_trail",
 								).style.strokeLinecap = minutes > 0 ? "round" : "butt";
 							}
 							if (instance.querySelector(".ub_countdown_circle_second")) {
 								instance.querySelector(
-									".ub_countdown_circle_second .ub_countdown_circle_path"
+									".ub_countdown_circle_second .ub_countdown_circle_path",
 								).style.strokeDasharray = `${
 									(seconds * 219.911) / 60
 								}px, 219.911px`;
 								instance.querySelector(
-									".ub_countdown_circle_second .ub_countdown_circle_trail"
+									".ub_countdown_circle_second .ub_countdown_circle_trail",
 								).style.strokeLinecap = seconds > 0 ? "round" : "butt";
 							}
 						}
@@ -467,7 +467,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				} else {
 					clearInterval(timer[i]);
 					if (!isNaN(timeLeft)) {
-						instance.innerHTML = instance.getAttribute("data-expirymessage");
+						instance.innerText = instance.getAttribute("data-expirymessage");
 					}
 				}
 			}, 1000);
