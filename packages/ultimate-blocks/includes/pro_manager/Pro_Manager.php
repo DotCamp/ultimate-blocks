@@ -251,14 +251,6 @@ class Pro_Manager {
 		$button_upsell      = new Button_Extension( 'ub/button' );
 		$button_upsell_data = $button_upsell->get_upsell_data();
 
-		// Buttons extension.
-		$buttons_upsell      = new Buttons_Extension( 'ub/buttons' );
-		$buttons_upsell_data = $buttons_upsell->get_upsell_data();
-
-		// Single Button extension.
-		$single_button_upsell      = new Single_Button_Extension( 'ub/single-button' );
-		$single_button_upsell_data = $single_button_upsell->get_upsell_data();
-
 		// Content toggle extension.
 		$content_toggle_upsell = new Content_Toggle_Extension( 'ub/content-toggle-block' );
 		$content_toggle_data   = $content_toggle_upsell->get_upsell_data();
@@ -323,8 +315,6 @@ class Pro_Manager {
 			$post_grid_upsell_data,
 			$visibility_control_upsell_data,
 			$animation_upsell_data,
-			$buttons_upsell_data,
-			$single_button_upsell_data
 		);
 
 		return array(
