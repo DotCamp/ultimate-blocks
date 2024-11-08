@@ -150,6 +150,10 @@ That's it. You're done!
 
 == Changelog ==
 
+= 3.2.4 =
+
+* FIX: Fatal Error on PHP 7.x and earlier.
+
 = 3.2.3 =
 
 * NEW: Add alignment control in tabbed content block.

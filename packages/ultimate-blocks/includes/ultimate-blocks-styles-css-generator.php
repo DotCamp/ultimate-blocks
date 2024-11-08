@@ -151,7 +151,7 @@ function get_border_variables_css( $border, $slug ) {
 function get_background_color_var(
 	$attributes,
 	$bg_color_attr_key,
-	$gradient_attr_key,
+	$gradient_attr_key
 ) {
 	if (!empty($attributes[$bg_color_attr_key])) {
 		return $attributes[$bg_color_attr_key];
