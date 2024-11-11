@@ -5,3 +5,15 @@ node_modules
 .vscode
 .swp
 .env
+
+packages/ultimate-blocks/src/blocks/*/*.css
+
+packages/pro/inc/admin/css/ultimate-blocks-pro-admin.css
+packages/pro/inc/admin/js/ultimate-blocks-pro-admin.asset.php
+packages/pro/inc/admin/js/ultimate-blocks-pro-admin.js
+packages/pro/inc/extra/js/dist/ContentToggleSearch.js
+packages/pro/inc/extra/js/dist/ContentToggleSearch.js.map
+packages/pro/inc/frontend/css/ultimate-blocks-pro-frontend.css
+packages/pro/inc/settings-menu/css/ultimate-blocks-pro-settings-menu.css
+packages/pro/inc/settings-menu/js/ultimate-blocks-pro-settings-menu.js
+packages/pro/inc/style/css/ultimate-blocks-pro-style.css
