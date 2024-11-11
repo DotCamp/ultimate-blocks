@@ -13,8 +13,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run PHP Compatibility Check
-        uses: pantheon-systems/phpcompatibility-action@v1
+        uses: permafrost06/phpcompatibility-action@main
         with:
-          test-versions: 6.7-
+          test-versions: 5.6-
           paths: ${{ github.workspace }}
+          extensions: php
 
