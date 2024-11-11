@@ -351,34 +351,6 @@ function ub_include_block_attribute_css() {
 					$blockStylesheets .= $prefix .  '{' . $styles . '}';
 
 					break;
-				case 'ub/call-to-action-block':
-					$styles = ub_get_spacing_styles($attributes);
-					$prefix           = '#ub_call_to_action_' . $attributes['blockID'];
-					$blockStylesheets .= $prefix . '{' . PHP_EOL .
-										 'background-color: ' . $attributes['ctaBackgroundColor'] . ';' . PHP_EOL .
-										 'border-width: ' . $attributes['ctaBorderSize'] . 'px;' . PHP_EOL .
-										 'border-color: ' . $attributes['ctaBorderColor'] . ';' . PHP_EOL .
-										  $styles .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_call_to_action_headline_text{' . PHP_EOL .
-										 'font-size: ' . $attributes['headFontSize'] . 'px;' . PHP_EOL .
-										 'color: ' . ( $attributes['headColor'] ?: "inherit" ) . ';' . PHP_EOL .
-										 'text-align: ' . $attributes['headAlign'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_cta_content_text{' . PHP_EOL .
-										 'font-size: ' . $attributes['contentFontSize'] . 'px;' . PHP_EOL .
-										 'color: ' . ( $attributes['contentColor'] ?: "inherit" ) . ';' . PHP_EOL .
-										 'text-align: ' . $attributes['contentAlign'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_cta_button{' . PHP_EOL .
-										 'background-color: ' . $attributes['buttonColor'] . ';' . PHP_EOL .
-										 'width: ' . $attributes['buttonWidth'] . 'px;' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_cta_button_text{' . PHP_EOL .
-										 'color: ' . ( $attributes['buttonTextColor'] ?: 'inherit' ) . ';' . PHP_EOL .
-										 'font-size: ' . $attributes['buttonFontSize'] . 'px;' . PHP_EOL .
-										 '}' . PHP_EOL;
-					break;
 				case 'ub/click-to-tweet':
 					$styles = ub_get_spacing_styles($attributes);
 					$prefix           = '#ub_click_to_tweet_' . $attributes['blockID'];
