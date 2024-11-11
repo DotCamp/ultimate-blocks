@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { SpacingControl } from "../components";
-import { getStyles } from "./get-styles";
 import { useSelect } from "@wordpress/data";
 import { __ } from "@wordpress/i18n";
 
@@ -26,6 +25,7 @@ import {
 	SelectControl,
 } from "@wordpress/components";
 import { getParentBlock } from "../../common";
+import { getSpacingCss } from "../utils/styling-helpers";
 
 export const blockControls = (props) => {
 	const { editable, attributes, setAttributes } = props;
@@ -305,11 +305,30 @@ export const editorDisplay = (props) => {
 		ub_cta_content_text,
 		ub_cta_button_text,
 		useHeadingTag,
+		padding,
+		margin,
+		ctaBackgroundColor,
+		ctaBorderColor,
+		ctaBorderSize,
 	} = attributes;
-	const styles = getStyles(attributes);
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+	const callToActionStyles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+		backgroundColor: ctaBackgroundColor,
+		borderWidth: ctaBorderSize + "px",
+		borderColor: ctaBorderColor,
+	};
 	return (
 		<>
-			<div className="ub_call_to_action" style={styles}>
+			<div className="ub_call_to_action" style={callToActionStyles}>
 				<div className="ub_call_to_action_headline">
 					<RichText
 						tagName={useHeadingTag ? "h2" : "p"}
