@@ -351,18 +351,6 @@ function ub_include_block_attribute_css() {
 					$blockStylesheets .= $prefix .  '{' . $styles . '}';
 
 					break;
-				case 'ub/click-to-tweet':
-					$styles = ub_get_spacing_styles($attributes);
-					$prefix           = '#ub_click_to_tweet_' . $attributes['blockID'];
-					$blockStylesheets .= $prefix . '{' . PHP_EOL .
-										 'border-color: ' . $attributes['borderColor'] . ';' . PHP_EOL .
-										 $styles . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_tweet{' . PHP_EOL .
-										 'color: ' . ( $attributes['tweetColor'] ?: 'inherit' ) . ';' . PHP_EOL .
-										 'font-size: ' . $attributes['tweetFontSize'] . 'px;' . PHP_EOL .
-										 '}' . PHP_EOL;
-					break;
 				case 'ub/content-filter-block':
 					$styles = ub_get_spacing_styles($attributes);
 					$prefix           = '#ub-content-filter-' . $attributes['blockID'];

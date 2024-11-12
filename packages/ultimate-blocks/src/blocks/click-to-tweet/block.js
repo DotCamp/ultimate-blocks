@@ -15,6 +15,7 @@ import {
 import { TextControl, RangeControl, PanelBody } from "@wordpress/components";
 import { useSelect } from "@wordpress/data";
 import { getParentBlock } from "../../common";
+import { generateStyles, getSpacingCss } from "../utils/styling-helpers";
 
 /**
  * Register: aa Gutenberg Block.
@@ -33,8 +34,16 @@ import { getParentBlock } from "../../common";
 function ClickToTweet(props) {
 	const { isSelected, setAttributes, attributes } = props;
 
-	const { ubTweet, ubVia, tweetFontSize, tweetColor, borderColor, blockID } =
-		attributes;
+	const {
+		ubTweet,
+		ubVia,
+		tweetFontSize,
+		tweetColor,
+		borderColor,
+		blockID,
+		padding,
+		margin,
+	} = attributes;
 	const { block, rootBlockClientId } = useSelect((select) => {
 		const { getBlock, getBlockRootClientId } =
 			select("core/block-editor") || select("core/editor");
@@ -58,6 +67,19 @@ function ClickToTweet(props) {
 		}
 	}, [block?.clientId]);
 	const blockProps = useBlockProps();
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+	const clickToTweetStyles = {
+		borderColor: borderColor,
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+	};
 	return (
 		<div {...blockProps}>
 			{isSelected && (
@@ -122,7 +144,10 @@ function ClickToTweet(props) {
 				</>
 			)}
 			<div className={props.className}>
-				<div className="ub_click_to_tweet" style={getStyles(attributes)}>
+				<div
+					className="ub_click_to_tweet"
+					style={generateStyles(clickToTweetStyles)}
+				>
 					<RichText
 						style={{
 							fontSize: tweetFontSize + "px",
