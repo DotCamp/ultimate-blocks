@@ -17,4 +17,5 @@ jobs:
         with:
           test-versions: 5.6-
           paths: ${{ github.workspace }}
+          extensions: 'php,js'
 
