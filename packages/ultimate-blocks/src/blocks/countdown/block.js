@@ -1,12 +1,7 @@
 import { isEmpty } from "lodash";
-import icon, {
-	RegularCountdownIcon,
-	CircularCountdownIcon,
-	TickingCountdownIcon,
-} from "./icon";
+import icon from "./icon";
 import Timer from "./components";
 import { getParentBlock } from "../../common";
-import { getStyles } from "./get-styles";
 import "./blocks-styles";
 import { ColorSettings, SpacingControl } from "../components/";
 
@@ -17,7 +12,6 @@ import { registerBlockType } from "@wordpress/blocks";
 import {
 	InspectorControls,
 	RichText,
-	PanelColorSettings,
 	BlockControls,
 	useBlockProps,
 } from "@wordpress/block-editor";
@@ -27,9 +21,9 @@ import {
 	ToolbarGroup,
 	ToolbarButton,
 	SelectControl,
-	RangeControl,
 } from "@wordpress/components";
 import { useSelect } from "@wordpress/data";
+import { generateStyles, getSpacingCss } from "../utils/styling-helpers";
 
 function CountdownMain(props) {
 	const [forceUpdate, setForceUpdate] = useState(false);
@@ -60,6 +54,8 @@ function CountdownMain(props) {
 			countdownColor,
 			unitColor,
 			className: blockClassName,
+			padding,
+			margin,
 		},
 	} = props;
 	const blockStylesClass = [
@@ -125,7 +121,20 @@ function CountdownMain(props) {
 
 	const timeUnits = ["week", "day", "hour", "minute", "second"];
 
-	const styles = getStyles(props.attributes);
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+	const countdownWrapperStyles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: !isEmpty(marginObj?.top) ? marginObj?.top : "",
+		marginRight: !isEmpty(marginObj?.right) ? marginObj?.right : " ",
+		marginBottom: !isEmpty(marginObj?.bottom) ? marginObj?.bottom : "",
+		marginLeft: !isEmpty(marginObj?.left) ? marginObj?.left : "",
+		"--ub-countdown-unit-color": unitColor,
+		"--ub-countdown-digit-color": countdownColor,
+	};
 	return (
 		<div {...useBlockProps()}>
 			{isSelected && (
@@ -228,7 +237,10 @@ function CountdownMain(props) {
 					</ToolbarGroup>
 				</BlockControls>
 			)}
-			<div className="ub-countdown-wrapper" style={styles}>
+			<div
+				className="ub-countdown-wrapper"
+				style={generateStyles(countdownWrapperStyles)}
+			>
 				<Timer
 					timerStyle={style}
 					deadline={endDate}

@@ -381,41 +381,6 @@ function ub_include_block_attribute_css() {
 											 '}';
 					}
 					break;
-				case 'ub/countdown':
-					$styles = ub_get_spacing_styles($attributes);
-					$prefix           = '#ub_countdown_' . $attributes['blockID'];
-					$blockStylesheets .= $prefix . '{' . PHP_EOL .
-										 'text-align: ' . $attributes['messageAlign'] . ';' . PHP_EOL .
-										 $styles . PHP_EOL .
-										 '}';
-
-					$timeUnits = [ "week", "day", "hour", "minute", "second" ];
-
-					switch ( $attributes['style'] ) {
-						case 'Odometer':
-							$blockStylesheets .= $prefix . ' .ub-countdown-odometer-container{' . PHP_EOL .
-												 'grid-template-columns: ' . implode( ' auto ',
-											array_fill( 0, array_search( $attributes['smallestUnit'],
-															$timeUnits ) - array_search( $attributes['largestUnit'],
-															$timeUnits ) + 1, '1fr' ) ) . ';' . PHP_EOL .
-												 '}';
-							break;
-						case 'Circular':
-							$blockStylesheets .= $prefix . ' .ub_countdown_circular_container{' . PHP_EOL .
-												 'grid-template-columns: ' . implode( ' ',
-											array_fill( 0, array_search( $attributes['smallestUnit'],
-															$timeUnits ) - array_search( $attributes['largestUnit'],
-															$timeUnits ) + 1, '1fr' ) ) . ';' . PHP_EOL .
-												 '}';
-							$blockStylesheets .= $prefix . ' .ub_countdown_circular_container > div{' . PHP_EOL .
-												 'height: ' . $attributes['circleSize'] . 'px;' . PHP_EOL .
-												 'width: ' . $attributes['circleSize'] . 'px;' . PHP_EOL .
-												 '}';
-							break;
-						default:
-							$blockStylesheets .= '';
-					}
-					break;
 				case 'ub/divider':
 					$prefix = '#ub_divider_' . $attributes['blockID'];
 					$styles = ub_get_spacing_styles($attributes);
