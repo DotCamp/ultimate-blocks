@@ -2,7 +2,6 @@
 import icon from "./icons/icon";
 import { useEffect } from "react";
 import { SpacingControl } from "../components";
-import { getStyles } from "./get-styles";
 import metadata from "./block.json";
 import { __ } from "@wordpress/i18n";
 import { registerBlockType } from "@wordpress/blocks";

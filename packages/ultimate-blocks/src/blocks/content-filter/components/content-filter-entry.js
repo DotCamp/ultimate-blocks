@@ -2,7 +2,6 @@ import icon from "../icon";
 
 import { useEffect, useState, useRef } from "react";
 import { SpacingControl } from "../../components";
-import { getStyles } from "./get-styles";
 import metadata from "./block.json";
 import { __ } from "@wordpress/i18n";
 import {
@@ -265,7 +264,6 @@ function ContentFilterEntry(props) {
 		setTagList(tempTagList);
 	}, [availableFilters, selectedFilters]);
 
-	const styles = getStyles(attributes);
 	return (
 		<>
 			<InspectorControls group="styles">
@@ -289,7 +287,6 @@ function ContentFilterEntry(props) {
 			<div
 				{...useBlockProps({
 					className: "ub-content-filter-panel",
-					style: styles,
 				})}
 			>
 				<InnerBlocks templateLock={false} />

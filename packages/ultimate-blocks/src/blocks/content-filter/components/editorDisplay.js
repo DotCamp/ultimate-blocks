@@ -21,7 +21,7 @@ import {
 import { SpacingControl } from "../../components";
 import { useEffect } from "react";
 import { getParentBlock, upgradeButtonLabel } from "../../../common";
-import { getStyles } from "./get-styles";
+import { generateStyles, getSpacingCss } from "../../utils/styling-helpers";
 
 export function OldPanelContent(props) {
 	function editFilterArray(item, pos) {
@@ -477,6 +477,9 @@ export function NewPanelContent(props) {
 		blockID,
 		initiallyShowAll,
 		matchingOption,
+		filterButtonAlignment,
+		padding,
+		margin,
 		//,allowReset,resetButtonLabel
 	} = attributes;
 	const blockProps = useBlockProps();
@@ -543,7 +546,21 @@ export function NewPanelContent(props) {
 			setAttributes({ blockID: block.clientId });
 		}
 	}, [block?.clientId]);
-	const styles = getStyles(attributes);
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+	const contentWrapperStyles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+	};
+	const contentFilterButtonsStyles = {
+		justifyContent: filterButtonAlignment,
+	};
 	return (
 		<div {...blockProps}>
 			<BlockControls>
@@ -665,7 +682,10 @@ export function NewPanelContent(props) {
 					</InspectorControls>
 				</>
 			)}
-			<div className="ub-content-filter-main" style={styles}>
+			<div
+				className="ub-content-filter-main"
+				style={generateStyles(contentWrapperStyles)}
+			>
 				{filterArray.length > 0 &&
 					filterArray.map((f, i) => (
 						<div className="ub-content-filter-category">
@@ -699,7 +719,10 @@ export function NewPanelContent(props) {
 									}}
 								/>
 							</div>
-							<div className="ub-content-filter-buttons-wrapper">
+							<div
+								className="ub-content-filter-buttons-wrapper"
+								style={generateStyles(contentFilterButtonsStyles)}
+							>
 								{f.filters.map((filter, j) => (
 									<div
 										className="ub-content-filter-tag"
