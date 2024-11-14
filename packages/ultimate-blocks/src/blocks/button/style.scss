@@ -8,24 +8,25 @@
 	margin: 30px auto;
 	max-width: 100%;
 }
+[id^="ub-button-"].ub-buttons {
+	.ub-button-container {
+		max-width: 100%;
+		display: flex;
+		a.ub-button-block-main.ub-button-block-main,
+		a.ub-button-block-btn.ub-button-block-btn {
+			text-decoration: none;
+		}
 
-.ub-button-container {
-	max-width: 100%;
-	display: flex;
-	a.ub-button-block-main.ub-button-block-main,
-	a.ub-button-block-btn.ub-button-block-btn {
-		text-decoration: none;
-	}
+		a {
+			color: var(--ub-button-color);
+			background-color: var(--ub-button-background-color);
+			border: var(--ub-button-border);
 
-	a {
-		color: var(--ub-button-color);
-		background-color: var(--ub-button-background-color);
-		border: var(--ub-button-border);
-
-		&:hover {
-			color: var(--ub-button-hover-color);
-			background-color: var(--ub-button-hover-background-color);
-			border: var(--ub-button-hover-border);
+			&:hover {
+				color: var(--ub-button-hover-color);
+				background-color: var(--ub-button-hover-background-color);
+				border: var(--ub-button-hover-border);
+			}
 		}
 	}
 }
