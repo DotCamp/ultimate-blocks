@@ -8,7 +8,7 @@
 	margin: 30px auto;
 	max-width: 100%;
 }
-[id^="ub-button-"].ub-buttons {
+.ub-buttons {
 	.ub-button-container {
 		max-width: 100%;
 		display: flex;
@@ -17,7 +17,7 @@
 			text-decoration: none;
 		}
 
-		a {
+		a.ub-button-block-main.ub-button-block-main {
 			color: var(--ub-button-color);
 			background-color: var(--ub-button-background-color);
 			border: var(--ub-button-border);
