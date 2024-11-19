@@ -511,17 +511,6 @@ function ub_include_block_attribute_css() {
 					$blockStylesheets .= '}' . PHP_EOL;
 
 					break;
-				case 'ub/image-slider':
-					$prefix           = '#ub_image_slider_' . $attributes['blockID'];
-					$styles = ub_get_spacing_styles($attributes);
-					$blockStylesheets .= $prefix . '{' . PHP_EOL . $styles . PHP_EOL . "}";
-					$blockStylesheets .= $prefix . '{'  . PHP_EOL .
-										 'min-height: ' . (35 + $attributes['sliderHeight']) . 'px;' . PHP_EOL .
-										 '}' . PHP_EOL;
-					$blockStylesheets .= $prefix . ' .swiper-slide img{' . PHP_EOL .
-										 'height: ' . $attributes['sliderHeight'] . 'px;' . PHP_EOL .
-										 '}' . PHP_EOL;
-					break;
 				case 'ub/notification-box-block':
 					$blockStylesheets .= '#ub-notification-box-' . $attributes['blockID'] . ' .ub_notify_text{' . PHP_EOL .
 										 'text-align: ' . $attributes['align'] . ';' . PHP_EOL .
