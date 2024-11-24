@@ -2,9 +2,9 @@
 Contributors: dotcamp, ultimateblocks, imtiazrayhan, istiakrayhan, erdembircan, alexius08, wpleaders1, wpcdplugin, wptb
 Tags: block, blocks, gutenberg blocks, gutenberg, block editor
 Requires at least: 5.8
-Tested up to: 6.5
+Tested up to: 6.7
 Stable tag: 3.2.5
-Requires PHP: 5.6
+Requires PHP: 7.2
 License: GPL3+
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
