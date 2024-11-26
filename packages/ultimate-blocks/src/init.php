@@ -659,27 +659,6 @@ function ub_include_block_attribute_css() {
 					}
 
 					break;
-				case 'ub/star-rating-block':
-					$styles = ub_get_spacing_styles($attributes);
-
-					$prefix           = '#ub-star-rating-' . $attributes['blockID'];
-					$gap = isset($attributes['gap']['all']) ?  Ultimate_Blocks\includes\spacing_preset_css_var($attributes['gap']['all']) : "";
-					$gap_css = !empty($gap) ? '--ub-star-rating-gap:' . $gap .';' : "";
-					$font_size_css = !empty($attributes['textFontSize']) ? '--ub-star-rating-font-size:'. $attributes['textFontSize'] . ';' : "";
-					$blockStylesheets .= $prefix . '{' . $styles . $font_size_css . $gap_css . '}';
-
-					$blockStylesheets .= $prefix . ' .ub-star-outer-container{' . PHP_EOL .
-										 'justify-content: ' . ( $attributes['starAlign'] === 'center' ? 'center' :
-									( 'flex-' . ( $attributes['starAlign'] === 'left' ? 'start' : 'end' ) ) ) . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub-review-text{' . PHP_EOL .
-										 'text-align: ' . $attributes['reviewTextAlign'] . ';' . PHP_EOL .
-										 'color: ' . ( $attributes['reviewTextColor'] ?: 'inherit' ) . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' svg{' . PHP_EOL .
-										 'fill: ' . $attributes['starColor'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL;
-					break;
 				case 'ub/styled-box':
 					$prefix = '#ub-styled-box-' . $attributes['blockID'];
 					$styles = ub_get_spacing_styles($attributes);

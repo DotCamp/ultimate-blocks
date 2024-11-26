@@ -10,7 +10,6 @@
 .ub-star-rating {
 	display: flex;
 	flex-direction: column;
-	gap: var(--ub-star-rating-gap, 20px);
 
 	&.ub-star-rating-text-top {
 		flex-direction: column-reverse;
@@ -43,9 +42,6 @@
 		&.ub-star-rating-align-right {
 			justify-content: flex-start;
 		}
-	}
-	.ub-review-text {
-		font-size: var(--ub-star-rating-font-size);
 	}
 }
 .ub-star-inner-container svg {

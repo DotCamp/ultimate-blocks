@@ -1,22 +1,24 @@
 <?php
 
-function ub_render_testimonial_block($attributes){
+function ub_render_testimonial_block($attributes, $_, $block){
 	extract($attributes);
-	$padding = Ultimate_Blocks\includes\get_spacing_css( isset($attributes['padding']) ? $attributes['padding'] : array() );
-	$margin = Ultimate_Blocks\includes\get_spacing_css( isset($attributes['margin']) ? $attributes['margin'] : array() );
+
+	$block_attrs = $block->parsed_block['attrs'];
+	$padding = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['padding']) ? $block_attrs['padding'] : array() );
+	$margin = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['margin']) ? $block_attrs['margin'] : array() );
 	$text_color_important = isset($attributes['textColorImportant']) ? $attributes['textColorImportant'] : false;
 	$background_color_important = isset($attributes['backgroundColorImportant']) ? $attributes['backgroundColorImportant'] : false;
 	$wrapper_Styles = array(
 		'background-color'   => isset($attributes['backgroundColor']) ? $attributes['backgroundColor'] . ($background_color_important ? " !important" : "") : "",
 		'color'              => isset($attributes['textColor']) ? $attributes['textColor'] . ($text_color_important ? " !important" : "") : "inherit",
-		'padding-top'        => isset($padding['top']) ? $padding['top'] . ($paddingImportant ? " !important" : "") : "",
-		'padding-left'       => isset($padding['left']) ? $padding['left'] . ($paddingImportant ? " !important" : "") : "",
-		'padding-right'      => isset($padding['right']) ? $padding['right'] . ($paddingImportant ? " !important" : "") : "",
-		'padding-bottom'     => isset($padding['bottom']) ? $padding['bottom'] . ($paddingImportant ? " !important" : "") : "",
-		'margin-top'         => !empty($margin['top']) ? $margin['top'] . " !important" : "",
-		'margin-left'        => !empty($margin['left']) ? $margin['left'] . " !important" : "",
-		'margin-right'       => !empty($margin['right']) ? $margin['right'] . " !important" : "",
-		'margin-bottom'      => !empty($margin['bottom']) ? $margin['bottom'] . " !important" : "",
+		'padding-top'        => isset($padding['top']) ? $padding['top'] : "",
+		'padding-left'       => isset($padding['left']) ? $padding['left'] : "",
+		'padding-right'      => isset($padding['right']) ? $padding['right'] : "",
+		'padding-bottom'     => isset($padding['bottom']) ? $padding['bottom'] : "",
+		'margin-top'         => !empty($margin['top']) ? $margin['top'] : "",
+		'margin-left'        => !empty($margin['left']) ? $margin['left'] : "",
+		'margin-right'       => !empty($margin['right']) ? $margin['right'] : "",
+		'margin-bottom'      => !empty($margin['bottom']) ? $margin['bottom'] : "",
 	);
 	$testimonial_text = array(
 		'font-size'   => isset($attributes['textSize']) ? $attributes['textSize'] . 'px' : '',
