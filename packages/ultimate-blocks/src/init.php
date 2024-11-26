@@ -945,27 +945,8 @@ function ub_include_block_attribute_css() {
 						$blockStylesheets .= $prefix . ' li{' . PHP_EOL .
 											 'color: ' . $attributes['listIconColor'] . ';' . PHP_EOL . '}' . PHP_EOL;
 					}
-					break;
-				case 'ub/testimonial':
-					$styles = ub_get_spacing_styles($attributes);
+				break;
 
-					$prefix           = '#ub_testimonial_' . $attributes['blockID'];
-					$blockStylesheets .= $prefix . '{' . PHP_EOL .
-										 'background-color: ' . $attributes['backgroundColor'] . ';' . PHP_EOL .
-										 'color: ' . ( $attributes['textColor'] ?: "inherit" ) . ';' . PHP_EOL .
-										 $styles .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_testimonial_text{' . PHP_EOL .
-										 'font-size: ' . $attributes['textSize'] . 'px;' . PHP_EOL .
-										 'text-align: ' . $attributes['textAlign'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_testimonial_author{' . PHP_EOL .
-										 'text-align: ' . $attributes['authorAlign'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_testimonial_author_role{' . PHP_EOL .
-										 'text-align: ' . $attributes['authorRoleAlign'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL;
-					break;
 			}
 		}
 	}
