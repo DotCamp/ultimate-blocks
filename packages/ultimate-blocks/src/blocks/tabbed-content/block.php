@@ -75,9 +75,6 @@ function ub_render_tabbed_content_block($attributes, $contents, $block){
 	foreach($tabsTitle as $key=>$title){
 
 		$tab_buttons_styles = array(
-			'background-color' => ($tabStyle === 'underline' ? 'inherit' : ($activeTab === $key ? esc_attr($theme) : (isset($normalColor) ? esc_attr($normalColor) : 'inherit'))),
-			'border-color' => ($activeTab === $key ? esc_attr($theme) : 'lightgrey'),
-			'color' => ($activeTab === $key ? esc_attr($titleColor) : '#000000'),
 			'border-top-left-radius' => !empty( $block_attrs['tabButtonsBorderRadius']['topLeft'] ) ? esc_attr($block_attrs['tabButtonsBorderRadius']['topLeft']) . ';': "",
 			'border-top-right-radius' => !empty( $block_attrs['tabButtonsBorderRadius']['topRight'] ) ?  esc_attr($block_attrs['tabButtonsBorderRadius']['topRight']) . ';': "",
 			'border-bottom-left-radius' => !empty( $block_attrs['tabButtonsBorderRadius']['bottomLeft'] ) ?  esc_attr($block_attrs['tabButtonsBorderRadius']['bottomLeft']) . ';': "",
