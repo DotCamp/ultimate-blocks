@@ -15,7 +15,7 @@ jobs:
       - name: Run PHP Compatibility Check
         uses: permafrost06/phpcompatibility-action@main
         with:
-          test-versions: 5.6-
+          test-versions: 7.2-
           paths: ${{ github.workspace }}
           extensions: php
 
