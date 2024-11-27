@@ -659,63 +659,7 @@ function ub_include_block_attribute_css() {
 					}
 
 					break;
-				case 'ub/styled-box':
-					$prefix = '#ub-styled-box-' . $attributes['blockID'];
-					$styles = ub_get_spacing_styles($attributes);
-					$blockStylesheets .= $prefix . '{' . $styles . '}';
 
-					if ( $attributes['mode'] === 'notification' ) {
-						$blockStylesheets .= $prefix . '.ub-notification-box{' . PHP_EOL .
-											 'background-color: ' . $attributes['backColor'] . ';' . PHP_EOL .
-											 'color: ' . $attributes['foreColor'] . ';' . PHP_EOL .
-											 'border-left-color: ' . $attributes['outlineColor'] . ';' . PHP_EOL .
-											 ( $attributes['text'][0] === '' ? '' : 'text-align: ' . $attributes['textAlign'][0] . ';' . PHP_EOL ) .
-											 '}' . PHP_EOL;
-					} elseif ( $attributes['mode'] === 'feature' ) {
-						foreach ( range( 1, count( $attributes['text'] ) ) as $i ) {
-							$blockStylesheets .= $prefix . ' .ub-feature:nth-child(' . $i . ') .ub-feature-title{' . PHP_EOL .
-												 'text-align: ' . $attributes['titleAlign'][ $i - 1 ] . ';' . PHP_EOL .
-												 '}' . PHP_EOL .
-												 $prefix . ' .ub-feature:nth-child(' . $i . ') .ub-feature-body{' . PHP_EOL .
-												 'text-align: ' . $attributes['textAlign'][ $i - 1 ] . ';' . PHP_EOL .
-												 '}' . PHP_EOL;
-						}
-					} elseif ( $attributes['mode'] === 'number' ) {
-						$blockStylesheets .= $prefix . ' .ub-number-panel{' . PHP_EOL .
-											 'border-color: ' . $attributes['outlineColor'] . ';' . PHP_EOL .
-											 '}' . PHP_EOL .
-											 $prefix . ' .ub-number-container{' . PHP_EOL .
-											 'background-color: ' . $attributes['backColor'] . ';' . PHP_EOL .
-											 '}' . PHP_EOL .
-											 $prefix . ' .ub-number-display{' . PHP_EOL .
-											 'color: ' . $attributes['foreColor'] . ';' . PHP_EOL .
-											 '}' . PHP_EOL;
-						foreach ( range( 1, count( $attributes['text'] ) ) as $i ) {
-							$blockStylesheets .= $prefix . ' .ub-number-panel:nth-child(' . $i . ') .ub-number-box-title{' . PHP_EOL .
-												 'text-align: ' . $attributes['titleAlign'][ $i - 1 ] . ';' . PHP_EOL .
-												 '}' . PHP_EOL .
-												 $prefix . ' .ub-number-panel:nth-child(' . $i . ') .ub-number-box-body{' . PHP_EOL .
-												 'text-align: ' . $attributes['textAlign'][ $i - 1 ] . ';' . PHP_EOL .
-												 '}' . PHP_EOL;
-						}
-					} elseif ( $attributes['mode'] === 'bordered' ) {
-						$radiusUnit = '';
-						if ( $attributes['outlineRadiusUnit'] === 'percent' ) {
-							$radiusUnit = '%';
-						} elseif ( $attributes['outlineRadiusUnit'] === 'pixel' ) {
-							$radiusUnit = 'px';
-						} elseif ( $attributes['outlineRadiusUnit'] === 'em' ) {
-							$radiusUnit = 'em';
-						}
-						$blockStylesheets .= $prefix . '.ub-bordered-box{' . PHP_EOL .
-											 'border: ' . $attributes['outlineThickness'] . 'px ' .
-											 $attributes['outlineStyle'] . ' ' .
-											 $attributes['outlineColor'] . ';' . PHP_EOL .
-											 'border-radius: ' . $attributes['outlineRoundingRadius'] . $radiusUnit . ';' . PHP_EOL .
-											 'background-color: ' . ( $attributes['boxColor'] ?: 'inherit' ) . ';' . PHP_EOL .
-											 '}' . PHP_EOL;
-					}
-					break;
 				case 'ub/styled-list':
 					$styles = ub_get_spacing_styles($attributes, true);
 
@@ -925,7 +869,6 @@ function ub_include_block_attribute_css() {
 											 'color: ' . $attributes['listIconColor'] . ';' . PHP_EOL . '}' . PHP_EOL;
 					}
 				break;
-
 			}
 		}
 	}
