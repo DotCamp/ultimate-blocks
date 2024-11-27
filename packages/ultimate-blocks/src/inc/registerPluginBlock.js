@@ -1,4 +1,4 @@
-import { registerBlockType } from '@wordpress/blocks';
+import { registerBlockType } from "@wordpress/blocks";
 
 /**
  * Register plugin block.
@@ -12,7 +12,7 @@ function registerPluginBlock(blockTypeId, options) {
 	let { attributes } = options;
 
 	// attribute checking
-	if (!attributes || typeof attributes !== 'object') {
+	if (!attributes || typeof attributes !== "object") {
 		attributes = {};
 	}
 
@@ -31,7 +31,7 @@ function registerPluginBlock(blockTypeId, options) {
 			attributes,
 			(finalData) => {
 				options.attributes = finalData;
-			}
+			},
 		);
 	}
 

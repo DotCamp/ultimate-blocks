@@ -1,13 +1,13 @@
-import React from 'react';
-import { configureStore } from '@reduxjs/toolkit';
-import assetsSlice from '$Stores/settings-menu/slices/assets';
-import appSlice from '$Stores/settings-menu/slices/app';
-import blocksSlice from '$Stores/settings-menu/slices/blocks';
-import extensionsSlice from '$Stores/settings-menu/slices/extension';
-import versionControlSlice from '$Stores/settings-menu/slices/versionControl';
-import deepmerge from 'deepmerge';
-import initialState from '$Stores/settings-menu/initialState';
-import pluginStatusSlice from '$Stores/settings-menu/slices/pluginStatus';
+import React from "react";
+import { configureStore } from "@reduxjs/toolkit";
+import assetsSlice from "$Stores/settings-menu/slices/assets";
+import appSlice from "$Stores/settings-menu/slices/app";
+import blocksSlice from "$Stores/settings-menu/slices/blocks";
+import extensionsSlice from "$Stores/settings-menu/slices/extension";
+import versionControlSlice from "$Stores/settings-menu/slices/versionControl";
+import deepmerge from "deepmerge";
+import initialState from "$Stores/settings-menu/initialState";
+import pluginStatusSlice from "$Stores/settings-menu/slices/pluginStatus";
 
 /**
  * Prepare data for pro only block upsells.
@@ -19,7 +19,7 @@ import pluginStatusSlice from '$Stores/settings-menu/slices/pluginStatus';
 function prepareProOnlyBlockUpsellData(proOnlyBlockList) {
 	return Object.keys(proOnlyBlockList)
 		.filter((key) =>
-			Object.prototype.hasOwnProperty.call(proOnlyBlockList, key)
+			Object.prototype.hasOwnProperty.call(proOnlyBlockList, key),
 		)
 		.reduce((carry, blockName) => {
 			const {
@@ -37,8 +37,8 @@ function prepareProOnlyBlockUpsellData(proOnlyBlockList) {
 					icon,
 					false,
 					true,
-					screenshot
-				)
+					screenshot,
+				),
 			);
 
 			return carry;
@@ -64,7 +64,7 @@ function generateBlockInfoObject(
 	icon,
 	active,
 	pro = false,
-	screenshotUrl = null
+	screenshotUrl = null,
 ) {
 	return {
 		name,
@@ -89,7 +89,7 @@ function createStore() {
 	ubAdminMenuData = null;
 
 	// add block infos to context data
-	const registeredBlocks = wp.data.select('core/blocks').getBlockTypes();
+	const registeredBlocks = wp.data.select("core/blocks").getBlockTypes();
 	const registeredUbBlocks = registeredBlocks.filter((blockData) => {
 		return (
 			blockData.parent === undefined &&
@@ -119,7 +119,7 @@ function createStore() {
 			title,
 			blockInfo,
 			icon.src,
-			blockStatus
+			blockStatus,
 		);
 
 		carry.push(newBlockObject);
@@ -136,9 +136,7 @@ function createStore() {
 
 		//check if pro block name is already in reduced lists which will tell us it is already registered by pro version of plugin, so we will only add pro property to block object
 		// if not inject the upsell data to current block list
-		const registeredProBlock = carry.find(
-			({ name }) => name === proBlockName
-		);
+		const registeredProBlock = carry.find(({ name }) => name === proBlockName);
 		if (registeredProBlock) {
 			registeredProBlock.pro = true;
 		} else {
