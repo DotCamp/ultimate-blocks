@@ -249,9 +249,14 @@ function ub_include_block_attribute_css() {
 
 	foreach ( $presentBlocks as $block ) {
 		if ( isset( $defaultValues[ $block['blockName'] ] ) ) {
-			$attributes = array_merge( array_map( function ( $attribute ) {
-				return $attribute['default'];
-			}, $defaultValues[ $block['blockName'] ]['attributes'] ), $block['attrs'] );
+			$attributes = array_merge(
+				isset($defaultValues[ $block['blockName'] ]['attributes']) ?
+					 array_map( function ( $attribute ) {
+						return $attribute['default'];
+					}, $defaultValues[ $block['blockName'] ]['attributes'] )
+					: array(),
+				isset($block['attrs']) ? $block['attrs'] : array()
+			);
 		}
 
 		if ( isset( $attributes ) && isset( $attributes['blockID'] ) && $attributes['blockID'] != '' ) {
