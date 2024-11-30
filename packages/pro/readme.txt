@@ -144,6 +144,13 @@ That's it. You're done!
 
 == Changelog ==
 
+= 3.2.6 =
+
+* FIX: PHP warning.
+* FIX: Tab color issue in tabbed content block.
+* FIX: Blocks can be inserted after deactivating them.
+* IMPROVE: Update Required PHP to 7.2.
+
 = 3.2.5 = 
 
 * FIX: Button block color issue on frontend.
