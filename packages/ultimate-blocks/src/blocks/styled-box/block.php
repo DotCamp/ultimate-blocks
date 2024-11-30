@@ -17,6 +17,7 @@ add_action('init', 'ub_register_styled_box_bordered_box_block');
 
 function ub_render_styled_box_numbered_box_column($attributes, $content){
     extract($attributes);
+
     return '<div class="ub-number-panel">
         <div class="ub-number-container">
             <p class="ub-number-display">' . wp_kses_post($number) . '</p>
