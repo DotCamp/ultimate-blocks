@@ -2,7 +2,7 @@
 
 class Ultimate_Blocks_Pro_Constants {
 
-    const PLUGIN_VERSION = '3.2.5';
+    const PLUGIN_VERSION = '3.2.6';
 
     const PLUGIN_NAME = 'ultimate-blocks-pro';
 
