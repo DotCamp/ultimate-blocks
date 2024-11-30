@@ -142,7 +142,7 @@ function ubpro_render_post_grid_block( $content, $block, $block_instance = null 
                 '<article id="post-%1$s" class="%2$s" style="%3$s">',
                 esc_attr( $post_id ),
 				esc_attr( $post_classes ),
-				esc_attr( CSS_generator\generate_css_string($postBorderRadius) ),
+				esc_attr( CSS_generator\generate_css_string($postBorderRadius) )
             );
 
             /* Get the featured image */
@@ -160,7 +160,7 @@ function ubpro_render_post_grid_block( $content, $block, $block_instance = null 
                     '<div class="ub-block-post-grid-image" style="%3$s"><a href="%1$s" rel="bookmark" aria-hidden="true" tabindex="-1">%2$s</a></div>',
                     esc_url( get_permalink( $post_id ) ),
 					wp_get_attachment_image( $post_thumb_id, array($attributes['postImageWidth'], $attributes['preservePostImageAspectRatio'] ? 0 : $attributes['postImageHeight']) ), //use array
-					esc_attr( CSS_generator\generate_css_string($styles) ),
+					esc_attr( CSS_generator\generate_css_string($styles) )
                 );
             }
 
@@ -175,7 +175,7 @@ function ubpro_render_post_grid_block( $content, $block, $block_instance = null 
             /* Wrap the text content */
             $post_grid .= sprintf(
 				'<div class="ub-block-post-grid-text" style="%1$s">',
-				esc_attr( CSS_generator\generate_css_string($styles) ),
+				esc_attr( CSS_generator\generate_css_string($styles) )
             );
 
             if($is_show_taxonomy && $taxonomy_position === 'above-title'){
@@ -224,7 +224,7 @@ function ubpro_render_post_grid_block( $content, $block, $block_instance = null 
                     esc_url( get_permalink( $post_id ) ),
                     esc_html( $title ),
 					esc_attr( $post_title_tag ),
-					esc_attr( CSS_Generator\generate_css_string($styles) ),
+					esc_attr( CSS_Generator\generate_css_string($styles) )
                 );
             }
 
@@ -239,7 +239,7 @@ function ubpro_render_post_grid_block( $content, $block, $block_instance = null 
                     '<div class="ub-block-post-grid-author" itemprop="author"><a class="ub-text-link" style="%3$s" href="%2$s" itemprop="url" rel="author"><span itemprop="name">%1$s</span></a></div>',
                     esc_html( get_the_author_meta( 'display_name', get_the_author_meta( 'ID' ) ) ),
 					esc_html( get_author_posts_url( get_the_author_meta( 'ID' ) ) ),
-					esc_attr( CSS_Generator\generate_css_string($styles) ),
+					esc_attr( CSS_Generator\generate_css_string($styles) )
                 );
             }
 
@@ -254,7 +254,7 @@ function ubpro_render_post_grid_block( $content, $block, $block_instance = null 
                     '<time datetime="%1$s" class="ub-block-post-grid-date" style="%3$s" itemprop="datePublished">%2$s</time>',
                     esc_attr( get_the_date( 'c', $post_id ) ),
 					esc_html( get_the_date( '', $post_id ) ),
-					esc_attr( CSS_Generator\generate_css_string($styles) ),
+					esc_attr( CSS_Generator\generate_css_string($styles) )
                 );
             }
             if($is_show_taxonomy && $taxonomy_position === 'with-meta'){
@@ -319,7 +319,7 @@ function ubpro_render_post_grid_block( $content, $block, $block_instance = null 
 				$post_grid .= sprintf(
 					'<div class="ub-block-post-grid-excerpt-text" style="%2$s">%1$s</div>',
 					wp_kses_post( $excerpt ),
-					esc_attr( CSS_Generator\generate_css_string($styles) ),
+					esc_attr( CSS_Generator\generate_css_string($styles) )
 				);
             }
 
@@ -347,7 +347,7 @@ function ubpro_render_post_grid_block( $content, $block, $block_instance = null 
                     esc_url( get_permalink( $post_id ) ),
                     esc_html( $attributes['readMoreText'] ),
 					esc_html( $title ),
-					esc_attr( CSS_Generator\generate_css_string( $styles ) ),
+					esc_attr( CSS_Generator\generate_css_string( $styles ) )
                 );
             }
 
@@ -443,7 +443,7 @@ function ubpro_render_post_grid_block( $content, $block, $block_instance = null 
             $is_equal_height,
             isset($attributes['blockID']) ? 'id="ub-post-grid-'. $attributes['blockID'] . '"' : "",
             $is_preserve_post_image_aspect_ratio,
-			esc_attr(CSS_Generator\generate_css_string($grid_styles)),
+			esc_attr(CSS_Generator\generate_css_string($grid_styles))
         );
         return $block_content;
     }

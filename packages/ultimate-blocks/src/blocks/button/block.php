@@ -36,7 +36,7 @@ function ub_multi_buttons_parse($b){
 			($iconSize ? : $presetIconSize[$size]) . ($iconUnit === 'em' ? 'em' :''),
 			Ultimate_Blocks_IconSet::generate_fontawesome_icon($chosenIcon)[0],
 			Ultimate_Blocks_IconSet::generate_fontawesome_icon($chosenIcon)[1],
-			Ultimate_Blocks_IconSet::generate_fontawesome_icon($chosenIcon)[2],
+			Ultimate_Blocks_IconSet::generate_fontawesome_icon($chosenIcon)[2]
 		);
 	} else {
 		$icon = '';
@@ -45,7 +45,7 @@ function ub_multi_buttons_parse($b){
 	$link_rel = sprintf(
 		'noopener noreferrer %1$s %2$s',
 		$addNofollow ? ' nofollow' : '',
-		$addSponsored ? ' sponsored' : '',
+		$addSponsored ? ' sponsored' : ''
 	);
 
 	$link_class = sprintf(
@@ -148,7 +148,7 @@ function ub_single_button_parse($b) {
 		($openInNewTab ? '_blank' : '_self'),
 		($addNofollow ? ' nofollow' : ''),
 		$link_class,
-		$link_style,
+		$link_style
 	);
 
 	if ($chosenIcon !== '') {
@@ -180,7 +180,7 @@ function ub_single_button_parse($b) {
 		$link_attrs,
 		$attributes['iconPosition'] === 'left' ? 'row' : 'row-reverse',
 		$icon,
-		wp_kses_post($buttonText),
+		wp_kses_post($buttonText)
 	);
 }
 
@@ -247,7 +247,7 @@ function ub_render_button_block($attributes, $_, $block){
 		'<div %1$s %2$s>%3$s</div>',
 		$block_attributes,
 		$id,
-		$buttonDisplay,
+		$buttonDisplay
 	);
 }
 

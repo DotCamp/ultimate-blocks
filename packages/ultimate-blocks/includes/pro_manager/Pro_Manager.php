@@ -314,7 +314,7 @@ class Pro_Manager {
 			$advanced_video_upsell_data,
 			$post_grid_upsell_data,
 			$visibility_control_upsell_data,
-			$animation_upsell_data,
+			$animation_upsell_data
 		);
 
 		return array(
