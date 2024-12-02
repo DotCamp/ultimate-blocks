@@ -1262,22 +1262,6 @@ function ub_register_settings() {
 
 add_action( 'init', 'ub_register_settings' );
 
-function ub_allow_svg_in_kses($allowed_tags) {
-    $allowed_tags['svg'] = [
-        'xmlns' => true,
-        'height' => true,
-        'width' => true,
-        'fill' => true,
-        'style' => true,
-		'viewBox' => true,
-    ];
-    $allowed_tags['path'] = [
-        'fill' => true,
-        'd' => true,
-    ];
-    return $allowed_tags;
-}
-add_filter('wp_kses_allowed_html', 'ub_allow_svg_in_kses', 10, 1);
 
 /**
  * Rank Math ToC Plugins List.

@@ -23,7 +23,7 @@ function ub_render_styled_box_numbered_box_column($attributes, $content){
             <p class="ub-number-display">' . wp_kses_post($number) . '</p>
         </div>
         <p class="ub-number-box-title">' . wp_kses_post($title) . '</p>
-        <div class="ub-number-box-body">' . wp_kses_post($content) . '</div>
+        <div class="ub-number-box-body">' . Ultimate_Blocks\includes\strip_xss($content) . '</div>
     </div>';
 }
 

@@ -161,3 +161,38 @@ function get_background_color_var(
 		return "";
 	}
 }
+/**
+ * Strip XSS from HTML content.
+ *
+ * @param string $html - The HTML content to sanitize.
+ * @return string Sanitized HTML content.
+ */
+function strip_xss( $html ) {
+	if ( ! $html ) {
+		return '';
+	}
+
+	$dom = new \DOMDocument( '1.0', 'UTF-8' );
+	$html = mb_convert_encoding( $html, 'HTML-ENTITIES', 'UTF-8' );
+
+	// Suppress errors due to malformed HTML.
+	@$dom->loadHTML( $html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+
+	$xpath = new \DOMXPath( $dom );
+	$elements = $xpath->query( '//*' );
+
+	foreach ( $elements as $element ) {
+		foreach ( $element->attributes as $attr ) {
+			if ( strpos( $attr->name, 'on' ) === 0 ) {
+				$element->removeAttribute( $attr->name );
+			}
+		}
+	}
+
+	$script_tags = $dom->getElementsByTagName( 'script' );
+	while ( $script_tags->length > 0 ) {
+		$script_tags->item( 0 )->parentNode->removeChild( $script_tags->item( 0 ) );
+	}
+
+	return $dom->saveHTML();
+}
