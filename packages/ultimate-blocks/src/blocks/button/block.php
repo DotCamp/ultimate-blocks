@@ -28,7 +28,7 @@ function ub_multi_buttons_parse($b){
 	if ($chosenIcon !== '' && !is_null($chosenIcon)) {
 		$icon = sprintf(
 			'<span class="ub-button-icon-holder">
-				<svg xmlns="http://www.w3.org/2000/svg" height="%1$s", width="%2$s" viewBox="0, 0, %3$s, %4$s">
+				<svg xmlns="http://www.w3.org/2000/svg" height="%1$s" width="%2$s" viewBox="0 0 %3$s %4$s">
 					<path fill="currentColor" d="%5$s">
 				</svg>
 			</span>',
@@ -154,7 +154,7 @@ function ub_single_button_parse($b) {
 	if ($chosenIcon !== '') {
 		$icon = sprintf(
 			'<span class="ub-button-icon-holder">
-				<svg xmlns="http://www.w3.org/2000/svg" height="%1$s", width="%2$s" viewBox="0, 0, %3$s, %4$s">
+				<svg xmlns="http://www.w3.org/2000/svg" height="%1$s" width="%2$s" viewBox="0 0 %3$s %4$s">
 					<path fill="currentColor" d="%5$s">
 				</svg>
 			</span>',

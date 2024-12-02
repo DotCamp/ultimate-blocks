@@ -153,6 +153,7 @@ That's it. You're done!
 = 3.2.6 =
 
 * FIX: PHP warning.
+* FIX: Button block icon not showing in styled box block.
 * FIX: Tab color issue in tabbed content block.
 * FIX: Blocks can be inserted after deactivating them.
 * IMPROVE: Update Required PHP to 7.2.

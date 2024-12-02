@@ -1262,6 +1262,7 @@ function ub_register_settings() {
 
 add_action( 'init', 'ub_register_settings' );
 
+
 /**
  * Rank Math ToC Plugins List.
  */
