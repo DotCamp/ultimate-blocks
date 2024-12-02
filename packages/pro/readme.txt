@@ -3,7 +3,7 @@ Contributors: dotcamp, ultimateblocks, imtiazrayhan, istiakrayhan, erdembircan, 
 Tags: block, blocks, gutenberg blocks, gutenberg, block editor
 Requires at least: 5.8
 Tested up to: 6.7
-Stable tag: 3.2.5
+Stable tag: 3.2.6
 Requires PHP: 7.2
 License: GPL3+
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -143,6 +143,13 @@ That's it. You're done!
 3. Tabbed Content Block.
 
 == Changelog ==
+
+= 3.2.6 =
+
+* FIX: PHP warning.
+* FIX: Tab color issue in tabbed content block.
+* FIX: Blocks can be inserted after deactivating them.
+* IMPROVE: Update Required PHP to 7.2.
 
 = 3.2.5 = 
 

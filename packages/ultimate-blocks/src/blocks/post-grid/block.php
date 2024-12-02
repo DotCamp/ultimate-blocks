@@ -91,7 +91,7 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
                 '<article id="post-%1$s" class="%2$s" style="%3$s">',
                 esc_attr( $post_id ),
 				esc_attr( $post_classes ),
-				esc_attr( Ultimate_Blocks\includes\generate_css_string($postBorderRadius) ),
+				esc_attr( Ultimate_Blocks\includes\generate_css_string($postBorderRadius) )
             );
 
             /* Get the featured image */
@@ -101,7 +101,7 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
 					"--ub-post-grid-image-top-left-radius" 		=> !empty($block_attrs['imageBorderRadius']['topLeft']) ? $block_attrs['imageBorderRadius']['topLeft'] : "",
 					"--ub-post-grid-image-top-right-radius"		=> !empty($block_attrs['imageBorderRadius']['topRight']) ? $block_attrs['imageBorderRadius']['topRight'] : "",
 					"--ub-post-grid-image-bottom-left-radius" 	=> !empty($block_attrs['imageBorderRadius']['bottomLeft']) ? $block_attrs['imageBorderRadius']['bottomLeft'] : "",
-					"--ub-post-grid-image-bottom-right-radius" 	=> !empty($block_attrs['imageBorderRadius']['bottomRight']) ? $block_attrs['imageBorderRadius']['bottomRight'] : "",
+					"--ub-post-grid-image-bottom-right-radius" 	=> !empty($block_attrs['imageBorderRadius']['bottomRight']) ? $block_attrs['imageBorderRadius']['bottomRight'] : ""
 				);
 
                 /* Output the featured image */
@@ -109,7 +109,7 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
                     '<div class="ub-block-post-grid-image" style="%3$s"><a href="%1$s" rel="bookmark" aria-hidden="true" tabindex="-1">%2$s</a></div>',
                     esc_url( get_permalink( $post_id ) ),
 					wp_get_attachment_image( $post_thumb_id, array($attributes['postImageWidth'], $attributes['preservePostImageAspectRatio'] ? 0 : $attributes['postImageHeight']) ), //use array
-					esc_attr( Ultimate_Blocks\includes\generate_css_string($styles) ),
+					esc_attr( Ultimate_Blocks\includes\generate_css_string($styles) )
                 );
             }
 
@@ -118,13 +118,13 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
 				"padding-top"		=> isset($content_padding['top']) ? $content_padding['top'] : '',
 				"padding-right"		=> isset($content_padding['right']) ? $content_padding['right'] : '',
 				"padding-bottom"	=> isset($content_padding['bottom']) ? $content_padding['bottom'] : '',
-				"padding-left"		=> isset($content_padding['left']) ? $content_padding['left'] : '',
+				"padding-left"		=> isset($content_padding['left']) ? $content_padding['left'] : ''
 			];
 
             /* Wrap the text content */
             $post_grid .= sprintf(
 				'<div class="ub-block-post-grid-text" style="%1$s">',
-				esc_attr( Ultimate_Blocks\includes\generate_css_string($styles) ),
+				esc_attr( Ultimate_Blocks\includes\generate_css_string($styles) )
             );
 
             $post_grid .= sprintf(
@@ -160,7 +160,7 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
                     esc_url( get_permalink( $post_id ) ),
                     esc_html( $title ),
 					esc_attr( $post_title_tag ),
-					esc_attr( Ultimate_Blocks\includes\generate_css_string($styles) ),
+					esc_attr( Ultimate_Blocks\includes\generate_css_string($styles) )
                 );
             }
 
@@ -175,7 +175,7 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
                     '<div class="ub-block-post-grid-author" itemprop="author"><a class="ub-text-link" style="%3$s" href="%2$s" itemprop="url" rel="author"><span itemprop="name">%1$s</span></a></div>',
                     esc_html( get_the_author_meta( 'display_name', get_the_author_meta( 'ID' ) ) ),
 					esc_html( get_author_posts_url( get_the_author_meta( 'ID' ) ) ),
-					esc_attr( Ultimate_Blocks\includes\generate_css_string($styles) ),
+					esc_attr( Ultimate_Blocks\includes\generate_css_string($styles) )
                 );
             }
 
@@ -190,7 +190,7 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
                     '<time datetime="%1$s" class="ub-block-post-grid-date" style="%3$s" itemprop="datePublished">%2$s</time>',
                     esc_attr( get_the_date( 'c', $post_id ) ),
 					esc_html( get_the_date( '', $post_id ) ),
-					esc_attr( Ultimate_Blocks\includes\generate_css_string($styles) ),
+					esc_attr( Ultimate_Blocks\includes\generate_css_string($styles) )
                 );
             }
 
@@ -243,7 +243,7 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
 				$post_grid .= sprintf(
 					'<div class="ub-block-post-grid-excerpt-text" style="%2$s">%1$s</div>',
 					wp_kses_post( $excerpt ),
-					esc_attr( Ultimate_Blocks\includes\generate_css_string($styles) ),
+					esc_attr( Ultimate_Blocks\includes\generate_css_string($styles) )
 				);
             }
 
@@ -271,7 +271,7 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
                     esc_url( get_permalink( $post_id ) ),
                     esc_html( $attributes['readMoreText'] ),
 					esc_html( $title ),
-					esc_attr( Ultimate_Blocks\includes\generate_css_string( $styles ) ),
+					esc_attr( Ultimate_Blocks\includes\generate_css_string( $styles ) )
                 );
             }
 
@@ -348,7 +348,7 @@ function ub_render_post_grid_block( $attributes, $content, $block ){
             esc_attr($is_equal_height),
 			$is_preserve_post_image_aspect_ratio,
 			esc_attr(Ultimate_Blocks\includes\generate_css_string($grid_styles)),
-			esc_attr(Ultimate_Blocks\includes\generate_css_string($wrapper_spacing_styles)),
+			esc_attr(Ultimate_Blocks\includes\generate_css_string($wrapper_spacing_styles))
         );
 
 		return $block_content;

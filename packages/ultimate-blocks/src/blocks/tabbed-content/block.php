@@ -94,7 +94,7 @@ function ub_render_tabbed_content_block($attributes, $contents, $block){
 			($tabletTabDisplay === 'verticaltab' ? ' ' . $blockName . '-tab-title-tablet-vertical-wrap' : ''), // 7
 			($activeTab === $key ? ' active' : ''), // 8
 			Ultimate_Blocks\includes\generate_css_string($tab_buttons_styles), //9
-			wp_kses_post($title), // 10
+			wp_kses_post($title) // 10
 		);
 	}
 
@@ -129,7 +129,7 @@ function ub_render_tabbed_content_block($attributes, $contents, $block){
 		($mobileTabDisplay === 'verticaltab' ? ' vertical-content-width-mobile' : ($mobileTabDisplay === 'accordion' ? ' ub-tabbed-content-mobile-accordion' : '')), // 19
 		($tabletTabDisplay === 'verticaltab' ? ' vertical-content-width-tablet' : ($tabletTabDisplay === 'accordion' ? ' ub-tabbed-content-tablet-accordion' : '')), // 20
 		implode($tabContents), // 21
-		Ultimate_Blocks\includes\generate_css_string($tab_contents_styles), // 22
+		Ultimate_Blocks\includes\generate_css_string($tab_contents_styles) // 22
 	);
 }
 
