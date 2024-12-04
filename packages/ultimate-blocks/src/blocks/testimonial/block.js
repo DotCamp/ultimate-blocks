@@ -17,7 +17,6 @@ import { compose } from "@wordpress/compose";
 
 import { withDispatch, withSelect, useSelect } from "@wordpress/data";
 import { useBlockProps } from "@wordpress/block-editor";
-import { getStyles } from "./get-styles";
 import { getParentBlock } from "../../common";
 /**
  * Register: aa Gutenberg Block.

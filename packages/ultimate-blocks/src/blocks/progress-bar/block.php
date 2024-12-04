@@ -1,48 +1,14 @@
 <?php
 require_once dirname(dirname(dirname(__DIR__))) . '/includes/ultimate-blocks-styles-css-generator.php';
 
-function ub_is_undefined($value) {
-    return $value === null || !isset($value) || empty($value);
-}
-function ub_generate_css_string($styles) {
-    $css_string = '';
-
-    foreach ($styles as $key => $value) {
-        if (!ub_is_undefined($value) && $value !== false && trim($value) !== '' && trim($value) !== 'undefined undefined undefined' && !empty($value)) {
-            $css_string .= $key . ': ' . $value . '; ';
-        }
-    }
-
-    return $css_string;
-}
-function ub_progress_bar_styles($attributes){
-
-	$padding = Ultimate_Blocks\includes\get_spacing_css( isset($attributes['padding']) ? $attributes['padding'] : array() );
-	$margin = Ultimate_Blocks\includes\get_spacing_css( isset($attributes['margin']) ? $attributes['margin'] : array() );
-
-    $styles = [
-        '--ub-bar-top-left-radius'      => isset( $attributes['barBorderRadius']['topLeft'] ) ? $attributes['barBorderRadius']['topLeft'] : '',
-        '--ub-bar-top-right-radius'     => isset( $attributes['barBorderRadius']['topRight'] ) ? $attributes['barBorderRadius']['topRight'] : '',
-        '--ub-bar-bottom-left-radius'   => isset( $attributes['barBorderRadius']['bottomLeft'] ) ? $attributes['barBorderRadius']['bottomLeft'] : '',
-        '--ub-bar-bottom-right-radius'  => isset( $attributes['barBorderRadius']['bottomRight'] ) ? $attributes['barBorderRadius']['bottomRight'] : '',
-        '--ub-progress-bar-padding-top'      => isset($padding['top']) ? esc_attr($padding['top']) : "",
-        '--ub-progress-bar-padding-right'    => isset($padding['right']) ? esc_attr($padding['right']) : "",
-        '--ub-progress-bar-padding-bottom'   => isset($padding['bottom']) ? esc_attr($padding['bottom']) : "",
-        '--ub-progress-bar-padding-left'     => isset($padding['left']) ? esc_attr($padding['left']) : "",
-        '--ub-progress-bar-margin-top'       => isset($margin['top']) ? esc_attr($margin['top'])  : "",
-        '--ub-progress-bar-margin-right'     => isset($margin['left']) ? esc_attr($margin['left'])  : "",
-        '--ub-progress-bar-margin-bottom'    => isset($margin['right']) ? esc_attr($margin['right'])  : "",
-        '--ub-progress-bar-margin-left'      => isset($margin['bottom']) ? esc_attr($margin['bottom'])  : "",
-        '--ub-progress-bar-label-font-size'  => isset($attributes['barThickness']) ? ($attributes['barThickness'] + 5) . '%' : "6%",
-    ];
-    return ub_generate_css_string($styles);
-}
 function ub_render_progress_bar_block($attributes, $block_content, $block){
     extract($attributes);
 	$blockName = 'ub_progress-bar';
 	$chosenProgressBar = '';
 	$block_attrs = isset($block->parsed_block["attrs"]) ? $block->parsed_block["attrs"] : $attributes;
 	$is_style_circle = isset($attributes['className']) ? strpos($attributes['className'], "is-style-ub-progress-bar-circle-wrapper") !== false : "";
+	$is_style_half_circle = isset($attributes['className']) ? strpos($className, "is-style-ub-progress-bar-half-circle-wrapper") !== false : "";
+
 	$percentage_position = $attributes['percentagePosition'];
 
 	$padding = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['padding']) ? $block_attrs['padding'] : array() );
@@ -60,13 +26,13 @@ function ub_render_progress_bar_block($attributes, $block_content, $block){
 	];
 	$label_styles = array(
 		'width' => isset($attributes['percentage']) ? $attributes['percentage'] . '%' : '100%',
+		'color' => isset($attributes['labelColor']) ? $attributes['labelColor'] : 'inherit'
 	);
 
-	if ($percentage_position === 'inside') {
+
+	if ($percentage_position === 'inside' && !$is_style_circle && !$is_style_half_circle) {
 		$label_styles['font-size'] = isset($block_attrs['barThickness']) ? ($block_attrs['barThickness'] + 5) . '%' : "6%";
 	}
-
-	$is_style_half_circle = isset($attributes['className']) ? strpos($className, "is-style-ub-progress-bar-half-circle-wrapper") !== false : "";
 
 	$is_stripe = $attributes['isStripe'];
 
@@ -110,7 +76,7 @@ function ub_render_progress_bar_block($attributes, $block_content, $block){
 		</foreignObject>' : '';
 
 	$circle_percentage = $show_number ? sprintf(
-		'<div class="%1$s-label">
+		'<div class="%1$s-label" style="%5$s">
 			<span class="ub-progress-number-prefix">%2$s</span>
 			<span class="ub-progress-number-value">%3$s</span>
 			<span class="ub-progress-number-suffix">%4$s</span>
@@ -118,7 +84,8 @@ function ub_render_progress_bar_block($attributes, $block_content, $block){
 		$blockName, // 1
 		wp_kses_post($number_prefix), // 2
 		wp_kses_post($percentage), // 3
-		wp_kses_post($number_suffix) // 4
+		wp_kses_post($number_suffix), // 4
+		Ultimate_Blocks\includes\generate_css_string($label_styles) // 5
 	) : '';
     if(!$is_style_circle && !$is_style_half_circle){
 		$line_path_styles = array(
@@ -182,10 +149,7 @@ function ub_render_progress_bar_block($attributes, $block_content, $block){
 			'stroke-linecap' => $stroke_linecap,
 			'--ub-progress-bar-filled-dasharray' => $stroke_dasharray_final
 		);
-		$ub_progress_bar_label_styles = array(
-			'visibility' => 'hidden',
-			'color' => isset($attributes['labelColor']) ? $attributes['labelColor'] : 'inherit'
-		);
+
 		$progressBarPath = sprintf(
 			'M 50,50 m 0,%1$s a %2$s,%2$s 0 1 1 0,%3$s a %2$s,%2$s 0 1 1 0,%4$s',
 			-$circleRadius, // 1

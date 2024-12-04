@@ -9,12 +9,12 @@ export default function HalfCircle(props) {
 		barBackgroundColor,
 		barThickness,
 		percent,
-		labelColor,
 		alignment,
 		size,
 		showNumber,
 		numberPrefix,
 		numberSuffix,
+		labelStyles,
 	} = props;
 
 	useEffect(() => {
@@ -81,7 +81,7 @@ export default function HalfCircle(props) {
 					className="ub_progress-bar-label"
 					style={{
 						visibility: isActive ? "visible" : "hidden",
-						color: labelColor || "inherit",
+						...labelStyles,
 					}}
 				>
 					<span className="ub-progress-number-prefix">{numberPrefix}</span>

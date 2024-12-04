@@ -19,6 +19,7 @@ import {
 	ToolbarButton,
 	ToggleControl,
 } from "@wordpress/components";
+import { generateStyles } from "../utils/styling-helpers";
 
 export const blockControls = (props) => {
 	const { attributes, setAttributes } = props;
@@ -200,7 +201,13 @@ export const editorDisplay = (props) => {
 		reviewTextAlign,
 		starAlign,
 		isShowReviewText,
+		textFontSize,
 	} = props.attributes;
+	const reviewTextStyles = {
+		textAlign: reviewTextAlign,
+		color: reviewTextColor || "inherit",
+		fontSize: textFontSize,
+	};
 	return (
 		<>
 			<div
@@ -253,10 +260,7 @@ export const editorDisplay = (props) => {
 					className="ub-review-text"
 					placeholder={__("The text of the review goes here")}
 					value={reviewText}
-					style={{
-						textAlign: reviewTextAlign,
-						color: reviewTextColor || "inherit",
-					}}
+					style={generateStyles(reviewTextStyles)}
 					onChange={(text) => setAttributes({ reviewText: text })}
 					keepPlaceholderOnFocus={true}
 					allowedFormats={[

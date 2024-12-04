@@ -6,7 +6,6 @@ import { Slider } from "./components";
 import { version_1_1_4 } from "./oldVersions";
 
 import { useEffect, useState } from "react";
-import { getStyles } from "./get-styles";
 import { __ } from "@wordpress/i18n";
 import { registerBlockType } from "@wordpress/blocks";
 import {

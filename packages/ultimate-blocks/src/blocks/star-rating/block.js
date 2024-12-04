@@ -4,7 +4,6 @@ import { registerBlockType, createBlock } from "@wordpress/blocks";
 import { useBlockProps } from "@wordpress/block-editor";
 import { compose } from "@wordpress/compose";
 import { withDispatch, withSelect, useSelect } from "@wordpress/data";
-import { getStyles } from "./get-styles";
 import { EmptyStar, BlockIcon, FullStar } from "./icons";
 import {
 	oldAttributes,
@@ -20,6 +19,10 @@ import {
 	getParentBlock,
 } from "../../common";
 import { useState, useEffect } from "react";
+import {
+	getSpacingCss,
+	getSpacingPresetCssVar,
+} from "../utils/styling-helpers";
 
 function OldStarRating(props) {
 	const [highlightedStars, setHighlightedStars] = useState(0);
@@ -57,7 +60,7 @@ function StarRating(props) {
 	const [highlightedStars, setHighlightedStars] = useState(0);
 	const {
 		isSelected,
-		attributes: { starColor, blockID, textPosition, starAlign },
+		attributes: { blockID, textPosition, starAlign, padding, margin, gap },
 		setAttributes,
 	} = props;
 	const { block, rootBlockClientId } = useSelect((select) => {
@@ -87,7 +90,21 @@ function StarRating(props) {
 		}
 	}, [block?.clientId]);
 	const blockProps = useBlockProps();
-	const styles = getStyles(props.attributes);
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+	const blockGap = getSpacingPresetCssVar(gap?.all) ?? "";
+
+	const styles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+		gap: blockGap,
+	};
 	const alignClass =
 		starAlign !== "" ? ` ub-star-rating-align-${starAlign}` : "";
 	return (
