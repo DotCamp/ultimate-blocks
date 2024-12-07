@@ -3,12 +3,10 @@ import { isEmpty } from "lodash";
 import { loadPromise, models } from "@wordpress/api";
 import { createBlock } from "@wordpress/blocks";
 import { useSelect, useDispatch } from "@wordpress/data";
-import { getStyles } from "./get-styles";
 import {
 	RichText,
 	InnerBlocks,
 	InspectorControls,
-	ColorPalette,
 	AlignmentToolbar,
 	BlockControls,
 	useBlockProps,
@@ -23,7 +21,7 @@ import {
 	ToolbarGroup,
 } from "@wordpress/components";
 import classnames from "classnames";
-import { IconControl, IconSizePicker } from "$Library/ub-common/Components";
+import { IconControl } from "$Library/ub-common/Components";
 
 import {
 	dashesToCamelcase,
@@ -36,8 +34,8 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { useState, useEffect, useRef } from "react";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import colorList from "./colorlist";
 import { ColorSettings, SpacingControl } from "../components";
+import { generateStyles, getSpacingCss } from "../utils/styling-helpers";
 
 library.add(fas, fab);
 
@@ -172,6 +170,8 @@ function EditorComponent(props) {
 		maxMobileColumns,
 		alignment,
 		listAlignment,
+		padding,
+		margin,
 	} = attributes;
 	const blockProps = useBlockProps({
 		className: classnames({
@@ -357,7 +357,9 @@ function EditorComponent(props) {
 	}, [isSelected]);
 
 	const listItemBlocks = getClientIdsOfDescendants([block.clientId]).filter(
-		(ID) => getBlock(ID).name === "ub/styled-list-item",
+		(ID) =>
+			getBlock(ID).name === "ub/styled-list-item" ||
+			getBlock(ID).name === "ub/styled-list",
 	);
 
 	function setAttributesToAllItems(newAttributes) {
@@ -378,7 +380,23 @@ function EditorComponent(props) {
 	if (isRootList !== isRootOfList) {
 		setAttributes({ isRootList: isRootOfList });
 	}
-	const styles = getStyles(attributes);
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+
+	const styles = {
+		backgroundColor: backgroundColor,
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+	};
+	if (!padding?.left) {
+		styles.paddingLeft = iconSize ? `${(6 + iconSize) / 10}em` : "";
+	}
 	return (
 		<div {...blockProps}>
 			{isSelected && isRootOfList && (
@@ -638,7 +656,7 @@ function EditorComponent(props) {
 			<ul
 				className={isRootList ? "ub_styled_list" : "ub_styled_list_sublist"}
 				id={`ub-styled-list-${blockID}`}
-				style={isRootList ? styles : {}}
+				style={isRootList ? generateStyles(styles) : {}}
 			>
 				<InnerBlocks
 					template={isRootOfList ? [["ub/styled-list-item"]] : []} //initial content
@@ -704,8 +722,16 @@ function EditorComponent(props) {
 
 export function StyledListItem(props) {
 	const { isSelected, attributes, setAttributes } = props;
-	const { blockID, itemText, iconSize, iconColor, selectedIcon, fontSize } =
-		attributes;
+	const {
+		blockID,
+		itemText,
+		iconSize,
+		iconColor,
+		selectedIcon,
+		fontSize,
+		padding,
+		margin,
+	} = attributes;
 	const {
 		insertBlock,
 		moveBlocksToPosition,
@@ -752,9 +778,20 @@ export function StyledListItem(props) {
 		};
 	});
 	const [useFontSize, toggleUseFontSize] = useState(false);
-	const styles = getStyles(attributes);
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
 
-	const blockProps = useBlockProps({ style: styles });
+	const styles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+	};
+	const blockProps = useBlockProps({ style: generateStyles(styles) });
 
 	useEffect(() => {
 		if (blockID === "") {
