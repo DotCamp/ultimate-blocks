@@ -3,25 +3,11 @@
     "description": "Ultimate Blocks Pro",
     "type": "project",
     "license": "GPL3+",
-    "scripts": {
-        "test": "",
-        "lint": "@phpcs-check",
-        "phpcs-check": "phpcs -p --standard=.phpcs.xml --extensions=php --ignore=vendor/*,node_modules/*,zip/*,inc/libraries/*,.parcel-cache/*,.idea/*,languages/* ."
-    },
     "autoload": {
         "psr-4": {
             "Ultimate_Blocks_Pro\\": [
                 "./"
             ]
         }
-    },
-    "config": {
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
-    },
-    "require-dev": {
-        "wp-coding-standards/wpcs": "^3.0",
-        "phpcompatibility/phpcompatibility-wp": "*"
     }
 }
