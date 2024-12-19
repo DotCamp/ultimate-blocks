@@ -12,7 +12,6 @@ use Freemius;
 use Ultimate_Blocks\admin\data\Settings_Menu_Pro_Manager_Asset_Data;
 use Ultimate_Blocks\includes\common\traits\Manager_Base_Trait;
 use Ultimate_Blocks\includes\Editor_Data_Manager;
-use Ultimate_Blocks\includes\Env_Manager;
 use Ultimate_Blocks\includes\pro_manager\base\Pro_Block_Upsell;
 use Ultimate_Blocks\includes\pro_manager\blocks\coupon\Coupon_Pro_Block;
 use Ultimate_Blocks\includes\pro_manager\blocks\timeline\Timeline_Pro_Block;
@@ -226,7 +225,6 @@ class Pro_Manager {
 						'contact'    => true,
 						'support'    => false,
 					),
-					'secret_key'          => Env_Manager::get( 'FS_SECRET_KEY' ),
 				)
 			);
 

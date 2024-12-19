@@ -15,7 +15,6 @@
  */
 
 // Exit if accessed directly.
-use Ultimate_Blocks\includes\Env_Manager;
 use Ultimate_Blocks\includes\pro_manager\Pro_Manager;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -100,9 +99,6 @@ function run_ultimate_blocks() {
 	$plugin = new Ultimate_Blocks();
 	$plugin->run();
 }
-
-// initialize env manager.
-Env_Manager::init();
 
 // initialize license provider.
 Pro_Manager::init_freemius();
