@@ -2,13 +2,36 @@
 
 function ub_render_expand_portion_block($attributes, $content){
     extract($attributes);
-    return '<div class="ub-expand-portion ub-expand-' . esc_attr($displayType) .
-        ($displayType === 'full' ? ' ub-hide' : '').
-        (isset($className) ? ' ' . $className : '') . '">' .
-        $content .
-        '<a class="ub-expand-toggle-button" role="button" aria-expanded="false" aria-controls="'.
-            ($parentID === '' ? '' : "ub-expand-full-" . $parentID ).'" tabindex="0">' . $clickText . '</a>'
-        . '</div>';
+	$classNames = array('ub-expand-portion', 'ub-expand-' . esc_attr($displayType));
+	if ($displayType === 'full') {
+		$classNames[] = 'ub-hide';
+	}
+	if (isset($className)) {
+		$classNames[] = $className;
+	}
+
+	$styles = array(
+		'text-align' => isset($attributes['toggleAlign']) ? $attributes['toggleAlign'] : 'left',
+	);
+
+	$wrapper_attributes = get_block_wrapper_attributes(
+		array(
+			'class' => join(' ', $classNames),
+			'id'    => ($parentID === '' ? '' : "ub-expand-full-" . $parentID),
+			'role'  => 'button',
+			'aria-expanded' => 'false',
+			'aria-controls' => ($parentID === '' ? '' : "ub-expand-full-" . $parentID),
+			'tabindex' => '0',
+			'style' => Ultimate_Blocks\includes\generate_css_string($styles),
+		)
+	);
+
+	return sprintf(
+		'<div %1$s>%2$s<a class="ub-expand-toggle-button">%3$s</a></div>',
+		$wrapper_attributes, // 1
+		$content, // 2
+		$clickText // 3
+	);
 }
 
 function ub_register_expand_portion_block($attributes){
@@ -20,7 +43,7 @@ function ub_register_expand_portion_block($attributes){
 	}
 }
 
-function ub_render_expand_block($attributes, $content){
+function ub_render_expand_block($attributes, $content, $block){
     extract($attributes);
 
     $scrollTargetPrefix = '';
@@ -36,11 +59,46 @@ function ub_render_expand_block($attributes, $content){
         default:
             $scrollTargetPrefix = '';
     }
+	$block_attrs = $block->parsed_block['attrs'];
 
-    return '<div class="wp-block-ub-expand ub-expand '.(isset($className) ? ' ' . $className : '')
+	$padding = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['padding']) ? $block_attrs['padding'] : array() );
+	$margin  = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['margin']) ? $block_attrs['margin'] : array() );
+	$styles  = array(
+		'padding-top'        => isset($padding['top']) ? $padding['top'] : "",
+		'padding-left'       => isset($padding['left']) ? $padding['left'] : "",
+		'padding-right'      => isset($padding['right']) ? $padding['right'] : "",
+		'padding-bottom'     => isset($padding['bottom']) ? $padding['bottom'] : "",
+		'margin-top'         => !empty($margin['top']) ? $margin['top']  : "",
+		'margin-left'        => !empty($margin['left']) ? $margin['left']  : "",
+		'margin-right'       => !empty($margin['right']) ? $margin['right']  : "",
+		'margin-bottom'      => !empty($margin['bottom']) ? $margin['bottom']  : "",
+	);
+	$classNames = array('wp-block-ub-expand', 'ub-expand');
 
-    .'" id="ub-expand-'. esc_attr($blockID) .'"' .  ($allowScroll ? (' data-scroll-type="' . esc_attr($scrollOption) . '"' . ($scrollOption === 'fixedamount' ? ' data-scroll-amount="' . esc_attr($scrollOffset) . '"' : '')
-    . ($scrollOption === 'namedelement' ? ' data-scroll-target="' . $scrollTargetPrefix . esc_attr($scrollTarget) . '"' : '')) : '' ) . '>'. $content .'</div>';
+
+	if (isset($className)) {
+		$classNames[] = $className;
+	}
+
+	$wrapper_attributes = get_block_wrapper_attributes(
+		array(
+			'class' => join(' ', $classNames),
+			'id'	=> 'ub-expand-' . esc_attr($blockID),
+			'style' => Ultimate_Blocks\includes\generate_css_string($styles),
+			'data-scroll-type' => $allowScroll ? esc_attr($scrollOption) : 'false',
+			'data-scroll-amount' => ($allowScroll && $scrollOption === 'fixedamount') ? esc_attr($scrollOffset) : '',
+			'data-scroll-target' => ($allowScroll && $scrollOption === 'namedelement') ? $scrollTargetPrefix . esc_attr($scrollTarget) : ''
+		)
+	);
+
+	$scrollDataAttributes = ''; // No longer needed as data attributes are included in $wrapper_attributes
+
+	return sprintf(
+		'<div %1$s%2$s>%3$s</div>',
+		$wrapper_attributes, // 1
+		$scrollDataAttributes, // 2
+		$content // 3
+	);
 }
 
 function ub_register_expand_block($attributes){

@@ -259,14 +259,6 @@ function ub_include_block_attribute_css() {
 				default:
 					//nothing could be done
 					break;
-				case 'ub/expand':
-					$prefix = '#ub-expand-' . $attributes['blockID'];
-					$styles = ub_get_spacing_styles($attributes);
-					$blockStylesheets .= $prefix . '{' . PHP_EOL . $styles . PHP_EOL . "}";
-					$blockStylesheets .= $prefix . ' .ub-expand-toggle-button{' . PHP_EOL .
-										 'text-align: ' . $attributes['toggleAlign'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL;
-					break;
 				case 'ub/feature-box-block':
 					$prefix           = '#ub_feature_box_' . $attributes['blockID'];
 					$blockStylesheets .= $prefix . ' .ub_feature_one_title{' . PHP_EOL .
