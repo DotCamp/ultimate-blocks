@@ -43,6 +43,9 @@
 		padding: 10px 10px 10px 25px;
 		margin: 0;
 		display: block;
+		> a {
+			color: var(--ub-content-toggle-title-link-color, inherit);
+		}
 	}
 	&-content {
 		padding: 25px;

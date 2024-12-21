@@ -259,36 +259,6 @@ function ub_include_block_attribute_css() {
 				default:
 					//nothing could be done
 					break;
-				case 'ub/content-toggle-block':
-					$styles = ub_get_spacing_styles($attributes);
-
-					$prefix           = '#ub-content-toggle-' . $attributes['blockID'];
-					if ( $block['innerBlocks'] ) {
-						$attributes       = array_merge( $attributes,
-								array_map( function ( $attribute ) {
-									return $attribute['default'];
-								}, $defaultValues['ub/content-toggle-panel-block']['attributes'] ),
-								$block['innerBlocks'][0]['attrs'] );
-
-						$blockStylesheets .= $prefix . '{' . PHP_EOL . $styles . PHP_EOL . "}";
-
-						$blockStylesheets .= $prefix . ' .wp-block-ub-content-toggle-accordion{' . PHP_EOL .
-											 'border-color: ' . $attributes['theme'] . ';' . PHP_EOL .
-											 '}' . PHP_EOL .
-											 $prefix . ' .wp-block-ub-content-toggle-accordion-title-wrap{' . PHP_EOL .
-											 'background-color: ' . $attributes['theme'] . ';' . PHP_EOL .
-											 '}' . PHP_EOL .
-											 $prefix . ' .wp-block-ub-content-toggle-accordion-title{' . PHP_EOL .
-											 'color: ' . ( $attributes['titleColor'] ?: 'inherit' ) . ';' . PHP_EOL .
-											 '}' . PHP_EOL .
-											 $prefix . ' .wp-block-ub-content-toggle-accordion-toggle-wrap{' . PHP_EOL .
-											 'color: ' . $attributes['toggleColor'] . ';' . PHP_EOL .
-											 '}' . PHP_EOL .
-											 '.ub-content-toggle-title-' . $attributes['blockID'] . ' > a{' . PHP_EOL .
-											 'color: ' . ( $attributes['titleLinkColor'] ?: 'inherit' ) . ';' . PHP_EOL .
-											 '}';
-					}
-					break;
 				case 'ub/divider':
 					$prefix = '#ub_divider_' . $attributes['blockID'];
 					$styles = ub_get_spacing_styles($attributes);
