@@ -5,23 +5,18 @@ import {
 } from "../../common";
 import { get, isEmpty } from "lodash";
 import { useState, useEffect } from "react";
-import {
-	BorderControl,
-	BorderRadiusControl,
-	SpacingControl,
-	UBSelectControl,
-} from "../components";
+import { BorderControl, SpacingControl, UBSelectControl } from "../components";
 import { useDispatch, useSelect, select } from "@wordpress/data";
-import { store as coreStore } from "@wordpress/core-data";
-import { getStyles } from "./get-styles";
 import AdvancedVideoPlaceholder from "./placeholder";
 import AdvancedVideoBlockControls from "./block-controls";
 import { store as noticesStore } from "@wordpress/notices";
 
 import { __ } from "@wordpress/i18n";
 import {
+	generateStyles,
 	getBorderCSS,
 	getSingleSideBorderValue,
+	getSpacingCss,
 } from "../utils/styling-helpers";
 const {
 	MediaUpload,
@@ -36,7 +31,6 @@ const {
 	ToggleControl,
 	PanelBody,
 	PanelRow,
-	SelectControl,
 	AnglePickerControl,
 } = wp.components;
 
@@ -315,8 +309,20 @@ export function AdvancedVideoBlock(props) {
 
 	const [useShadow, setShadowStatus] = useState(false);
 	const { attributes, setAttributes, clientId } = props;
+	const paddingObj = getSpacingCss(attributes.padding);
+	const marginObj = getSpacingCss(attributes.margin);
+	const blockStyles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: !isEmpty(marginObj?.top) ? marginObj?.top : "",
+		marginRight: !isEmpty(marginObj?.right) ? marginObj?.right : " ",
+		marginBottom: !isEmpty(marginObj?.bottom) ? marginObj?.bottom : "",
+		marginLeft: !isEmpty(marginObj?.left) ? marginObj?.left : "",
+	};
 	const blockProps = useBlockProps({
-		style: getStyles(attributes),
+		style: generateStyles(blockStyles),
 	});
 	const { block, rootBlockClientId } = useSelect((select) => {
 		const { getBlock, getBlockRootClientId } =
