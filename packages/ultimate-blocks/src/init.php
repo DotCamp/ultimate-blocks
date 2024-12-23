@@ -396,43 +396,6 @@ function ub_include_block_attribute_css() {
 										 'color: ' . $attributes['numberColor'] . ';' . PHP_EOL .
 										 '}';
 					break;
-				case 'ub/review':
-					$prefix			 = '#ub_review_' . $attributes['blockID'];
-					$block_styling		= ub_generate_review_block_styling($attributes);
-					$styles = ub_get_spacing_styles($attributes);
-					$blockStylesheets .= $prefix . '{' . PHP_EOL . $styles . $block_styling . PHP_EOL . "}";
-					$blockStylesheets .= $prefix . ' .ub_review_item_name{' . PHP_EOL .
-										 'text-align: ' . $attributes['titleAlign'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_review_author_name{' . PHP_EOL .
-										 'text-align: ' . $attributes['authorAlign'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_review_description{' . PHP_EOL .
-										 'text-align: ' . $attributes['descriptionAlign'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_review_cta_main{' . PHP_EOL .
-										 'justify-content: ' . $attributes['ctaAlignment'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_review_cta_main>a{' . PHP_EOL .
-										 'color: ' . ( $attributes['callToActionForeColor'] ?: 'inherit' ) . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_review_cta_btn{' . PHP_EOL .
-										 'color: ' . ( $attributes['callToActionForeColor'] ?: 'inherit' ) . ';' . PHP_EOL .
-										 'border-color: ' . $attributes['callToActionBorderColor'] . ';' . PHP_EOL .
-										 'background-color: ' . $attributes['callToActionBackColor'] . ';' . PHP_EOL .
-										 ( $attributes['callToActionFontSize'] > 0 ? 'font-size: ' . $attributes['callToActionFontSize'] . 'px;' . PHP_EOL : '' ) .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_review_image{' . PHP_EOL .
-										 'max-height: ' . $attributes['imageSize'] . 'px;' . PHP_EOL .
-										 'max-width: ' . $attributes['imageSize'] . 'px;' . PHP_EOL .
-										 '}' . PHP_EOL;
-					if ( ! $attributes['useSummary'] ) {
-						$blockStylesheets .= $prefix . ' .ub_review_overall_value{' . PHP_EOL .
-											 'display: block;' . PHP_EOL .
-											 '}' . PHP_EOL;
-					}
-
-					break;
 				case 'ub/social-share':
 					$icon_sizes       = array(
 							'normal' => 20,
