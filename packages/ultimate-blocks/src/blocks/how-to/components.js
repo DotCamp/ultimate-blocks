@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { convertFromSeconds, getParentBlock } from "../../common";
 import { SpacingControl } from "../components";
-import { getStyles } from "./get-styles";
 import { useSelect } from "@wordpress/data";
 
 import { __ } from "@wordpress/i18n"; // Import __() from wp.i18n
@@ -21,6 +20,7 @@ import {
 	RangeControl,
 	SelectControl,
 } from "@wordpress/components";
+import { generateStyles, getSpacingCss } from "../utils/styling-helpers";
 
 function InspectorPanel(props) {
 	const {
@@ -956,6 +956,8 @@ export function EditorComponent(props) {
 			firstLevelTag,
 			secondLevelTag,
 			thirdLevelTag,
+			padding,
+			margin,
 		},
 		setAttributes,
 		isSelected,
@@ -1191,7 +1193,19 @@ export function EditorComponent(props) {
 			console.log("input is not a url");
 		}
 	};
-	const styles = getStyles(props.attributes);
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+
+	let styles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+	};
 	const updateStep = (sectionIndex, stepIndex, newStep) => {
 		const newSections = section.map((sec, idx) => {
 			if (idx === sectionIndex) {
@@ -1218,7 +1232,11 @@ export function EditorComponent(props) {
 					//videoURLInput isn't being updated via updateState for now
 				}}
 			/>
-			<div className="ub_howto" id={`ub_howto-${blockID}`} style={styles}>
+			<div
+				className="ub_howto"
+				id={`ub_howto-${blockID}`}
+				style={generateStyles(styles)}
+			>
 				<RichText
 					tagName={firstLevelTag}
 					placeholder={__("How to title")}

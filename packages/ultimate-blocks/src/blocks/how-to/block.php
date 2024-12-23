@@ -63,13 +63,17 @@ function ub_render_how_to_block($attributes){
 	if (!in_array($thirdLevelTag, ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'strong'])) {
 		$thirdLevelTag = 'h4';
 	}
+	$supplies_styles = array();
 
+	if(isset($attributes['suppliesListStyle']) && $attributes['suppliesListStyle'] === 'none'){
+		$supplies_styles['list-style'] = 'none';
+	}
     $suppliesCode = '"supply": [';
     if($advancedMode && $includeSuppliesList){
         $header .= '<' . esc_attr($secondLevelTag) . '>' . wp_kses_post($suppliesIntro) . '</' . esc_attr($secondLevelTag) . '>';
         if(isset($supplies) && count($supplies) > 0){
             $header .=  $suppliesListStyle === 'ordered' ? '<ol' : '<ul';
-            $header .= ' class="ub_howto-supplies-list">';
+            $header .= ' class="ub_howto-supplies-list" style="' . Ultimate_Blocks\includes\generate_css_string($tools_styles) . '">';
             foreach($supplies as $i => $s){
                 $header .= '<li>' . wp_kses_post($s['name']) . ($s['imageURL'] === '' ? '' :
                             '<br><img src="' . esc_url($s['imageURL']) . '"/>') . '</li>';
@@ -84,13 +88,18 @@ function ub_render_how_to_block($attributes){
     }
     $suppliesCode .= ']';
 
+	$tools_styles = array();
+
+	if(isset($attributes['toolsListStyle']) && $attributes['toolsListStyle'] === 'none'){
+		$tools_styles['list-style'] = 'none';
+	}
     $toolsCode = '"tool": [';
 
     if($advancedMode && $includeToolsList){
         $header .= '<' . esc_attr($secondLevelTag) . '>' . wp_kses_post($toolsIntro) . '</' . esc_attr($secondLevelTag) . '>';
         if(isset($tools) && count($tools) > 0){
             $header .= $toolsListStyle === 'ordered' ? '<ol' : '<ul';
-            $header .= ' class="ub_howto-tools-list">';
+            $header .= ' class="ub_howto-tools-list" style="' . Ultimate_Blocks\includes\generate_css_string($supplies_styles) . '">';
             foreach($tools as $i => $t){
                 $header .= '<li>' . wp_kses_post($t['name']) . ($t['imageURL'] === '' ? '' :
                             '<br><img src="' . esc_url($t['imageURL']) . '"/>') . '</li>';
@@ -121,15 +130,24 @@ function ub_render_how_to_block($attributes){
 
     $ISOTotalTime = generateISODurationCode($totalTime);
 
+	$section_styles = array();
+	$step_styles = array();
+
+	if(isset($attributes['sectionListStyle']) && $attributes['sectionListStyle'] === 'none'){
+		$section_styles['list-style'] = 'none';
+	}
+	if(isset($attributes['sectionListStyle']) && $attributes['sectionListStyle'] === 'none'){
+		$step_styles['list-style'] = 'none';
+	}
     $stepsDisplay = '';
     $stepsCode = PHP_EOL .  '"step": [';
 
     if($useSections){
         $stepsDisplay = ($sectionListStyle === 'ordered' ? '<ol' : '<ul') .
-                            ' class="ub_howto-section-display">';
+                            ' class="ub_howto-section-display" style="' . Ultimate_Blocks\includes\generate_css_string($section_styles) . '">';
         foreach($section as $i => $s){
             $stepsDisplay .= '<li class="ub_howto-section"><' . esc_attr($secondLevelTag) . '>' . wp_kses_post($s['sectionName']) . '</' . esc_attr($secondLevelTag) . '>' .
-            ($sectionListStyle === 'ordered' ? '<ol' : '<ul') . ' class="ub_howto-step-display">';
+            ($sectionListStyle === 'ordered' ? '<ol' : '<ul') . ' class="ub_howto-step-display" style="' . Ultimate_Blocks\includes\generate_css_string($step_styles) . '">';
             $stepsCode .= '{"@type": "HowToSection",' . PHP_EOL
                         . '"name": "'. str_replace("\'", "'", wp_kses_post($s['sectionName'])) . '",' . PHP_EOL
                         . '"itemListElement": [' . PHP_EOL;
@@ -143,7 +161,7 @@ function ub_render_how_to_block($attributes){
                             . '"image": "' . $step['stepPic']['url'] . '",' . PHP_EOL
                             . '"itemListElement" :[{' . PHP_EOL;
 
-                $stepsDisplay .= '<li class="ub_howto-step"><' . esc_attr($thirdLevelTag) . ' id="' . $step['anchor'] . '">'
+                $stepsDisplay .= '<li class="ub_howto-step" style="' . Ultimate_Blocks\includes\generate_css_string($step_styles) . '"><' . esc_attr($thirdLevelTag) . ' id="' . $step['anchor'] . '">'
                     . $step['title'] . '</' . esc_attr($thirdLevelTag) . '>' . ($step['stepPic']['url'] !== '' ?
                     ($step['stepPic']['caption'] === '' ? '' : '<figure>') .
                         '<img class="ub_howto-step-image" src="' . $step['stepPic']['url'] . '">'

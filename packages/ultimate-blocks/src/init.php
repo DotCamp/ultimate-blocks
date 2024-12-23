@@ -285,23 +285,6 @@ function ub_include_block_attribute_css() {
 					$prefix = '#ub_howto_' . $attributes['blockID'];
 					$blockStylesheets .= $prefix . '{' . $styles . '}';
 
-					if ( $attributes['sectionListStyle'] === 'none' ) {
-						$blockStylesheets .= $prefix . ' .ub_howto-section-display,' . $prefix . ' .ub_howto-step-display,' .
-											 $prefix . ' .ub_howto-step-display .ub_howto-step{' . PHP_EOL .
-											 'list-style: none;' . PHP_EOL .
-											 '}' . PHP_EOL;
-					}
-					if ( $attributes['suppliesListStyle'] === 'none' ) {
-						$blockStylesheets .= $prefix . ' .ub_howto-supplies-list{' . PHP_EOL .
-											 'list-style: none;' . PHP_EOL .
-											 '}' . PHP_EOL;
-					}
-					if ( $attributes['toolsListStyle'] === 'none' ) {
-						$blockStylesheets .= $prefix . ' .ub_howto-tools-list{' . PHP_EOL .
-											 'list-style: none;' . PHP_EOL .
-											 '}' . PHP_EOL;
-					}
-
 					function ub_howto_getStepPic( $step ) {
 						return $step['stepPic'];
 					}
