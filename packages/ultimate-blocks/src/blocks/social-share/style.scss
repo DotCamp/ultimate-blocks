@@ -74,6 +74,12 @@ $site-colors: (
 );
 
 @each $site, $color in $site-colors {
+	.ub-social-share-#{$site}-container {
+		margin: 5px;
+		padding-right: 5px;
+		display: flex;
+		align-items: center;
+	}
 	.ub-social-share-#{$site} {
 		&.square,
 		&.circle {
