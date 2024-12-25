@@ -396,59 +396,6 @@ function ub_include_block_attribute_css() {
 										 'color: ' . $attributes['numberColor'] . ';' . PHP_EOL .
 										 '}';
 					break;
-				case 'ub/table-of-contents-block':
-					$prefix = '#ub_table-of-contents-' . $attributes['blockID'];
-					$styles = ub_get_spacing_styles($attributes);
-					$blockStylesheets .= $prefix . '{' . PHP_EOL . $styles . PHP_EOL . "}";
-					if ( $attributes['listStyle'] === 'plain' ) {
-						$blockStylesheets .= $prefix . ' ul{' . PHP_EOL .
-											 'list-style: none;' . PHP_EOL .
-											 '}' . PHP_EOL;
-					}
-					if ( $attributes['enableSmoothScroll'] && $hasNoSmoothScroll ) {
-						$blockStylesheets  .= 'html {' . PHP_EOL .
-											  'scroll-behavior: smooth;' . PHP_EOL .
-											  '}' . PHP_EOL;
-						$hasNoSmoothScroll = false;
-					}
-					if ( $attributes['allowToCHiding'] ) {
-						$blockStylesheets .= $prefix . '.ub_table-of-contents-collapsed {' . PHP_EOL .
-											 'max-width: fit-content;' . PHP_EOL .
-											 'max-width: -moz-fit-content;' . PHP_EOL .
-											 '}' . PHP_EOL .
-											 $prefix . '.ub_table-of-contents-collapsed .ub_table-of-contents-header {' . PHP_EOL .
-											 'margin-bottom: 0;' . PHP_EOL .
-											 '}' . PHP_EOL;
-					}
-					$blockStylesheets .= $prefix . ' .ub_table-of-contents-header{' . PHP_EOL .
-										 'text-align: ' . $attributes['titleAlignment'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL;
-
-					if ( $attributes['titleBackgroundColor'] ) {
-						$blockStylesheets .= $prefix . ' .ub_table-of-contents-header-container,' . $prefix . ' .ub_table-of-contents-toggle-link {' . PHP_EOL .
-											 'background-color: ' . $attributes['titleBackgroundColor'] . ';' . PHP_EOL .
-											 '}' . PHP_EOL;
-					}
-					if ( $attributes['titleColor'] ) {
-						$blockStylesheets .= $prefix . ' .ub_table-of-contents-title, ' . $prefix . ' .ub_table-of-contents-toggle,' . $prefix . ' .ub_table-of-contents-toggle-link{' . PHP_EOL .
-											 'color: ' . $attributes['titleColor'] . ';' . PHP_EOL .
-											 '}' . PHP_EOL;
-					}
-					if ( $attributes['listColor'] ) {
-						$blockStylesheets .= $prefix . ' .ub_table-of-contents-container a{' . PHP_EOL .
-											 'color: ' . $attributes['listColor'] . ';' . PHP_EOL .
-											 '}' . PHP_EOL;
-					}
-					if ( $attributes['listBackgroundColor'] ) {
-						$blockStylesheets .= $prefix . ' .ub_table-of-contents-extra-container{' . PHP_EOL .
-											 'background-color: ' . $attributes['listBackgroundColor'] . ';' . PHP_EOL .
-											 '}' . PHP_EOL;
-					}
-					if ( $attributes['listIconColor'] ) {
-						$blockStylesheets .= $prefix . ' li{' . PHP_EOL .
-											 'color: ' . $attributes['listIconColor'] . ';' . PHP_EOL . '}' . PHP_EOL;
-					}
-				break;
 			}
 		}
 	}

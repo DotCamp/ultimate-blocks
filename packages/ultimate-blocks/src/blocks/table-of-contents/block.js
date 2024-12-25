@@ -4,7 +4,6 @@ import TableOfContents, {
 	blockControls,
 	editorDisplay,
 } from "./components";
-import { getStyles } from "./get-style";
 
 import {
 	version_1_0_8,
@@ -39,6 +38,7 @@ import {
 	mergeRichTextArray,
 	getParentBlock,
 } from "../../common";
+import { generateStyles, getSpacingCss } from "../utils/styling-helpers";
 
 registerBlockType("ub/table-of-contents", {
 	title: __("Table of Contents"),
@@ -230,7 +230,7 @@ registerBlockType(metadata.name, {
 		const {
 			isSelected,
 			block,
-			attributes: { blockID, showList },
+			attributes: { blockID, showList, padding, margin },
 			rootBlockClientId,
 		} = props;
 
@@ -245,11 +245,24 @@ registerBlockType(metadata.name, {
 				props.setAttributes({ blockID: block.clientId });
 			}
 		}, [block?.clientId]);
+		const paddingObj = getSpacingCss(padding);
+		const marginObj = getSpacingCss(margin);
+
+		let styles = {
+			paddingTop: paddingObj?.top,
+			paddingRight: paddingObj?.right,
+			paddingBottom: paddingObj?.bottom,
+			paddingLeft: paddingObj?.left,
+			marginTop: marginObj?.top,
+			marginRight: marginObj?.right,
+			marginBottom: marginObj?.bottom,
+			marginLeft: marginObj?.left,
+		};
 		const blockProps = useBlockProps({
 			className: `ub_table-of-contents${
 				showList ? "" : " ub_table-of-contents-collapsed"
 			}`,
-			style: getStyles(props.attributes),
+			style: generateStyles(styles),
 			id: `ub_table-of-contents-${blockID}`,
 		});
 		return [
