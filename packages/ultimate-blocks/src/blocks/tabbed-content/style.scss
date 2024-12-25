@@ -56,6 +56,12 @@
 	& .wp-block-ub-tabbed-content-tab-title-wrap {
 		border: 1px solid lightgrey;
 		border-bottom: 0;
+		background: var(--ub-tabbed-title-background-color);
+		color: var(--ub-tabbed-title-color);
+		&.active {
+			background: var(--ub-tabbed-active-title-background-color);
+			color: var(--ub-tabbed-active-title-color);
+		}
 	}
 
 	&-holder {
@@ -242,7 +248,12 @@
 	border: 1px solid lightgray;
 	padding: 10px 15px;
 	display: none;
+	background-color: var(--ub-tabbed-accordion-background-color);
+	color: var(--ub-tabbed-accordion-color);
+
 	&.active {
+		background-color: var(--ub-tabbed-active-accordion-background-color);
+		color: var(--ub-tabbed-active-accordion-color);
 		border-bottom: none;
 	}
 	@media (max-width: 699px) {

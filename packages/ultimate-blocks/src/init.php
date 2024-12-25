@@ -396,46 +396,6 @@ function ub_include_block_attribute_css() {
 										 'color: ' . $attributes['numberColor'] . ';' . PHP_EOL .
 										 '}';
 					break;
-				case 'ub/tabbed-content-block':
-					$prefix           = '#ub-tabbed-content-' . $attributes['blockID'];
-					$styles 		   = ub_get_spacing_styles($attributes);
-					if(isset($attributes['contentColor'])){
-						$styles .= '--ub-tab-content-color:'. $attributes['contentColor'] .';';
-					}
-					if(isset($attributes['contentBackground'])){
-						$styles .= '--ub-tab-content-background:'. $attributes['contentBackground'] .';';
-					}
-					$blockStylesheets .= $prefix . '{' . PHP_EOL . $styles . PHP_EOL . "}";
-					$blockStylesheets .= $prefix . ' > .wp-block-ub-tabbed-content-tab-holder > .wp-block-ub-tabbed-content-tabs-title > .wp-block-ub-tabbed-content-tab-title-wrap, ' .
-										 $prefix . ' > .wp-block-ub-tabbed-content-tab-holder > .wp-block-ub-tabbed-content-tabs-title-vertical-tab > .wp-block-ub-tabbed-content-tab-title-vertical-wrap{' . PHP_EOL .
-										 ( $attributes['tabStyle'] === 'underline' ? '' : 'background-color: ' . ( $attributes['normalColor'] ?: 'inherit' ) . ';' . PHP_EOL ) .
-										 ( ( $attributes['tabStyle'] === 'tabs' ? 'border-color: lightgrey;' : 'border: none;' ) . PHP_EOL ) .
-										 'color: ' . ( $attributes['normalTitleColor'] ?: 'inherit' ) . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' > .wp-block-ub-tabbed-content-tab-holder > .wp-block-ub-tabbed-content-tabs-title > .wp-block-ub-tabbed-content-tab-title-wrap.active, ' .
-										 $prefix . ' > .wp-block-ub-tabbed-content-tab-holder > .wp-block-ub-tabbed-content-tabs-title-vertical-tab > .wp-block-ub-tabbed-content-tab-title-vertical-wrap.active,' .
-										 $prefix . ' > .wp-block-ub-tabbed-content-tab-holder > .wp-block-ub-tabbed-content-tabs-title > .wp-block-ub-tabbed-content-accordion-toggle.active{' . PHP_EOL .
-										 ( $attributes['tabStyle'] === 'underline' ? 'border-bottom: 5px solid ' . $attributes['titleColor'] . ';' . PHP_EOL :
-												 'background-color: ' . $attributes['theme'] . ';' . PHP_EOL ) .
-										 'color: ' . ( $attributes['titleColor'] ?: 'inherit' ) . ';' . PHP_EOL .
-										 '}' .
-										 $prefix . '  .wp-block-ub-tabbed-content-accordion-toggle.active{' . PHP_EOL .
-										 'background-color: ' . $attributes['theme'] . ';' . PHP_EOL .
-										 '}' .
-										 $prefix . ' > .wp-block-ub-tabbed-content-tab-holder > .wp-block-ub-tabbed-content-tabs-title{' . PHP_EOL .
-										 'justify-content: ' . ( $attributes['tabsAlignment'] === 'center' ? 'center' :
-									'flex-' . ( $attributes['tabsAlignment'] === 'left' ? 'start' : 'end' ) ) . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .wp-block-ub-tabbed-content-accordion-toggle{' . PHP_EOL .
-										 'background-color: ' . ( $attributes['normalColor'] ?: 'transparent' ) . ';' . PHP_EOL .
-										 'color: ' . ( $attributes['normalTitleColor'] ?: 'inherit' ) . ';' . PHP_EOL .
-										 '}' . PHP_EOL;
-					foreach ( $attributes['tabsTitleAlignment'] as $key => $titleAlign ) {
-						$blockStylesheets .= $prefix . ' > .wp-block-ub-tabbed-content-tab-holder > .wp-block-ub-tabbed-content-tabs-title > .wp-block-ub-tabbed-content-tab-title-wrap:nth-child(' . ( $key + 1 ) . '){' . PHP_EOL .
-											 'text-align: ' . $titleAlign . ';' . PHP_EOL .
-											 '}' . PHP_EOL;
-					}
-					break;
 				case 'ub/table-of-contents-block':
 					$prefix = '#ub_table-of-contents-' . $attributes['blockID'];
 					$styles = ub_get_spacing_styles($attributes);

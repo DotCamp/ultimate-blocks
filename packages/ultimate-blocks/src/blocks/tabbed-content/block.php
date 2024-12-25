@@ -44,6 +44,12 @@ function ub_render_tabbed_content_block($attributes, $contents, $block){
 		'border-bottom-left-radius' => !empty( $block_attrs['tabContentsBorderRadius']['bottomLeft'] ) ?  esc_attr($block_attrs['tabContentsBorderRadius']['bottomLeft']) . ';': "",
 		'border-bottom-right-radius' => !empty( $block_attrs['tabContentsBorderRadius']['bottomRight'] ) ?  esc_attr($block_attrs['tabContentsBorderRadius']['bottomRight']) . ';': "",
 	);
+	if (isset($attributes['contentColor'])) {
+		$tab_contents_styles['--ub-tab-content-color'] = esc_attr($attributes['contentColor']);
+	}
+	if (isset($attributes['contentBackground'])) {
+		$tab_contents_styles['--ub-tab-content-background'] = esc_attr($attributes['contentBackground']);
+	}
 
 	foreach ($contents as $key => $content) {
         if($useAnchors){
@@ -58,9 +64,14 @@ function ub_render_tabbed_content_block($attributes, $contents, $block){
         else{
             $accordionIsActive = false;
         }
-
+		$tab_accordion_content_styles = array(
+			'--ub-tabbed-active-accordion-background-color' => $attributes['theme'] ?: 'transparent',
+			'--ub-tabbed-accordion-background-color' => $attributes['normalColor'] ?: 'transparent',
+			'--ub-tabbed-accordion-color' => $attributes['normalTitleColor'] ?: 'inherit',
+			'--ub-tabbed-active-accordion-color' => $attributes['titleColor'] ?: 'inherit'
+		);
         if($tabletTabDisplay === 'accordion' || $mobileTabDisplay === 'accordion'){
-            $content = '<div class="' . $blockName . '-accordion-toggle'.
+            $content = '<div style="' . Ultimate_Blocks\includes\generate_css_string($tab_accordion_content_styles) . '" class="' . $blockName . '-accordion-toggle'.
             ($accordionIsActive ? ' active' : '') .
             ($tabletTabDisplay === 'accordion' ? ' ub-tablet-display' : '') .
             ($mobileTabDisplay === 'accordion' ? ' ub-mobile-display' : '') .
@@ -73,15 +84,16 @@ function ub_render_tabbed_content_block($attributes, $contents, $block){
     }
 
 	foreach($tabsTitle as $key=>$title){
-
 		$tab_buttons_styles = array(
-			'background-color' => ($tabStyle === 'underline' ? 'inherit' : ($activeTab === $key ? esc_attr($theme) : (isset($normalColor) ? esc_attr($normalColor) : 'inherit'))),
-			'border-color' => ($activeTab === $key ? esc_attr($theme) : 'lightgrey'),
-			'color' => ($activeTab === $key ? esc_attr($titleColor) : '#000000'),
+			'--ub-tabbed-title-background-color' => ($tabStyle === 'underline' ? 'inherit' : ($activeTab === $key ? esc_attr($theme) : (isset($normalColor) ? esc_attr($normalColor) : 'inherit'))),
+			'--ub-tabbed-title-color' => ($activeTab === $key ? esc_attr($titleColor) : $attributes['normalTitleColor']),
+			'--ub-tabbed-active-title-color' => $attributes['titleColor'] ?: 'inherit',
+			'--ub-tabbed-active-title-background-color' => $attributes['theme'] ?: 'inherit',
 			'border-top-left-radius' => !empty( $block_attrs['tabButtonsBorderRadius']['topLeft'] ) ? esc_attr($block_attrs['tabButtonsBorderRadius']['topLeft']) . ';': "",
 			'border-top-right-radius' => !empty( $block_attrs['tabButtonsBorderRadius']['topRight'] ) ?  esc_attr($block_attrs['tabButtonsBorderRadius']['topRight']) . ';': "",
 			'border-bottom-left-radius' => !empty( $block_attrs['tabButtonsBorderRadius']['bottomLeft'] ) ?  esc_attr($block_attrs['tabButtonsBorderRadius']['bottomLeft']) . ';': "",
 			'border-bottom-right-radius' => !empty( $block_attrs['tabButtonsBorderRadius']['bottomRight'] ) ?  esc_attr($block_attrs['tabButtonsBorderRadius']['bottomRight']) . ';': "",
+			'text-align' => isset($attributes['tabsTitleAlignment'][$key]) ? $attributes['tabsTitleAlignment'][$key] : 'left'
 		);
 
 		$tabs .= sprintf(
@@ -97,17 +109,21 @@ function ub_render_tabbed_content_block($attributes, $contents, $block){
 			($tabletTabDisplay === 'verticaltab' ? ' ' . $blockName . '-tab-title-tablet-vertical-wrap' : ''), // 7
 			($activeTab === $key ? ' active' : ''), // 8
 			Ultimate_Blocks\includes\generate_css_string($tab_buttons_styles), //9
-			wp_kses_post($title), // 10
+			wp_kses_post($title) // 10
 		);
 	}
 
     $mobileTabStyle = substr($mobileTabDisplay, 0, strlen($mobileTabDisplay) - 3);
     $tabletTabStyle = substr($tabletTabDisplay, 0, strlen($tabletTabDisplay) - 3);
 
+	$tab_buttons_wrapper_styles = array(
+		'justify-content' => $attributes['tabsAlignment'] === 'center' ? 'center' : 'flex-' . ($attributes['tabsAlignment'] === 'left' ? 'start' : 'end'),
+	);
+
 	return sprintf(
 		'<div class="wp-block-ub-tabbed-content-block %1$s%2$s %3$s-holder%4$s%5$s%6$s%7$s%8$s"%9$s%10$s>
 			<div class="%3$s-tab-holder%11$s%12$s%13$s">
-				<div role="tablist" class="%3$s-tabs-title%14$s%15$s%16$s">%17$s</div>
+				<div role="tablist" class="%3$s-tabs-title%14$s%15$s%16$s" style="%23$s">%17$s</div>
 			</div>
 			<div class="%3$s-tabs-content%18$s%19$s%20$s" style="%22$s">%21$s</div>
 		</div>',
@@ -133,6 +149,7 @@ function ub_render_tabbed_content_block($attributes, $contents, $block){
 		($tabletTabDisplay === 'verticaltab' ? ' vertical-content-width-tablet' : ($tabletTabDisplay === 'accordion' ? ' ub-tabbed-content-tablet-accordion' : '')), // 20
 		implode($tabContents), // 21
 		Ultimate_Blocks\includes\generate_css_string($tab_contents_styles), // 22
+		Ultimate_Blocks\includes\generate_css_string($tab_buttons_wrapper_styles) //23
 	);
 }
 
