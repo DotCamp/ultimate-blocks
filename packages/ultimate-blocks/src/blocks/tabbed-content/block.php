@@ -119,9 +119,21 @@ function ub_render_tabbed_content_block($attributes, $contents, $block){
 	$tab_buttons_wrapper_styles = array(
 		'justify-content' => $attributes['tabsAlignment'] === 'center' ? 'center' : 'flex-' . ($attributes['tabsAlignment'] === 'left' ? 'start' : 'end'),
 	);
+	$padding = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['padding']) ? $block_attrs['padding'] : array() );
+	$margin  = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['margin']) ? $block_attrs['margin'] : array() );
+	$styles = array(
+			'padding-top'        => isset($padding['top']) ? $padding['top'] : "",
+			'padding-left'       => isset($padding['left']) ? $padding['left'] : "",
+			'padding-right'      => isset($padding['right']) ? $padding['right'] : "",
+			'padding-bottom'     => isset($padding['bottom']) ? $padding['bottom'] : "",
+			'margin-top'         => !empty($margin['top']) ? $margin['top']  : "",
+			'margin-left'        => !empty($margin['left']) ? $margin['left']  : "",
+			'margin-right'       => !empty($margin['right']) ? $margin['right']  : "",
+			'margin-bottom'      => !empty($margin['bottom']) ? $margin['bottom']  : "",
+	);
 
 	return sprintf(
-		'<div class="wp-block-ub-tabbed-content-block %1$s%2$s %3$s-holder%4$s%5$s%6$s%7$s%8$s"%9$s%10$s>
+		'<div class="wp-block-ub-tabbed-content-block %1$s%2$s %3$s-holder%4$s%5$s%6$s%7$s%8$s"%9$s%10$s style="%24$s">
 			<div class="%3$s-tab-holder%11$s%12$s%13$s">
 				<div role="tablist" class="%3$s-tabs-title%14$s%15$s%16$s" style="%23$s">%17$s</div>
 			</div>
@@ -149,7 +161,8 @@ function ub_render_tabbed_content_block($attributes, $contents, $block){
 		($tabletTabDisplay === 'verticaltab' ? ' vertical-content-width-tablet' : ($tabletTabDisplay === 'accordion' ? ' ub-tabbed-content-tablet-accordion' : '')), // 20
 		implode($tabContents), // 21
 		Ultimate_Blocks\includes\generate_css_string($tab_contents_styles), // 22
-		Ultimate_Blocks\includes\generate_css_string($tab_buttons_wrapper_styles) //23
+		Ultimate_Blocks\includes\generate_css_string($tab_buttons_wrapper_styles), //23
+		Ultimate_Blocks\includes\generate_css_string($styles) //24
 	);
 }
 
