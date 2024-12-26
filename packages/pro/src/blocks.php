@@ -123,16 +123,8 @@ function ubpro_include_block_attribute_css(){
                         '}';
                     }
                     break;
-                case 'ub/social-share':
-					$prefix           = '#ub-social-share-' . $attributes['blockID'];
-                    $styles           = ubpro_get_spacing_styles($attributes);
-					$blockStylesheets .= $prefix . '{' . PHP_EOL . $styles . PHP_EOL . "}"; 
-                    break;
-                case 'ub/review':
-                    $prefix           = '#ub_review_' . $attributes['blockID'];
-					$styles           = ubpro_get_spacing_styles($attributes);
-					$blockStylesheets .= $prefix . '{' . PHP_EOL . $styles . PHP_EOL . "}"; 
-                    break;
+               
+              
                 case 'ub/image-slider':
                     $prefix           = '#ub_image_slider_' . $attributes['blockID'];
 					$styles           = ubpro_get_spacing_styles($attributes);

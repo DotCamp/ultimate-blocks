@@ -29,8 +29,8 @@ import Inspector from "./inspector";
 import { useEffect, useState } from "react";
 
 import { withSelect } from "@wordpress/data";
-import { getStyles } from "./get-styles";
 import { getParentBlock } from "../../common";
+import { generateStyles, getSpacingCss } from "../../utils/styling-helpers";
 // variables
 const iconSizes = {
   normal: 20,
@@ -208,6 +208,8 @@ function NewSocialShareMain(props) {
     useCaptions,
     addOutline,
     orientation,
+    padding,
+    margin,
   } = attributes;
 
   const iconSize = iconSizes[attributes.iconSize];
@@ -247,8 +249,18 @@ function NewSocialShareMain(props) {
       setAttributes({ blockID: block.clientId });
     }
   }, [block?.clientId]);
-
-  const styles = getStyles(attributes);
+  const paddingObj = getSpacingCss(padding);
+  const marginObj = getSpacingCss(margin);
+  const styles = {
+    paddingTop: paddingObj?.top,
+    paddingRight: paddingObj?.right,
+    paddingBottom: paddingObj?.bottom,
+    paddingLeft: paddingObj?.left,
+    marginTop: marginObj?.top,
+    marginRight: marginObj?.right,
+    marginBottom: marginObj?.bottom,
+    marginLeft: marginObj?.left,
+  };
 
   return (
     <>
@@ -267,7 +279,7 @@ function NewSocialShareMain(props) {
       <div
         id="ub-social-share-block-editor"
         className={"wp-block-ub-social-share"}
-        style={styles}
+        style={generateStyles(styles)}
       >
         <SortableList
           axis="x"
