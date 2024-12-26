@@ -134,12 +134,6 @@ function ubpro_include_block_attribute_css(){
                     $styles            = ubpro_get_spacing_styles($attributes);
 					$blockStylesheets  .= $prefix . '{' . PHP_EOL . $styles . PHP_EOL . PHP_EOL . $block_styles . PHP_EOL . "}"; 
                     break;
-    
-                case 'ub/content-toggle-block':
-                    $prefix           = '#ub-content-toggle-' . $attributes['blockID'];
-					$styles           = ubpro_get_spacing_styles($attributes);
-					$blockStylesheets .= $prefix . '{' . PHP_EOL . $styles . PHP_EOL . "}"; 
-                    break;
             }
         }
     }

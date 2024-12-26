@@ -16,9 +16,8 @@ import {
 import { ToolbarButton, ToolbarGroup } from "@wordpress/components";
 import TabTitle from "./TabTitle";
 import IndexDataRegistry from "../inc/js/IndexDataRegistry";
-import { getStyles } from "../get-styles";
 import { getParentBlock } from "../../../common";
-import { generateStyles } from "../../../utils/styling-helpers";
+import { generateStyles, getSpacingCss } from "../../../utils/styling-helpers";
 
 export class TabHolder extends Component {
   constructor(props) {
@@ -111,6 +110,8 @@ export class TabHolder extends Component {
       tabIcons,
       tabIconSize,
       align,
+      padding,
+      margin,
     } = attributes;
     const rootBlock = getParentBlock(rootBlockClientId, "core/block");
 
@@ -351,13 +352,27 @@ export class TabHolder extends Component {
     if (blockID === "") {
       setAttributes({ blockID: this.props.block.clientId });
     }
-    const styles = getStyles(attributes);
+    const paddingObj = getSpacingCss(padding);
+    const marginObj = getSpacingCss(margin);
+
+    let styles = {
+      paddingTop: paddingObj?.top,
+      paddingRight: paddingObj?.right,
+      paddingBottom: paddingObj?.bottom,
+      paddingLeft: paddingObj?.left,
+      marginTop: marginObj?.top,
+      marginRight: marginObj?.right,
+      marginBottom: marginObj?.bottom,
+      marginLeft: marginObj?.left,
+    };
 
     const tabContentsStyles = generateStyles({
       borderTopLeftRadius: attributes.tabContentsBorderRadius?.topLeft,
       borderTopRightRadius: attributes.tabContentsBorderRadius?.topRight,
       borderBottomLeftRadius: attributes.tabContentsBorderRadius?.bottomLeft,
       borderBottomRightRadius: attributes.tabContentsBorderRadius?.bottomRight,
+      "--ub-tab-content-color": contentColor,
+      "--ub-tab-content-background": contentBackground,
     });
     return [
       isSelected && (
@@ -407,7 +422,7 @@ export class TabHolder extends Component {
       ),
       <div
         className={`${className}${tabStyle === "tabs" ? "" : `-${tabStyle}`}`}
-        style={styles}
+        style={generateStyles(styles)}
       >
         <div
           className={`${className}-holder ${
