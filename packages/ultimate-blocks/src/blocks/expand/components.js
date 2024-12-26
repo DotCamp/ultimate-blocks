@@ -35,6 +35,8 @@ export function ExpandRoot(props) {
 		scrollOffset,
 		scrollTarget,
 		scrollTargetType,
+		padding,
+		margin,
 	} = attributes;
 	const blockProps = useBlockProps();
 	const rootBlock = getParentBlock(rootBlockClientId, "core/block");

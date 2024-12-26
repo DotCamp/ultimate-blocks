@@ -6,7 +6,6 @@ import {
 } from "./icons";
 import React, { Component, Fragment } from "react";
 import { SpacingControl } from "../../components/StylingControls";
-import { getStyles } from "./get-styles";
 import {
   getDescendantBlocks,
   mergeRichTextArray,

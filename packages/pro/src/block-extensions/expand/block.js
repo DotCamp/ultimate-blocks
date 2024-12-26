@@ -2,7 +2,6 @@ import { isEmpty } from "lodash";
 import { useEffect } from "react";
 import { getDescendantBlocks } from "../../global";
 import "./block-styles";
-import { getStyles } from "./get-styles";
 import {
   BorderControl,
   ColorSettings,
@@ -10,6 +9,11 @@ import {
   SpacingControl,
 } from "../../components/StylingControls";
 import { getParentBlock } from "../../common";
+import {
+  generateStyles,
+  getBorderVariablesCss,
+  getSpacingCss,
+} from "../../utils/styling-helpers";
 const { __ } = wp.i18n;
 
 const {
@@ -114,7 +118,43 @@ export function NewExpandBlock(props) {
       isVisible: fullVersionVisibility,
     });
   }
-  const styles = getStyles(attributes);
+  const buttonBorderVariables = getBorderVariablesCss(
+    attributes.expandButtonBorder,
+    "expand-button"
+  );
+  const paddingObj = getSpacingCss(attributes.padding);
+  const buttonPaddingObj = getSpacingCss(attributes.expandButtonPadding);
+  const marginObj = getSpacingCss(attributes.margin);
+  const buttonBorderRadius = {
+    "--ub-expand-button-top-left-radius":
+      attributes.expandButtonBorderRadius?.topLeft,
+    "--ub-expand-button-top-right-radius":
+      attributes.expandButtonBorderRadius?.topRight,
+    "--ub-expand-button-bottom-left-radius":
+      attributes.expandButtonBorderRadius?.bottomLeft,
+    "--ub-expand-button-bottom-right-radius":
+      attributes.expandButtonBorderRadius?.bottomRight,
+  };
+  let styles = {
+    "--ub-expand-button-color": attributes.expandButtonColor,
+    "--ub-expand-button-bg-color": !isEmpty(attributes?.expandButtonBgColor)
+      ? attributes.expandButtonBgColor
+      : attributes?.expandButtonBgGradient,
+    "--ub-expand-button-padding-top": buttonPaddingObj?.top,
+    "--ub-expand-button-padding-right": buttonPaddingObj?.right,
+    "--ub-expand-button-padding-bottom": buttonPaddingObj?.bottom,
+    "--ub-expand-button-padding-left": buttonPaddingObj?.left,
+    paddingTop: paddingObj?.top,
+    paddingRight: paddingObj?.right,
+    paddingBottom: paddingObj?.bottom,
+    paddingLeft: paddingObj?.left,
+    marginTop: marginObj?.top,
+    marginRight: marginObj?.right,
+    marginBottom: marginObj?.bottom,
+    marginLeft: marginObj?.left,
+    ...buttonBorderRadius,
+    ...buttonBorderVariables,
+  };
 
   return (
     <>
@@ -261,7 +301,7 @@ export function NewExpandBlock(props) {
           />
         </PanelBody>
       </InspectorControls>
-      <div className="ub-expand" style={styles}>
+      <div className="ub-expand" style={generateStyles(styles)}>
         <InnerBlocks
           templateLock={"all"}
           template={[

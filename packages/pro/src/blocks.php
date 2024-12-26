@@ -5,7 +5,6 @@ require_once('block-extensions/image-slider/block.php');
 require_once('block-extensions/advanced-video/block.php');
 require_once('block-extensions/advanced-video/block.php');
 require_once('block-extensions/post-grid/block.php');
-require_once dirname(__FILE__) . '/class-ultimate-blocks-pro-block-styling-functions.php';
 
 add_filter('render_block', 'ubpro_button_filter', 10, 3);
 add_filter('render_block', 'ubpro_table_of_contents_filter', 9, 3);
@@ -122,17 +121,6 @@ function ubpro_include_block_attribute_css(){
                             'background-color: ' . $attributes['titleColor'] . ';' . PHP_EOL .
                         '}';
                     }
-                    break;
-               
-              
-             
-                case 'ub/expand':
-                    $prefix            = '#ub-expand-' . $attributes['blockID'];
-                    $styling_functions = new Ultimate_Blocks_Pro_Block_Styling_Function();
-                    $block_styles      = $styling_functions->ubpro_get_expand_block_styles($attributes); 
-
-                    $styles            = ubpro_get_spacing_styles($attributes);
-					$blockStylesheets  .= $prefix . '{' . PHP_EOL . $styles . PHP_EOL . PHP_EOL . $block_styles . PHP_EOL . "}"; 
                     break;
             }
         }
