@@ -9,7 +9,7 @@ import { Button, Dashicon } from "@wordpress/components";
 import { __ } from "@wordpress/i18n";
 import { removeIcon } from "./icon";
 import { useEffect, useRef, useState } from "react";
-import { getStyles } from "./get-styles";
+
 import { generateStyles, getSpacingCss } from "../../utils/styling-helpers";
 
 export function OldStars(props) {

@@ -31,8 +31,8 @@ function ubpro_image_slider_filter($block_content, $block){
 
         extract($block['attrs']);
         $block_attrs = $block['attrs'];
-        $margin 			 	= Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['margin']) ? $block_attrs['margin'] : array() );
-        $padding 			 	= Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['padding']) ? $block_attrs['padding'] : array() );
+        $margin 			 	= CSS_Generator\get_spacing_css( isset($block_attrs['margin']) ? $block_attrs['margin'] : array() );
+        $padding 			 	= CSS_Generator\get_spacing_css( isset($block_attrs['padding']) ? $block_attrs['padding'] : array() );
 
         $navigationColor = isset($block_attrs['navigationColor']) ? $block_attrs['navigationColor'] : '';
         $activePaginationColor = isset($block_attrs['activePaginationColor']) ? $block_attrs['activePaginationColor'] : '';

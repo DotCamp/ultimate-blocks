@@ -96,8 +96,6 @@
 .wp-block-ub-divider:not(.ub-divider-orientation-vertical) .ub_divider_icon {
   left: 50%;
   transform: translate(-50%, -50%);
-  padding-left: var(--ub-divider-icon-spacing);
-  padding-right: var(--ub-divider-icon-spacing);
 }
 .wp-block-ub-divider:not(.ub-divider-orientation-vertical) .ub_divider_icon[data-icon-alignment=left] {
   left: 0 !important;

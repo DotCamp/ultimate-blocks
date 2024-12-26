@@ -134,13 +134,7 @@ function ubpro_include_block_attribute_css(){
                     $styles            = ubpro_get_spacing_styles($attributes);
 					$blockStylesheets  .= $prefix . '{' . PHP_EOL . $styles . PHP_EOL . PHP_EOL . $block_styles . PHP_EOL . "}"; 
                     break;
-                case 'ub/divider':
-                    $prefix           = '#ub_divider_' . $attributes['blockID'];
-					$styles           = ubpro_get_spacing_styles($attributes);
-                    $block_spacing_value = Ultimate_Blocks_Pro\CSS_Generator\spacing_preset_css_var(isset($attributes['iconSpacing']['all']) ? $attributes['iconSpacing']['all'] : '');
-					$block_spacing = !empty($block_spacing_value) ? '--ub-divider-icon-spacing:' . $block_spacing_value . ';' : "";
-					$blockStylesheets .= $prefix . '{' . PHP_EOL . $styles . $block_spacing . PHP_EOL . "}"; 
-                    break;
+    
                 case 'ub/content-toggle-block':
                     $prefix           = '#ub-content-toggle-' . $attributes['blockID'];
 					$styles           = ubpro_get_spacing_styles($attributes);

@@ -21,12 +21,16 @@ import {
   Button,
   ButtonGroup,
 } from "@wordpress/components";
-import { getStyles } from "./get-styles";
 import {
   CustomToggleGroupControl,
   SpacingControl,
 } from "../../components/StylingControls";
 import { AVAILABLE_JUSTIFICATIONS } from "../../common";
+import {
+  generateStyles,
+  getSpacingCss,
+  getSpacingPresetCssVar,
+} from "../../utils/styling-helpers";
 
 const allIcons = Object.assign(fas, fab);
 
@@ -49,6 +53,8 @@ function NewDividerBlock(props) {
       isWidthControlChanged,
       dividerWidth,
       align,
+      padding,
+      margin,
     },
     isSelected,
     setAttributes,
@@ -70,7 +76,11 @@ function NewDividerBlock(props) {
   useEffect(() => {
     setAttributes({ blockID: clientId });
   }, [clientId]);
-  const styles = getStyles(props.attributes);
+  const paddingObj = getSpacingCss(padding);
+  const marginObj = getSpacingCss(margin);
+  const iconSpacing =
+    getSpacingPresetCssVar(props.attributes.iconSpacing?.all) ?? "";
+
   const borderName = orientation === "horizontal" ? "borderTop" : "borderLeft";
   const dividerWrapperStyle =
     orientation === "horizontal"
@@ -91,7 +101,31 @@ function NewDividerBlock(props) {
       : {};
   const dividerStyle =
     orientation === "horizontal" ? horizontalSpacing : { height: "100%" };
-
+  let styles = {
+    ...Object.assign(
+      dividerWrapperStyle,
+      // eslint-disable-next-line no-nested-ternary
+      alignment === "left"
+        ? { marginLeft: "0" }
+        : alignment === "right"
+          ? { marginRight: "0" }
+          : {}
+    ),
+    paddingTop: paddingObj?.top,
+    paddingRight: paddingObj?.right,
+    paddingBottom: paddingObj?.bottom,
+    paddingLeft: paddingObj?.left,
+    marginTop: marginObj?.top,
+    marginRight: marginObj?.right,
+    marginBottom: marginObj?.bottom,
+    marginLeft: marginObj?.left,
+  };
+  const iconStyles = {
+    backgroundColor: iconBackgroundColor,
+    paddingLeft: iconSpacing,
+    paddingRight: iconSpacing,
+    ...horizontalSpacing,
+  };
   return (
     <>
       <BlockControls group="block">
@@ -294,18 +328,7 @@ function NewDividerBlock(props) {
 
       <div
         className={`ub_divider ${className || ""}`}
-        style={{
-          ...Object.assign(
-            dividerWrapperStyle,
-            // eslint-disable-next-line no-nested-ternary
-            alignment === "left"
-              ? { marginLeft: "0" }
-              : alignment === "right"
-              ? { marginRight: "0" }
-              : {}
-          ),
-          ...styles,
-        }}
+        style={generateStyles(styles)}
       >
         <div
           className={"ub_divider_line"}
@@ -318,10 +341,7 @@ function NewDividerBlock(props) {
           <div
             data-icon-alignment={iconAlignment}
             className="ub_divider_icon"
-            style={{
-              backgroundColor: iconBackgroundColor,
-              ...horizontalSpacing,
-            }}
+            style={generateStyles(iconStyles)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
