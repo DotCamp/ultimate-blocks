@@ -29,7 +29,6 @@ import {
   ColorSettingsWithGradient,
   SpacingControl,
 } from "../../components/StylingControls";
-import { getStyles } from "./get-styles";
 
 const editGallery = (
   <svg
@@ -54,6 +53,11 @@ import SwiperCore, {
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import InspectorControlsStylesTab from "@Components/Common/InspectorControlsStylesTab";
+import {
+  generateStyles,
+  getBackgroundColorVar,
+  getSpacingCss,
+} from "../../utils/styling-helpers";
 
 SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Thumbs]);
 
@@ -195,6 +199,11 @@ export class NewImageSlider extends Component {
         useNavigation,
         align,
         speed,
+        padding,
+        margin,
+        navigationColor,
+        activePaginationColor,
+        paginationColor,
       },
       setAttributes,
       isSelected,
@@ -204,7 +213,27 @@ export class NewImageSlider extends Component {
 
     const imageArray = pics;
     const captionArray = descriptions;
-    const styles = getStyles(this.props.attributes);
+    const paddingObj = getSpacingCss(padding);
+    const marginObj = getSpacingCss(margin);
+    const styles = {
+      minHeight: `${30 + (imageArray.length ? sliderHeight : 200)}px`,
+      paddingTop: paddingObj?.top,
+      paddingRight: paddingObj?.right,
+      paddingBottom: paddingObj?.bottom,
+      paddingLeft: paddingObj?.left,
+      marginTop: marginObj?.top,
+      marginRight: marginObj?.right,
+      marginBottom: marginObj?.bottom,
+      marginLeft: marginObj?.left,
+      "--swiper-navigation-color": navigationColor,
+      "--swiper-pagination-color": activePaginationColor,
+      "--swiper-inactive-pagination-color": paginationColor,
+      "--swiper-navigation-background-color": getBackgroundColorVar(
+        this.props.attributes,
+        "navigationBackgroundColor",
+        "navigationGradientColor"
+      ),
+    };
     return [
       <BlockControls group="block">
         <BlockAlignmentControl
@@ -579,10 +608,7 @@ export class NewImageSlider extends Component {
       <div
         id={`ub_image_slider_${blockID}`}
         className={"ub_image_slider"}
-        style={{
-          minHeight: `${20 + (imageArray.length ? sliderHeight : 200)}px`,
-          ...styles,
-        }}
+        style={generateStyles(styles)}
       >
         {imageArray.length === 0 ? (
           <MediaPlaceholder

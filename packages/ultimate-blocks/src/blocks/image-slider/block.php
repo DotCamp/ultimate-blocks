@@ -8,8 +8,10 @@ use function Ultimate_Blocks\includes\generate_css_string;
  * @return void
  */
 
-function ub_render_image_slider_block($attributes){
+function ub_render_image_slider_block($attributes, $_, $block){
     extract($attributes);
+
+    $block_attrs = $block->parsed_block['attrs'];
 
     $imageArray = isset($pics) ? (count($pics) > 0 ? $pics : json_decode($images, true)) : array();
     $captionArray = isset($descriptions) ? count($descriptions) > 0 ? $descriptions : json_decode($captions, true) : array();
@@ -62,8 +64,8 @@ function ub_render_image_slider_block($attributes){
 
     $wrapper_attributes = get_block_wrapper_attributes(
         array(
-            'class' => implode(' ', $classes),
-			'style' => Ultimate_Blocks\includes\generate_css_string($image_slider_wrapper_styles),
+		'class' => implode(' ', $classes),
+		'style' => Ultimate_Blocks\includes\generate_css_string($image_slider_wrapper_styles),
         )
     );
 	return sprintf(

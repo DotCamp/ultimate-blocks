@@ -125,11 +125,7 @@ function ubpro_include_block_attribute_css(){
                     break;
                
               
-                case 'ub/image-slider':
-                    $prefix           = '#ub_image_slider_' . $attributes['blockID'];
-					$styles           = ubpro_get_spacing_styles($attributes);
-					$blockStylesheets .= $prefix . '{' . PHP_EOL . $styles . PHP_EOL . "}"; 
-                    break;
+             
                 case 'ub/expand':
                     $prefix            = '#ub-expand-' . $attributes['blockID'];
                     $styling_functions = new Ultimate_Blocks_Pro_Block_Styling_Function();
