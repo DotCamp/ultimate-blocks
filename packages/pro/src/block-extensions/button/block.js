@@ -1366,7 +1366,9 @@ class NewButtonBlockComponent extends Component {
                         : b.buttonTextHoverColor || "inherit"
                       : b.buttonIsTransparent
                         ? b.buttonColor
-                        : b.buttonTextColor || "inherit",
+                        : (hoveredButton === i
+                            ? b.buttonTextHoverColor
+                            : b.buttonTextColor) || "inherit",
                   borderTopLeftRadius: b?.borderRadius?.topLeft,
                   borderTopRightRadius: b?.borderRadius?.topRight,
                   borderBottomLeftRadius: b?.borderRadius?.bottomLeft,

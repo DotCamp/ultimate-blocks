@@ -23,14 +23,20 @@ function ubpro_buttons_parse( $b ) {
     extract( $b ); // Should overwrite the values above if they exist in the array
 
     $link_style = sprintf('border-radius: %1$spx;', $buttonRounded ? '60' : '0');
-     $style_vars = [
+    $is_wipe_animation = key_exists('animation', $b) && $b['animation'] === 'wipe';
+    $wipe_animation_color = $is_wipe_animation ? $buttonColor : $buttonHoverColor;
+    $style_vars = [
         '--ub-button-background-color'			=> $buttonIsTransparent ? 'transparent' : esc_attr($buttonColor),
         '--ub-button-color'						=> $buttonIsTransparent ? esc_attr($buttonColor) : esc_attr($buttonTextColor),
         '--ub-button-border'					=> $buttonIsTransparent ? '3px solid ' . esc_attr($buttonColor) : 'none',
         '--ub-button-hover-background-color'	=> $buttonIsTransparent ? '' : esc_attr($buttonHoverColor),
-        '--ub-button-hover-color'				=> $buttonIsTransparent ? esc_attr($buttonHoverColor) : esc_attr($buttonTextHoverColor),
+        '--ub-button-hover-color'				=> $buttonIsTransparent ? $wipe_animation_color : $buttonTextHoverColor,
         '--ub-button-hover-border'				=> $buttonIsTransparent ? '3px solid ' . esc_attr($buttonHoverColor) : 'none',
     ];
+    if ($is_wipe_animation) {
+        $link_style .= 'position: relative;';
+        $link_style .= '--ub-button-after-background-color: ' . $b['buttonHoverColor'] . ';';
+    }
     $link_style .= CSS_generator\generate_css_string($style_vars);
 
     if (isset($isBorderComponentChanged) && $isBorderComponentChanged) {
@@ -64,14 +70,16 @@ function ubpro_buttons_parse( $b ) {
 
 	$link_style .= CSS_generator\generate_css_string($link_border_radius_styles);
 
-    $iconType = $chosenIcon !== '' ? 'preset' : 'none';
-
+    $iconType = $b['iconType'];
     $presetIconSize = array(
         'small'  => 25,
         'medium' => 30,
         'large'  => 35,
         'larger' => 40,
     );
+    $image_styles = [
+        'max-height' => ( $b['iconSize'] ?: $presetIconSize[ $b['size'] ] ) . $b['iconUnit'] . ';'
+    ];
 
     return sprintf(
         '<div class="ub-button-container%s" >
@@ -88,7 +96,7 @@ function ubpro_buttons_parse( $b ) {
         $size, // 6
         ( $buttonWidth === 'full' ? ' ub-button-full-width' : ( $buttonWidth === 'flex' ? ' ub-button-flex-' . $size : '' ) ), // 7
         ( isset( $animation ) && $animation === 'wipe' ? ' ub-button-wipe-' . $wipeDirection : '' ), // 8
-        ( $iconType === 'custom' ? ( $imageID > 0 ? '<img class="ub-button-image" src=' . $imageURL . '>' : '' ) : ( $iconType === 'preset' ? ( ( $chosenIcon !== '' && ! is_null( $chosenIcon ) ) ? '<span class="ub-button-icon-holder"><svg xmlns="http://www.w3.org/2000/svg" height="' . ( $iconSize ?: $presetIconSize[ $size ] ) . ( $iconUnit === 'em' ? 'em' : '' ) . '", width="' . ( $iconSize ?: $presetIconSize[ $size ] ) . ( $iconUnit === 'em' ? 'em' : '' ) . '" viewBox="0, 0, ' . Ultimate_Blocks_IconSet::generate_fontawesome_icon( $chosenIcon )[0] . ', ' . Ultimate_Blocks_IconSet::generate_fontawesome_icon( $chosenIcon )[1] . '"><path fill="currentColor" d="' . Ultimate_Blocks_IconSet::generate_fontawesome_icon( $chosenIcon )[2] . '"></svg></span>' : '' ) : '' ) ), // 9
+        ( $iconType === 'custom' ? ( $imageID > 0 ? '<img style="'. CSS_Generator\generate_css_string($image_styles) .'"  class="ub-button-image" src=' . $imageURL . '>' : '' ) : ( $iconType === 'preset' ? ( ( $chosenIcon !== '' && ! is_null( $chosenIcon ) ) ? '<span class="ub-button-icon-holder"><svg xmlns="http://www.w3.org/2000/svg" height="' . ( $iconSize ?: $presetIconSize[ $size ] ) . ( $iconUnit === 'em' ? 'em' : '' ) . '", width="' . ( $iconSize ?: $presetIconSize[ $size ] ) . ( $iconUnit === 'em' ? 'em' : '' ) . '" viewBox="0, 0, ' . Ultimate_Blocks_IconSet::generate_fontawesome_icon( $chosenIcon )[0] . ', ' . Ultimate_Blocks_IconSet::generate_fontawesome_icon( $chosenIcon )[1] . '"><path fill="currentColor" d="' . Ultimate_Blocks_IconSet::generate_fontawesome_icon( $chosenIcon )[2] . '"></svg></span>' : '' ) : '' ) ), // 9
         $buttonText, // 10
         esc_attr($link_style), // 11
 		$iconPosition === 'left' ? 'row' : 'row-reverse', //12

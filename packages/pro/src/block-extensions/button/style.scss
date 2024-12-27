@@ -8,6 +8,17 @@
   &-up,
   &-down {
     overflow: hidden;
+    .ub-button-content-holder {
+      top: 0;
+      z-index: 6;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      z-index: 5;
+      transition: all 0.5s;
+      background-color: var(--ub-button-after-background-color);
+    }
   }
   &-left:hover:after,
   &-right:hover:after,

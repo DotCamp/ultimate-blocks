@@ -48,40 +48,6 @@ function ubpro_include_block_attribute_css(){
                 default:
                     //nothing could be done
                     break;
-                case 'ub/button':
-
-                    $prefix = '#ub-button-' . $attributes['blockID'];
-
-                    $presetIconSize = array('small' => 25, 'medium' => 30, 'large' => 35, 'larger' => 40);
-
-                    foreach($attributes['buttons'] as $key => $button){
-                        if( key_exists('animation', $attributes['buttons'][$key]) && $attributes['buttons'][$key]['animation'] === 'wipe'){
-                            $blockStylesheets .= $prefix . ' .ub-button-container:nth-child('. ($key + 1) .') a{' . PHP_EOL .
-                                'position: relative;' . PHP_EOL .
-                            '}' . PHP_EOL .
-                            $prefix . ' .ub-button-container:nth-child('. ($key + 1) .') a:hover{' . PHP_EOL .
-                                'background-color: ' . $attributes['buttons'][$key]['buttonColor'] . ';' . PHP_EOL .
-                                'color: ' . $attributes['buttons'][$key]['buttonTextColor'] . ';' . PHP_EOL .
-                            '}' . PHP_EOL .
-                            $prefix . ' .ub-button-container:nth-child('. ($key + 1) .') a:after{' . PHP_EOL .
-                                'content: "";' . PHP_EOL .
-                                'position: absolute;' . PHP_EOL .
-                                'z-index: 5;' . PHP_EOL .
-                                'background-color: ' . $attributes['buttons'][$key]['buttonHoverColor'] . ';' . PHP_EOL .
-                                'transition: all 0.5s;' . PHP_EOL .
-                            '}' . PHP_EOL .
-                            $prefix . ' .ub-button-container:nth-child('. ($key + 1) .') .ub-button-content-holder{' . PHP_EOL .
-                                'top: 0;' . PHP_EOL . 
-                                'z-index: 6;' . PHP_EOL .
-                            '}' ;
-                        }
-                        if( key_exists('imageURL', $attributes['buttons'][$key]) && $attributes['buttons'][$key]['imageURL'] !== '' ){
-                            $blockStylesheets .= $prefix . ' .ub-button-container:nth-child('. ($key + 1) .') .ub-button-image{' . PHP_EOL .
-                                'max-height: ' . ( $attributes['buttons'][$key]['iconSize'] ? : $presetIconSize[ $attributes['buttons'][$key]['size'] ]) . ($attributes['buttons'][$key]['iconUnit']) . ';' . PHP_EOL .
-                            '}';
-                        }
-                    }
-                    break;
                 case 'ub/table-of-contents-block':
                     $prefix = '#ub_table-of-contents-' . $attributes['blockID'];
                     $styles = ubpro_get_spacing_styles($attributes);
