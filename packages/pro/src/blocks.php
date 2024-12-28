@@ -48,46 +48,6 @@ function ubpro_include_block_attribute_css(){
                 default:
                     //nothing could be done
                     break;
-                case 'ub/table-of-contents-block':
-                    $prefix = '#ub_table-of-contents-' . $attributes['blockID'];
-                    $styles = ubpro_get_spacing_styles($attributes);
-					$blockStylesheets .= $prefix . '{' . PHP_EOL . $styles . PHP_EOL . "}"; 
-                    $blockStylesheets .= $prefix . ' li{ color:' . $attributes['listIconColor'] .';  }';
-                    if( $attributes['listStyle'] === "bulleted" && $attributes['listIcon'] !== ''){
-                        $iconData = Ultimate_Blocks_Pro_IconSet::generate_fontawesome_icon($attributes['listIcon']);
-
-                        $blockStylesheets .= $prefix . ' li{' . PHP_EOL .
-                            'list-style: none;' . PHP_EOL .
-                        '}' . PHP_EOL .
-                        $prefix . ' li::before{' . PHP_EOL .
-                            'top: 0.2em;' . PHP_EOL .
-                            'content: "";' . PHP_EOL .
-                            'position: relative;' . PHP_EOL .
-                            'display: inline-block;' . PHP_EOL .
-                            'background-repeat: no-repeat;' . PHP_EOL .
-                            'height: 1em;' . PHP_EOL .
-                            'width: 1em;' . PHP_EOL .
-                            'background-image: url(\'data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 ' . $iconData[0]. ' ' . $iconData[1]
-                            . '\"><path fill=\"%23' . substr($attributes['listIconColor'], 1) . '\" d=\"' . $iconData[2] . '\"></path></svg>\');' . PHP_EOL .
-                            'margin-right: 5px;' . PHP_EOL .
-                        '}' . PHP_EOL;
-                    }
-                    if($attributes['toggleButtonType'] === 'plus'){
-                        $blockStylesheets .= $prefix . ' .ub_table-of-contents-plus-part{' . PHP_EOL .
-                            'background-color: ' . $attributes['titleColor'] . ';' . PHP_EOL .
-                        '}';
-                        if($attributes['showList']){
-                            $blockStylesheets .= $prefix . ':not(.ub_table-of-contents-collapsed) .ub_table-of-contents-plus-part.ub_vertical_bar{' . PHP_EOL .
-                                'background-color: transparent;' . PHP_EOL .
-                            '}';
-                        }
-                    }
-                    if($attributes['toggleButtonType'] === 'chevron'){
-                        $blockStylesheets .= $prefix . ' .ub_table-of-contents-chevron-left, ' . $prefix . ' .ub_table-of-contents-chevron-right{' . PHP_EOL .
-                            'background-color: ' . $attributes['titleColor'] . ';' . PHP_EOL .
-                        '}';
-                    }
-                    break;
             }
         }
     }
