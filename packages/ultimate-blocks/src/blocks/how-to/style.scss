@@ -49,3 +49,31 @@
 		}
 	}
 }
+
+
+@media screen and (min-width: 768px) {
+	.ub_howto-section-display .ub_howto-section .ub_howto-step {
+		figure, .ub_howto-step-image {
+			width: var(--ub-howto-image-width);
+			padding-left: var(--ub-howto-image-padding-left);
+			padding-right: var(--ub-howto-image-padding-right);
+			float: var(--ub-howto-image-float);
+		}
+	}
+
+	.ub_howto-step-display .ub_howto-step {
+		figure, .ub_howto-step-image {
+			width: var(--ub-howto-image-width);
+			padding-left: var(--ub-howto-image-padding-left);
+			padding-right: var(--ub-howto-image-padding-right);
+			float: var(--ub-howto-image-float);
+		}
+	}
+
+	.ub_howto-yield-image-container {
+		width: var(--ub-howto-image-width);
+		padding-left: var(--ub-howto-image-padding-left);
+		padding-right: var(--ub-howto-image-padding-right);
+		float: var(--ub-howto-image-float);
+	}
+}
