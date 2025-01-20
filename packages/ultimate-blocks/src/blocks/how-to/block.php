@@ -53,9 +53,10 @@ function ub_convert_to_paragraphs($string)
 }
 
 
-function ub_render_how_to_block($attributes)
+function ub_render_how_to_block($attributes, $_, $block)
 {
 	extract($attributes);
+	$block_attrs = $block->parsed_block['attrs'];
 
 	$header = '';
 
@@ -320,7 +321,7 @@ function ub_render_how_to_block($attributes)
 		. $stepsCode . ',"yield": "' . str_replace("\'", "'", wp_kses_post($howToYield)) . '",
     "image": "' . esc_url($finalImageURL) . '"' . '}</script>';
 
-	return '<div class="wp-block-ub-how-to ub_howto" styles="' . ub_get_spacing_styles($attributes) . '" id="ub_howto_' . esc_attr($blockID) . '"><' . esc_attr($firstLevelTag) . '>'
+	return '<div class="wp-block-ub-how-to ub_howto" style="' . ub_get_spacing_styles($block_attrs) . '" id="ub_howto_' . esc_attr($blockID) . '"><' . esc_attr($firstLevelTag) . '>'
 		. wp_kses_post($title) . '</' . esc_attr($firstLevelTag) . '>' . ub_convert_to_paragraphs($introduction) . $header .
 		($advancedMode ? ($videoURL === '' ? '' : $videoEmbedCode)
 			. '<p>' . wp_kses_post($costDisplayText) . wp_kses_post($costDisplay) . '</p>'
