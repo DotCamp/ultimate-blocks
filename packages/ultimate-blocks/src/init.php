@@ -259,62 +259,6 @@ function ub_include_block_attribute_css() {
 				default:
 					//nothing could be done
 					break;
-				case 'ub/feature-box-block':
-					$prefix           = '#ub_feature_box_' . $attributes['blockID'];
-					$blockStylesheets .= $prefix . ' .ub_feature_one_title{' . PHP_EOL .
-										 'text-align: ' . $attributes['title1Align'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_feature_two_title{' . PHP_EOL .
-										 'text-align: ' . $attributes['title2Align'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_feature_three_title{' . PHP_EOL .
-										 'text-align: ' . $attributes['title3Align'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_feature_one_body{' . PHP_EOL .
-										 'text-align: ' . $attributes['body1Align'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_feature_two_body{' . PHP_EOL .
-										 'text-align: ' . $attributes['body2Align'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_feature_three_body{' . PHP_EOL .
-										 'text-align: ' . $attributes['body3Align'] . ';' . PHP_EOL .
-										 '}';
-					break;
-				case 'ub/notification-box-block':
-					$blockStylesheets .= '#ub-notification-box-' . $attributes['blockID'] . ' .ub_notify_text{' . PHP_EOL .
-										 'text-align: ' . $attributes['align'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL;
-					break;
-				case 'ub/number-box-block':
-					$prefix           = '#ub-number-box-' . $attributes['blockID'];
-					$blockStylesheets .= $prefix . ' .ub_number_one_title{' . PHP_EOL .
-										 'text-align: ' . $attributes['title1Align'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_number_two_title{' . PHP_EOL .
-										 'text-align: ' . $attributes['title2Align'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_number_three_title{' . PHP_EOL .
-										 'text-align: ' . $attributes['title3Align'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_number_one_body{' . PHP_EOL .
-										 'text-align: ' . $attributes['body1Align'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_number_two_body{' . PHP_EOL .
-										 'text-align: ' . $attributes['body2Align'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_number_three_body{' . PHP_EOL .
-										 'text-align: ' . $attributes['body3Align'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_number_column{' . PHP_EOL .
-										 'text-align: ' . $attributes['borderColor'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_number_box_number{' . PHP_EOL .
-										 'background-color: ' . $attributes['numberBackground'] . ';' . PHP_EOL .
-										 '}' . PHP_EOL .
-										 $prefix . ' .ub_number_box_number>p{' . PHP_EOL .
-										 'color: ' . $attributes['numberColor'] . ';' . PHP_EOL .
-										 '}';
-					break;
 			}
 		}
 	}
