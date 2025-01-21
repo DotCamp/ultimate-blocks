@@ -132,6 +132,10 @@ class BlockExtensionManager extends ManagerBase {
               classes.push(
                 `ub-divider-orientation-${props.attributes.orientation}`
               );
+            } else if (props.name === "ub/content-toggle-block") {
+              if (!isEmpty(props.attributes.align)) {
+                classes.push("align" + props.attributes.align);
+              }
             }
 
             return (

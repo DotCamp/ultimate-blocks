@@ -1,8 +1,10 @@
 import { Fragment, useEffect, useState } from "react";
 import {
+  BlockControls,
   InnerBlocks,
   InspectorControls,
   PanelColorSettings,
+  BlockAlignmentControl,
 } from "@wordpress/block-editor";
 import {
   PanelBody,
@@ -72,6 +74,7 @@ function PanelContent(props) {
       toggleIcon,
       border,
       showOnlyOne,
+      align,
     },
     setAttributes,
     className,
@@ -411,6 +414,13 @@ function PanelContent(props) {
   const styles = getStyles(props.attributes);
   return (
     <>
+      <BlockControls group="block">
+        <BlockAlignmentControl
+          value={align}
+          controls={["full", "wide"]}
+          onChange={(newAlign) => setAttributes({ align: newAlign })}
+        />
+      </BlockControls>
       <ContentToggleContext.Provider value={contentToggleContextData}>
         {isSelected && (
           <Fragment>

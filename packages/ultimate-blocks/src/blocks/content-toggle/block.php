@@ -47,7 +47,7 @@ function ub_render_content_toggle_block( $attributes, $content ) {
 	extract( $attributes );
 
 	return '<div class="wp-block-ub-content-toggle' . ( isset( $className ) ? ' ' .  $className  : '' )
-			. '" ' . ( $blockID === '' ? '' : 'id="ub-content-toggle-' . esc_attr($blockID) . '"' ) .
+			. (isset($align) ? " align". $align : "") . '" ' . ( $blockID === '' ? '' : 'id="ub-content-toggle-' . esc_attr($blockID) . '"' ) .
 			( $preventCollapse ? ' data-preventcollapse="true"' : '' ) .
 			( $showOnlyOne ? ' data-showonlyone="true"' : '' ) . ' data-mobilecollapse="' . json_encode( $collapsedOnMobile ) . '" data-desktopcollapse="' . json_encode( $collapsed ) . '">'
 			. $content . '</div>';

@@ -146,7 +146,9 @@ That's it. You're done!
 
 = 3.2.7 =
 
+* FIX: Content toggle wide width issue.
 * FIX: Styled List item duplication issue.
+* NEW: Add full and wide width option on content toggle block.
 
 = 3.2.6 =
 
