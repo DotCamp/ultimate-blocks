@@ -150,6 +150,10 @@ That's it. You're done!
 
 == Changelog ==
 
+= 3.2.7 =
+
+* FIX: Styled List item duplication issue.
+
 = 3.2.6 =
 
 * FIX: PHP warning.

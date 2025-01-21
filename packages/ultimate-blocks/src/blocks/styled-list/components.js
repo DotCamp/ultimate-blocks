@@ -725,6 +725,7 @@ export function StyledListItem(props) {
 		getClientIdsWithDescendants,
 		getNextBlockClientId,
 		getPreviousBlockClientId,
+		rootBlockClientId,
 	} = useSelect((select) => {
 		const {
 			getBlock,
@@ -735,10 +736,13 @@ export function StyledListItem(props) {
 			getClientIdsWithDescendants,
 			getNextBlockClientId,
 			getPreviousBlockClientId,
+			getBlockRootClientId,
 		} = select("core/block-editor");
+		const block = getBlock(props.clientId);
+		const rootBlockClientId = getBlockRootClientId(block.clientId);
 
 		return {
-			block: getBlock(props.clientId),
+			block,
 			getBlock,
 			getBlockIndex,
 			currentBlockIndex: getBlockIndex(props.clientId),
@@ -749,6 +753,7 @@ export function StyledListItem(props) {
 			getClientIdsWithDescendants,
 			getNextBlockClientId,
 			getPreviousBlockClientId,
+			rootBlockClientId,
 		};
 	});
 	const [useFontSize, toggleUseFontSize] = useState(false);
@@ -757,10 +762,11 @@ export function StyledListItem(props) {
 	const blockProps = useBlockProps({ style: styles });
 
 	useEffect(() => {
-		if (blockID === "") {
+		const rootBlock = getParentBlock(rootBlockClientId, "core/block");
+		if (!rootBlock) {
 			setAttributes({ blockID: block.clientId });
 		}
-	}, []);
+	}, [block?.clientId]);
 
 	const listRoot = getBlock(listRootClientId);
 	function outdentItem() {
