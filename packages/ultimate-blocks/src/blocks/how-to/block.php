@@ -326,9 +326,7 @@ function ub_render_how_to_block($attributes, $_, $block)
 		($advancedMode ? ($videoURL === '' ? '' : $videoEmbedCode)
 			. '<p>' . wp_kses_post($costDisplayText) . wp_kses_post($costDisplay) . '</p>'
 			. $timeDisplay : '') . $stepsDisplay .
-		'<div class="ub_howto-yield"><' . esc_attr($secondLevelTag) . '>' . wp_kses_post($resultIntro) . '</' . esc_attr($secondLevelTag) . '>' .
-		($finalImageURL === '' ? '' : (!isset($finalImageCaption) || $finalImageCaption === '' ? '' :
-			'<figure class="ub_howto-yield-image-container" style="' .
+		'<div class="ub_howto-yield" style="' .
 			(
 				($finalImageWidth > 0) ?
 				'--ub-howto-image-width: ' . $finalImageWidth . 'px;' .
@@ -337,7 +335,9 @@ function ub_render_how_to_block($attributes, $_, $block)
 				(($finalImageFloat !== 'none') ? '--ub-howto-image-float: ' . $finalImageFloat . ';' : '--ub-howto-image-float: none;') :
 				''
 			)
-			. '">') .
+			. '"><' . esc_attr($secondLevelTag) . '>' . wp_kses_post($resultIntro) . '</' . esc_attr($secondLevelTag) . '>' .
+		($finalImageURL === '' ? '' : (!isset($finalImageCaption) || $finalImageCaption === '' ? '' :
+			'<figure class="ub_howto-yield-image-container">') .
 			'<img class="ub_howto-yield-image" src="' . esc_url($finalImageURL) . '">' .
 			(!isset($finalImageCaption) || $finalImageCaption === '' ? '' : '<figcaption>' . wp_kses_post($finalImageCaption) . '</figcaption></figure>')) .
 		ub_convert_to_paragraphs($howToYield) . '</div>

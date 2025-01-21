@@ -70,10 +70,12 @@
 		}
 	}
 
-	.ub_howto-yield-image-container {
-		width: var(--ub-howto-image-width);
-		padding-left: var(--ub-howto-image-padding-left);
-		padding-right: var(--ub-howto-image-padding-right);
-		float: var(--ub-howto-image-float);
+	.ub_howto-yield {
+		.ub_howto-yield-image-container, img {
+			width: var(--ub-howto-image-width);
+			padding-left: var(--ub-howto-image-padding-left);
+			padding-right: var(--ub-howto-image-padding-right);
+			float: var(--ub-howto-image-float);
+		}
 	}
 }
