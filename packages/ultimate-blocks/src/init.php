@@ -125,23 +125,16 @@ function ub_load_assets() {
 		ub_update_css_version( 'frontend' );
 	}
 
-	#TODO Temporary
-	wp_enqueue_style(
-		'ultimate_blocks-cgb-style-css', // Handle.
-		plugins_url( 'dist/blocks.style.build.css', dirname( __FILE__ ) ), // Block style CSS.
-		array(), // Dependency to include the CSS after it.
-		uniqid()  // Version: latest version number.
+	wp_register_style(
+			'ultimate_blocks-cgb-style-css', // Handle.
+			file_exists( wp_upload_dir()['basedir'] . '/ultimate-blocks/blocks.style.build.css' ) ?
+					content_url( '/uploads/ultimate-blocks/blocks.style.build.css' ) :
+					plugins_url( 'dist/blocks.style.build.css', dirname( __FILE__ ) ), // Block style CSS.
+			array(), // Dependency to include the CSS after it.
+			Ultimate_Blocks_Constants::plugin_version()  // Version: latest version number.
 	);
-	// wp_enqueue_style(
-	// 		'ultimate_blocks-cgb-style-css', // Handle.
-	// 		file_exists( wp_upload_dir()['basedir'] . '/ultimate-blocks/blocks.style.build.css' ) ?
-	// 				content_url( '/uploads/ultimate-blocks/blocks.style.build.css' ) :
-	// 				plugins_url( 'dist/blocks.style.build.css', dirname( __FILE__ ) ), // Block style CSS.
-	// 		array(), // Dependency to include the CSS after it.
-	// 		Ultimate_Blocks_Constants::plugin_version()  // Version: latest version number.
-	// );
 }
-
+add_action( "init", "ub_load_assets" );
 function ub_advanced_heading_add_assets( $fontList ) {
 
 	$fontNames = join( "|", array_filter( $fontList, function ( $item ) {
@@ -237,42 +230,6 @@ function ultimate_blocks_cgb_block_assets() {
 // Hook: Frontend assets.
 add_action( 'enqueue_block_assets', 'ultimate_blocks_cgb_block_assets' );
 
-function ub_include_block_attribute_css() {
-	require plugin_dir_path( __FILE__ ) . 'defaults.php';
-	require_once plugin_dir_path( __FILE__ ) . 'common.php';
-
-	$presentBlocks    = array_unique( array_merge( ub_getPresentBlocks(), ub_generate_widget_block_list( true ) ),
-			SORT_REGULAR );
-	$blockStylesheets = "";
-
-	$hasNoSmoothScroll = true;
-
-	foreach ( $presentBlocks as $block ) {
-		if ( isset( $defaultValues[ $block['blockName'] ] ) ) {
-			$attributes = array_merge( array_map( function ( $attribute ) {
-				return $attribute['default'];
-			}, $defaultValues[ $block['blockName'] ]['attributes'] ), $block['attrs'] );
-		}
-
-		if ( isset( $attributes ) && isset( $attributes['blockID'] ) && $attributes['blockID'] != '' ) {
-			switch ( $block['blockName'] ) {
-				default:
-					//nothing could be done
-					break;
-			}
-		}
-	}
-	$blockStylesheets = preg_replace( '/\s+/', ' ', $blockStylesheets );
-	ob_start(); ?>
-
-	<style><?php echo( $blockStylesheets ); ?></style>
-
-	<?php
-	ob_end_flush();
-}
-
-add_action( 'wp_head', 'ub_include_block_attribute_css' );
-
 /**
  * Enqueue assets which are important to be initialized before any version of plugin assets are.
  * @return void
@@ -296,7 +253,7 @@ function ultimate_blocks_priority_editor_assets() {
  */
 function ultimate_blocks_cgb_editor_assets() {
 	// Scripts.
-	wp_enqueue_script(
+	wp_register_script(
 			'ultimate_blocks-cgb-block-js', // Handle.
 			plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ),
 			// Block.build.js: We register the block here. Built with Webpack.
@@ -343,7 +300,7 @@ function ultimate_blocks_cgb_editor_assets() {
 		ub_update_css_version( 'editor' );
 	}
 
-	wp_enqueue_style(
+	wp_register_style(
 			'ultimate_blocks-cgb-block-editor-css', // Handle.
 			file_exists( wp_upload_dir()['basedir'] . '/ultimate-blocks/blocks.editor.build.css' ) ?
 					content_url( '/uploads/ultimate-blocks/blocks.editor.build.css' ) :

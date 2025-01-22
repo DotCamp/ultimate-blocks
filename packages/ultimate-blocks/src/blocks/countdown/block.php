@@ -11,7 +11,7 @@ function ub_render_countdown_block($attributes, $_, $block){
     extract($attributes);
 	$block_attrs = $block->parsed_block['attrs'];
     $timeUnits = ["week", "day", "hour", "minute", "second"];
-
+	$circle_size = isset($circleSize) ? $circleSize . 'px' : '70px';
     $timeLeft = $endDate - time();
     $seconds = $timeLeft % 60;
     $minutes = (($timeLeft - $seconds) % 3600) / 60;
@@ -42,7 +42,7 @@ function ub_render_countdown_block($attributes, $_, $block){
         function ub_generateCircle($label, $value, $limit, $color, $size){
             $circlePath = "M 50,50 m 0,-35 a 35,35 0 1 1 0,70 a 35,35 0 1 1 0,-70";
             $prefix = "ub_countdown_circle_";
-            return '<div class="' . $prefix . $label . '">
+            return '<div class="' . $prefix . $label . '" style="width: ' . esc_attr($size) . 'px; height: ' . esc_attr($size) . 'px;">
                         <svg height="' . esc_attr($size) . '" width="' . esc_attr($size) . '" viewBox="0 0 100 100">
                             <path class="' . $prefix . 'trail" d="' . $circlePath . '" stroke-width="3" ></path>
                             <path class="' . $prefix . 'path" d="'.$circlePath.'" stroke="' . esc_attr($color) .
@@ -67,7 +67,6 @@ function ub_render_countdown_block($attributes, $_, $block){
 
 	$circularFormatStyles = array(
 		'grid-template-columns' => implode(' ', array_fill(0, array_search($attributes['smallestUnit'], $timeUnits) - array_search($attributes['largestUnit'], $timeUnits) + 1, '1fr')) . ';',
-		'--ub-countdown-circle-size' => isset($circleSize) ? $circleSize . 'px' : '70px',
 	);
 
 	$circularFormat = sprintf(
