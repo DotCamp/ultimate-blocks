@@ -8,7 +8,7 @@
  * Plugin Name: Ultimate Blocks Pro
  * Description: Make Your Content Shine With Ultimate Blocks Pro.
  * Plugin URI:  https://ultimateblocks.com/
- * Version:     3.2.4
+ * Version:     3.2.6
  * Author:      Ultimate Blocks
  * Author URI:  https://ultimateblocks.com/
  * License: GPL3+
@@ -148,7 +148,7 @@ function Ultimate_Blocks_Pro_init() {
 	return new Ultimate_Blocks_Pro();
 }
 
-$min_php = '5.6.0';
+$min_php = '7.2';
 
 // Check the minimum required PHP version and run the plugin.
 if ( version_compare( PHP_VERSION, $min_php, '>=' ) ) {

@@ -2,9 +2,9 @@
 Contributors: dotcamp, ultimateblocks, imtiazrayhan, istiakrayhan, erdembircan, alexius08
 Tags: blocks, gutenberg blocks, gutenberg, block editor, free
 Requires at least: 5.8
-Tested up to: 6.5
-Stable tag: 3.2.4
-Requires PHP: 5.6
+Tested up to: 6.7
+Stable tag: 3.2.6
+Requires PHP: 7.2
 License: GPL3+
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -149,6 +149,24 @@ That's it. You're done!
 3. Tabbed Content Block.
 
 == Changelog ==
+
+= 3.2.7 =
+
+* FIX: Content toggle wide width issue.
+* FIX: Styled List item duplication issue.
+* NEW: Add full and wide width option on content toggle block.
+
+= 3.2.6 =
+
+* FIX: PHP warning.
+* FIX: Button block icon not showing in styled box block.
+* FIX: Tab color issue in tabbed content block.
+* FIX: Blocks can be inserted after deactivating them.
+* IMPROVE: Update Required PHP to 7.2.
+
+= 3.2.5 =
+
+* FIX: Button block color issue on frontend.
 
 = 3.2.4 =
 

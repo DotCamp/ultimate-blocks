@@ -5,7 +5,7 @@
  * Description: Custom Blocks for Bloggers and Marketers. Create Better Content With Gutenberg.
  * Author: Ultimate Blocks
  * Author URI: https://ultimateblocks.com/
- * Version: 3.2.4
+ * Version: 3.2.6
  * License: GPL3+
  * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
  * Text Domain: ultimate-blocks
@@ -15,7 +15,6 @@
  */
 
 // Exit if accessed directly.
-use Ultimate_Blocks\includes\Env_Manager;
 use Ultimate_Blocks\includes\pro_manager\Pro_Manager;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -100,9 +99,6 @@ function run_ultimate_blocks() {
 	$plugin = new Ultimate_Blocks();
 	$plugin->run();
 }
-
-// initialize env manager.
-Env_Manager::init();
 
 // initialize license provider.
 Pro_Manager::init_freemius();

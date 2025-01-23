@@ -267,7 +267,7 @@ function ultimate_blocks_cgb_editor_assets() {
 
 	wp_enqueue_script(
 			'ultimate_blocks-cgb-deactivator-js', // Handle.
-			plugins_url( '/dist/deactivator.build.js', dirname( __FILE__ ) ),
+			plugins_url( '/includes/assets/js/deactivator.js', dirname( __FILE__ ) ),
 			// Block.build.js: We register the block here. Built with Webpack.
 			array( 'wp-editor', 'wp-blocks', 'wp-i18n', 'wp-element' ), // Dependencies, defined above.
 			Ultimate_Blocks_Constants::plugin_version(), // Version: latest version number.
@@ -326,6 +326,7 @@ function ub_register_settings() {
 }
 
 add_action( 'init', 'ub_register_settings' );
+
 
 /**
  * Rank Math ToC Plugins List.

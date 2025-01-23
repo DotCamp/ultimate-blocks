@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash";
 import Inspector from "./inspector";
 import { useEffect, useState } from "react";
 import {
@@ -26,10 +27,12 @@ import { __ } from "@wordpress/i18n";
 import { createBlock } from "@wordpress/blocks";
 
 import {
+	BlockControls,
 	InnerBlocks,
 	InspectorControls,
 	PanelColorSettings,
 	useBlockProps,
+	BlockAlignmentControl,
 } from "@wordpress/block-editor";
 import {
 	PanelBody,
@@ -203,7 +206,6 @@ const oldColorDefaults = {
 
 export function PanelContent(props) {
 	const panels = props.block.innerBlocks;
-	const blockProps = useBlockProps();
 	const {
 		attributes: {
 			collapsed,
@@ -223,6 +225,7 @@ export function PanelContent(props) {
 			showOnlyOne,
 			padding,
 			margin,
+			align,
 		},
 		setAttributes,
 		className,
@@ -238,7 +241,9 @@ export function PanelContent(props) {
 		getBlock,
 		rootBlockClientId,
 	} = props;
-
+	const blockProps = useBlockProps({
+		className: !isEmpty(align) ? "align" + align : "",
+	});
 	const newArrangement = panels.map((panel) => panel.attributes.index);
 
 	useEffect(() => {
@@ -589,6 +594,13 @@ export function PanelContent(props) {
 	};
 	return (
 		<div {...blockProps}>
+			<BlockControls group="block">
+				<BlockAlignmentControl
+					value={align}
+					controls={["full", "wide"]}
+					onChange={(newAlign) => setAttributes({ align: newAlign })}
+				/>
+			</BlockControls>
 			{isSelected && (
 				<>
 					<InspectorControls group="settings">

@@ -99,7 +99,7 @@ function ubpro_buttons_parse( $b ) {
         ( $iconType === 'custom' ? ( $imageID > 0 ? '<img style="'. CSS_Generator\generate_css_string($image_styles) .'"  class="ub-button-image" src=' . $imageURL . '>' : '' ) : ( $iconType === 'preset' ? ( ( $chosenIcon !== '' && ! is_null( $chosenIcon ) ) ? '<span class="ub-button-icon-holder"><svg xmlns="http://www.w3.org/2000/svg" height="' . ( $iconSize ?: $presetIconSize[ $size ] ) . ( $iconUnit === 'em' ? 'em' : '' ) . '", width="' . ( $iconSize ?: $presetIconSize[ $size ] ) . ( $iconUnit === 'em' ? 'em' : '' ) . '" viewBox="0, 0, ' . Ultimate_Blocks_IconSet::generate_fontawesome_icon( $chosenIcon )[0] . ', ' . Ultimate_Blocks_IconSet::generate_fontawesome_icon( $chosenIcon )[1] . '"><path fill="currentColor" d="' . Ultimate_Blocks_IconSet::generate_fontawesome_icon( $chosenIcon )[2] . '"></svg></span>' : '' ) : '' ) ), // 9
         $buttonText, // 10
         esc_attr($link_style), // 11
-		$iconPosition === 'left' ? 'row' : 'row-reverse', //12
+		$iconPosition === 'left' ? 'row' : 'row-reverse' //12
     );
 }
 
