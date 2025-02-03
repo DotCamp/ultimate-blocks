@@ -15,6 +15,7 @@ import { TextControl, RangeControl, PanelBody } from "@wordpress/components";
 import { useSelect } from "@wordpress/data";
 import { getParentBlock } from "../../common";
 import { generateStyles, getSpacingCss } from "../utils/styling-helpers";
+import { useEntityProp } from "@wordpress/core-data";
 
 /**
  * Register: aa Gutenberg Block.
@@ -65,6 +66,19 @@ function ClickToTweet(props) {
 			setAttributes({ blockID: block.clientId });
 		}
 	}, [block?.clientId]);
+	const postType = useSelect(
+		(select) => select("core/editor").getCurrentPostType(),
+		[],
+	);
+
+	const [meta, setMeta] = useEntityProp("postType", postType, "meta");
+	useEffect(() => {
+		if (meta?.ub_ctt_via && ubVia === "") {
+			setAttributes({ ubVia: meta.ub_ctt_via });
+			const { ub_ctt_via, ...newMeta } = meta;
+			setMeta({ ...newMeta });
+		}
+	}, []);
 	const blockProps = useBlockProps();
 	const paddingObj = getSpacingCss(padding);
 	const marginObj = getSpacingCss(margin);

@@ -20,8 +20,8 @@
 			"default": ""
 		},
 		"ubVia": {
-			"source": "meta",
-			"meta": "ub_ctt_via"
+			"type": "string",
+			"default": ""
 		},
 		"tweetFontSize": {
 			"type": "number",
