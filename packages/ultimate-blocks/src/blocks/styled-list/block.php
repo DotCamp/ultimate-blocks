@@ -162,7 +162,7 @@ function ub_render_styled_list_block($attributes, $contents, $block){
 		return sprintf(
 			'<div %1$s><ul class="fa-ul">%2$s</ul></div>',
 			$wrapper_attributes, //1
-			wp_kses_post($listItems), //2
+			wp_kses_post($listItems) //2
 		);
     }
 

@@ -60,7 +60,7 @@ function ub_render_divider_block($attributes, $_ ,$block){
 		esc_attr($borderSize . 'px'),
 		esc_attr($borderStyle),
 		esc_attr($borderColor),
-		Ultimate_Blocks\includes\generate_css_string($divider_style),
+		Ultimate_Blocks\includes\generate_css_string($divider_style)
 	);
 
 	return sprintf(

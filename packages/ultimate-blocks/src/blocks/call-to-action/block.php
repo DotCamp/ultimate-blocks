@@ -88,7 +88,7 @@ function ub_render_call_to_action_block($attributes, $_, $block) {
 		 esc_attr( Ultimate_Blocks\includes\generate_css_string($cta_headline_styles) ), //14
 		 esc_attr( Ultimate_Blocks\includes\generate_css_string($cta_content_styles) ), //15
 		 esc_attr( Ultimate_Blocks\includes\generate_css_string($cta_button_styles) ), //16
-		 esc_attr( Ultimate_Blocks\includes\generate_css_string($cta_button_text_styles) ), //17
+		 esc_attr( Ultimate_Blocks\includes\generate_css_string($cta_button_text_styles) ) //17
 	);
 }
 
