@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Constants
+ *
+ * @package Ultimate_Blocks_Pro
+ */
+
 class Ultimate_Blocks_Pro_Constants {
 
     const PLUGIN_VERSION = '3.2.6';

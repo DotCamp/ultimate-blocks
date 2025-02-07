@@ -135,12 +135,12 @@
           "icon": "icon"
      },
      "editorScript": [
-          "./index.js",
+          "ultimate-blocks-pro-blocks-js",
           "ub-timeline-frontend-script"
      ],
-     "editorStyle": "file:./index.css",
-     "style": "file:./style.css",
      "viewScript": [
           "ub-timeline-frontend-script"
-     ]
+     ],
+     "editorStyle": "ultimate-blocks-pro-blocks-editor-css",
+     "style": "ultimate-blocks-pro-blocks-frontend-css"
 }
