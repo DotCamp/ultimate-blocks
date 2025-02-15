@@ -371,8 +371,8 @@ export class TabHolder extends Component {
       borderTopRightRadius: attributes.tabContentsBorderRadius?.topRight,
       borderBottomLeftRadius: attributes.tabContentsBorderRadius?.bottomLeft,
       borderBottomRightRadius: attributes.tabContentsBorderRadius?.bottomRight,
-      "--ub-tab-content-color": contentColor,
-      "--ub-tab-content-background": contentBackground,
+      "--ub-tab-content-color": attributes.contentColor,
+      "--ub-tab-content-background": attributes.contentBackground,
     });
     return [
       isSelected && (
