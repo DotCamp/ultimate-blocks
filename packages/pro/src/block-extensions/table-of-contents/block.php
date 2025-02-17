@@ -1,6 +1,5 @@
 <?php
 
-use Ultimate_Blocks_Pro;
 
 function ubpro_table_of_contents_replace_script(){
     wp_dequeue_script( 'ultimate_blocks-table-of-contents-front-script' );

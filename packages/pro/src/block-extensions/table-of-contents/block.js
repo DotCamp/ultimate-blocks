@@ -416,7 +416,9 @@ class TableOfContents extends Component {
   }
 
   componentWillUnmount() {
-    this.state.unsubscribe();
+    if (this.state.unsubscribe) {
+      this.state.unsubscribe();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
