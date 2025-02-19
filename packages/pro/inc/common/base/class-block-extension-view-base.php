@@ -20,16 +20,26 @@ abstract class Block_Extension_View_Base {
 	 */
 	protected static final function get_dom_document( $content ) {
 		$handler = new DOMDocument();
+		libxml_use_internal_errors(true);
 
-		$server_charset = get_bloginfo( 'charset' );
-		$status         = @$handler->loadHTML( html_entity_decode( '<?xml encoding="UTF-8">' . $content, ENT_COMPAT, $server_charset ),
-			LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING );
+		$server_charset = get_bloginfo('charset');
 
-		if ( $status ) {
+		$content = mb_encode_numericentity($content, [0x80, 0xFFFF, 0, 0xFFFF], $server_charset);
+
+		$status = @$handler->loadHTML(
+			'<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html>' . $content,
+			LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+		);
+
+		libxml_clear_errors();
+
+		if ($status) {
 			return $handler;
 		} else {
-			return new WP_Error( 500,
-				esc_html__( 'failed to convert block content to DomDocument', 'ultimate-blocks-pro' ) );
+			return new WP_Error(
+				500,
+				esc_html__('Failed to convert block content to DOMDocument', 'ultimate-blocks-pro')
+			);
 		}
 	}
 }
