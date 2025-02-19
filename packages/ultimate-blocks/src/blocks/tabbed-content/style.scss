@@ -98,10 +98,26 @@
 			width: 21%;
 		}
 	}
-	&-tabs-title,
-	&-tabs-title-vertical-tab {
+	&-tabs-title {
 		display: flex;
 		overflow-x: hidden;
+		&:hover,
+		&:focus {
+			overflow-x: auto;
+		}
+	}
+	&-tabs-title-vertical-tab {
+		@media (max-width: 699px) {
+			display: flex;
+			overflow-x: hidden;
+			&:hover,
+			&:focus {
+				overflow-x: auto;
+			}
+		}
+	}
+	&-tabs-title,
+	&-tabs-title-vertical-tab {
 		&:hover,
 		&:focus {
 			overflow-x: auto;
