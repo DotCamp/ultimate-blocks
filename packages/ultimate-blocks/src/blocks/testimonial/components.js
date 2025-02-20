@@ -11,7 +11,7 @@ const {
 const { Button, PanelBody, RangeControl, ToolbarGroup, ToolbarButton } =
 	wp.components;
 import { SpacingControl } from "../components";
-import { getStyles } from "./get-styles";
+import { generateStyles, getSpacingCss } from "../utils/styling-helpers";
 
 import icons from "./icons";
 
@@ -29,7 +29,7 @@ export const blockControls = (props) => {
 							label={__(
 								(a !== "justify" ? "Align " : "") +
 									a[0].toUpperCase() +
-									a.slice(1)
+									a.slice(1),
 							)}
 							isActive={a === activeAlignment}
 							onClick={() => {
@@ -126,10 +126,27 @@ export const editorDisplay = (props) => {
 		textAlign,
 		authorAlign,
 		authorRoleAlign,
+		backgroundColor,
+		textColor,
+		padding,
+		margin,
 	} = attributes;
-	const styles = getStyles(props.attributes);
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+	const styles = {
+		backgroundColor: backgroundColor,
+		color: textColor || "inherit",
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+	};
 	return (
-		<div className="ub_testimonial" style={styles}>
+		<div className="ub_testimonial" style={generateStyles(styles)}>
 			<div className="ub_testimonial_img">
 				{!imgID ? (
 					<div className="ub_testimonial_upload_button">
@@ -177,7 +194,7 @@ export const editorDisplay = (props) => {
 			<div className="ub_testimonial_content">
 				<RichText
 					placeholder={__(
-						"This is the testimonial body. Add the testimonial text you want to add here."
+						"This is the testimonial body. Add the testimonial text you want to add here.",
 					)}
 					className="ub_testimonial_text"
 					style={{ fontSize: textSize, textAlign: textAlign }}

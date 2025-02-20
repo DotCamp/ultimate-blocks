@@ -47,6 +47,10 @@
 
 .ub-advanced-video-thumbnail {
 	position: relative;
+	.ub-advanced-video-thumbnail-image {
+		height: 100%;
+		width: 100%;
+	}
 	& > svg {
 		position: absolute;
 		top: 50%;
@@ -58,11 +62,17 @@
 .ub-advanced-video-embed {
 	video {
 		max-width: 100%;
+		aspect-ratio: var(--ub-advanced-video-aspect-ratio);
+		height: auto !important;
+		object-fit: cover;
 	}
 	&.ub-advanced-video-autofit-youtube {
 		width: 100%;
+		aspect-ratio: var(--ub-advanced-video-aspect-ratio);
 		> iframe {
 			width: 100%;
+			aspect-ratio: var(--ub-advanced-video-aspect-ratio);
+			height: auto !important;
 		}
 	}
 	&.ub-advanced-video-autofit-vimeo,

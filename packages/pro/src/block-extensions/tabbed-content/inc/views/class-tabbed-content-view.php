@@ -134,16 +134,7 @@ class Tabbed_Content_View extends Block_Extension_View_Base implements I_Block_E
 							unset( $base_class_list[ $hide_index ] );
 							$base_class_list = array_values( $base_class_list );
 						}
-					} else {
-						// make attribute changes to hide tab content on startup
-						$base_class_list[] = 'ub-hide';
-
-						$active_index = array_search( 'active', $base_class_list );
-						if ( $active_index !== false ) {
-							unset( $base_class_list[ $active_index ] );
-							$base_class_list = array_values( $base_class_list );
-						}
-					}
+					} 
 
 					// assign attribute changes to content wrapper
 					$content_wrapper->setAttribute( 'class', join( ' ', array_unique( $base_class_list ) ) );

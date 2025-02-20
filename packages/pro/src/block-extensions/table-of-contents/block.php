@@ -1,6 +1,5 @@
 <?php
 
-use Ultimate_Blocks_Pro\Ultimate_Blocks_Pro;
 
 function ubpro_table_of_contents_replace_script(){
     wp_dequeue_script( 'ultimate_blocks-table-of-contents-front-script' );
@@ -30,6 +29,7 @@ function ubpro_table_of_contents_filter($block_content, $block){
         }
 
         extract($block['attrs']);
+        $attributes = $block['attrs'];
         require_once dirname(dirname(__DIR__)) . '/icons.php';
 
         $linkArray = json_decode($links, true);
@@ -78,7 +78,7 @@ function ubpro_table_of_contents_filter($block_content, $block){
         $listItems = '';
     
         if (!function_exists('ub_makeListItem')) {
-            function ub_makeListItem($num, $item, $listStyle, $blockID, $currentGaps){
+            function ub_makeListItem($num, $item, $listStyle, $blockID, $currentGaps, $attributes){
                 static $outputString = '';
                 if($num === 0 && $outputString !== ''){
                     $outputString = '';
@@ -109,7 +109,7 @@ function ubpro_table_of_contents_filter($block_content, $block){
                         strrpos($outputString, '</li>'), strlen('</li>'));
     
                     forEach($item as $key => $subItem){
-                        ub_makeListItem($key + 1, $subItem, $listStyle, $blockID, $currentGaps);
+                        ub_makeListItem($key + 1, $subItem, $listStyle, $blockID, $currentGaps, $attributes);
                     }
                     $outputString .= ($listStyle === 'numbered' ? '</ol>' : '</ul>') . '</li>';
                 }
@@ -119,7 +119,7 @@ function ubpro_table_of_contents_filter($block_content, $block){
     
         if(count($sortedHeaders) > 0){
             foreach($sortedHeaders as $key => $item){
-                $listItems = ub_makeListItem($key, $item, $listStyle, $blockID, $currentGaps);
+                $listItems = ub_makeListItem($key, $item, $listStyle, $blockID, $currentGaps, $attributes);
             }
         }
     
@@ -133,24 +133,58 @@ function ubpro_table_of_contents_filter($block_content, $block){
 
         switch($toggleButtonType){
             case 'chevron':
-                $toggleButton = '<div class="ub_table-of-contents-toggle-icon-container">
-                                    <span class="ub_table-of-contents-chevron-left ' . ($showList ? 'ub_asc_diagonal_bar' : 'ub_desc_diagonal_bar') . '"></span>
-                                    <span class="ub_table-of-contents-chevron-right ' . ($showList ? 'ub_desc_diagonal_bar' : 'ub_asc_diagonal_bar') .'"></span>
-                                </div>';
+                $toggle_button_styles = array();
+                if ($attributes['toggleButtonType'] === 'chevron') {
+                    $toggle_button_styles['background-color'] = $attributes['titleColor'];
+                }
+                $toggleButton = sprintf(
+                    '<div class="ub_table-of-contents-toggle-icon-container">
+                        <span class="ub_table-of-contents-chevron-left %1$s" style="%3$s"></span>
+                        <span class="ub_table-of-contents-chevron-right %2$s" style="%3$s"></span>
+                    </div>',
+                    ($showList ? 'ub_asc_diagonal_bar' : 'ub_desc_diagonal_bar'),
+                    ($showList ? 'ub_desc_diagonal_bar' : 'ub_asc_diagonal_bar'),
+                    Ultimate_Blocks_Pro\CSS_Generator\generate_css_string($toggle_button_styles)
+                );
                 break;
             case 'plus':
-                $toggleButton = '<div class="ub_table-of-contents-toggle-icon-container">
-                                    <span class="ub_table-of-contents-plus-part ' . ($showList ? 'ub_horizontal_bar' : 'ub_vertical_bar' ) . '"></span>
-                                    <span class="ub_table-of-contents-plus-part' . ($showList ? ' ub_vertical_bar' : '' ) . '"></span>
-                                </div>';
+                $toggle_button_styles = array();
+
+                if ($attributes['toggleButtonType'] === 'plus') {
+                    $toggle_button_styles['background-color'] = $attributes['titleColor'];
+                }
+                $toggleButton = sprintf(
+                    '<div class="ub_table-of-contents-toggle-icon-container">
+                        <span class="ub_table-of-contents-plus-part %1$s" style="%3$s"></span>
+                        <span class="ub_table-of-contents-plus-part%2$s" style="%3$s"></span>
+                    </div>',
+                    ($showList ? 'ub_horizontal_bar' : 'ub_vertical_bar'),
+                    ($showList ? ' ub_vertical_bar' : ''),
+                    Ultimate_Blocks_Pro\CSS_Generator\generate_css_string($toggle_button_styles)
+                );
                 break;
             case 'text':
             default:
-                $toggleButton = '<div class="ub_table-of-contents-header-toggle">
-                    <div class="ub_table-of-contents-toggle">
-                    &nbsp;[<a class="ub_table-of-contents-toggle-link" href="#">' .
-                        __($showList ? 'hide' : 'show', 'ultimate-blocks')
-                        . '</a>]</div></div>';
+                $toggle_link_styles = array();
+                $toggle_styles = array();
+
+                if (isset($attributes['titleBackgroundColor'])) {
+                    $toggle_link_styles['background-color'] = $attributes['titleBackgroundColor'];
+                }
+                if (isset($attributes['titleColor'])) {
+                    $toggle_link_styles['color'] = $attributes['titleColor'];
+                    $toggle_styles['color'] = $attributes['titleColor'];
+                }
+                $toggleButton = sprintf(
+                    '<div class="ub_table-of-contents-header-toggle" style="%2$s">
+                        <div class="ub_table-of-contents-toggle">
+                        &nbsp;[<a class="ub_table-of-contents-toggle-link" href="#">%s</a>]
+                        </div>
+                    </div>',
+                    __($showList ? 'hide' : 'show', 'ultimate-blocks'),
+                    Ultimate_Blocks\includes\generate_css_string($toggle_link_styles),
+		            Ultimate_Blocks\includes\generate_css_string($toggle_styles)
+                );
                 break;
         }
         $icon_name = !empty( $listIcon ) ? $listIcon : 'bars';
@@ -175,25 +209,72 @@ function ubpro_table_of_contents_filter($block_content, $block){
         );
 
         $link_to_divider_dataset = 'data-linktodivider='. ($is_link_to_divider ? 'true' : 'false');
-        
-        return '<div ' . ($is_sticky ? 'data-is_sticky="true"' :  'data-is_sticky="false"') .  ' class="wp-block-ub-table-of-contents-block ub_table-of-contents' . (isset($className) ? ' ' . esc_attr($className) : '')
-                    . (!$showList && strlen($title) > 0 ? ' ub_table-of-contents-collapsed' : '' ) .
-                    '"' . $link_to_divider_dataset . ' ' . $sticky_data_sets . ' data-showtext="' . __('show', 'ultimate-blocks') . '" data-hidetext="' . __('hide', 'ultimate-blocks')
-                    . '" data-scrolltype="' . $scrollOption . '"' . ($scrollOption === 'fixedamount' ? ' data-scrollamount="' . $scrollOffset . '"' : '')
-                    . ($scrollOption === 'namedelement' ? ' data-scrolltarget="' . $targetType . $scrollTarget . '"' : '')
-                    . ($blockID === '' ? '' : ' id="ub_table-of-contents-' . $blockID . '"') . ' data-initiallyhideonmobile="' . json_encode($hideOnMobile) . '"
-                        data-initiallyshow="' . json_encode($showList) . '">' .
+        $contents_header_styles = array(
+            'text-align' => isset($attributes['titleAlignment']) ? $attributes['titleAlignment'] : 'left',
+        );
+        if ($attributes['allowToCHiding']) {
+            $contents_header_styles['margin-bottom'] = '0';
+        }
+        $header_container_styles = array(
+            'background-color' => isset($attributes['titleBackgroundColor']) ? $attributes['titleBackgroundColor'] : '',
+            'color' => isset($attributes['titleColor']) ? $attributes['titleColor'] : '',
+        );
+        $headerContent = (strlen($title) > 0 ? sprintf(
+            '<div class="ub_table-of-contents-header-container" style="%4$s"><div class="ub_table-of-contents-header" style="%3$s"><div class="ub_table-of-contents-title">%1$s</div>%2$s</div></div>',
+            $title,
+            ($allowToCHiding ? $toggleButton : ''),
+            Ultimate_Blocks\includes\generate_css_string($contents_header_styles),
+		    Ultimate_Blocks\includes\generate_css_string($header_container_styles)
+        ) : '');
+        $padding = Ultimate_Blocks\includes\get_spacing_css( isset($attributes['padding']) ? $attributes['padding'] : array() );
+	    $margin  = Ultimate_Blocks\includes\get_spacing_css( isset($attributes['margin']) ? $attributes['margin'] : array() );
 
-                    (strlen($title) > 0 ? ('<div class="ub_table-of-contents-header-container"><div class="ub_table-of-contents-header">
-                        <div class="ub_table-of-contents-title">' . $title . '</div>' . 
-                        ($allowToCHiding ? $toggleButton : '')
-                    . '</div></div>') : '')
-                    . '<div class="ub_table-of-contents-extra-container"><div class="ub_table-of-contents-container ub_table-of-contents-' .
-                        $numColumns . '-column ' . ($showList || strlen($title) === 0 ||
-                        (strlen($title) === 1 && $title[0] === '') ? '' : 'ub-hide') . '">' .
-                    ($listStyle === 'numbered' ? '<ol>' :  '<ul' . ($listStyle === 'plain' && $blockID === '' ? ' style="list-style: none;"' : '') . ($listIcon === '' ? '' : ' class="fa-ul"') . '>') //add fa-ul if needed
-                    . $listItems .
-                    ($listStyle === 'numbered' ? '</ol>' : '</ul>')
-                    . '</div></div></div>';
+        $styles = array(
+            'padding-top'        => isset($padding['top']) ? $padding['top'] : "",
+            'padding-left'       => isset($padding['left']) ? $padding['left'] : "",
+            'padding-right'      => isset($padding['right']) ? $padding['right'] : "",
+            'padding-bottom'     => isset($padding['bottom']) ? $padding['bottom'] : "",
+            'margin-top'         => !empty($margin['top']) ? $margin['top']  : "",
+            'margin-left'        => !empty($margin['left']) ? $margin['left']  : "",
+            'margin-right'       => !empty($margin['right']) ? $margin['right']  : "",
+            'margin-bottom'      => !empty($margin['bottom']) ? $margin['bottom']  : "",
+        );
+        if ($attributes['listStyle'] === 'bulleted' && $attributes['listIcon'] !== '') {
+            $iconData = Ultimate_Blocks_Pro_IconSet::generate_fontawesome_icon($attributes['listIcon']);
+            $styles['--ub-table-of-content-list-style-image'] = 'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' . $iconData[0] . ' ' . $iconData[1] . '"><path fill="%23' . substr($attributes['listIconColor'], 1) . '" d="' . $iconData[2] . '"></path></svg>\');';
+        }
+
+        if ($attributes['allowToCHiding']) {
+            $styles['max-width'] = 'fit-content';
+            $styles['max-width'] = '-moz-fit-content';
+        }
+        $list_container_styles = array(
+            'background-color' => isset($attributes['listBackgroundColor']) ? $attributes['listBackgroundColor'] : '',
+        );
+        return sprintf(
+            '<div %1$s class="wp-block-ub-table-of-contents-block ub_table-of-contents%2$s%3$s%22$s" style="%21$s" %4$s %5$s data-showtext="%6$s" data-hidetext="%7$s" data-scrolltype="%8$s"%9$s%10$s%11$s data-initiallyhideonmobile="%12$s" data-initiallyshow="%13$s">%14$s<div class="ub_table-of-contents-extra-container" style="%20$s"><div class="ub_table-of-contents-container ub_table-of-contents-%15$s-column %16$s">%17$s%18$s</div></div></div>',
+            ($is_sticky ? 'data-is_sticky="true"' : 'data-is_sticky="false"'), //1
+            (isset($className) ? ' ' . esc_attr($className) : ''), //2
+            (!$showList && strlen($title) > 0 ? ' ub_table-of-contents-collapsed' : ''), //3
+            $link_to_divider_dataset, //4
+            $sticky_data_sets, //5
+            __('show', 'ultimate-blocks'), //6
+            __('hide', 'ultimate-blocks'), //7
+            $scrollOption, //8
+            ($scrollOption === 'fixedamount' ? ' data-scrollamount="' . $scrollOffset . '"' : ''), //9
+            ($scrollOption === 'namedelement' ? ' data-scrolltarget="' . $targetType . $scrollTarget . '"' : ''), //10
+            ($blockID === '' ? '' : ' id="ub_table-of-contents-' . $blockID . '"'), //11
+            json_encode($hideOnMobile), //12
+            json_encode($showList), //13
+            $headerContent, //14
+            $numColumns, //15
+            ($showList || strlen($title) === 0 || (strlen($title) === 1 && $title[0] === '') ? '' : 'ub-hide'), //16
+            ($listStyle === 'numbered' ? '<ol>' : '<ul' . ($listStyle === 'plain' && $blockID === '' ? ' style="list-style: none;"' : '') . ($listIcon === '' ? '' : ' class="fa-ul"') . '>'), //17
+            $listItems, //18
+            ($listStyle === 'numbered' ? '</ol>' : '</ul>'), //19
+            Ultimate_Blocks_Pro\CSS_Generator\generate_css_string($list_container_styles), //20
+            Ultimate_Blocks\includes\generate_css_string( $styles ), //21
+            $attributes['listStyle'] === "bulleted" && $attributes['listIcon'] !== '' ? " ub_table-of-contents-custom-icon": ""
+        );
     }
 }

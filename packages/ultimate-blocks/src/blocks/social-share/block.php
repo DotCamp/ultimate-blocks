@@ -15,12 +15,26 @@ require_once 'icons/icons.php';
  *
  * @param array $attributes The block attributes.
  */
-function ub_render_social_share_block( $attributes ) {
+function ub_render_social_share_block( $attributes, $_, $block ) {
     extract($attributes);
 	$icon_sizes = array(
 		'normal' => 20,
 		'medium' => 30,
 		'large'  => 40,
+	);
+	$block_attrs = $block->parsed_block['attrs'];
+
+	$padding = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['padding']) ? $block_attrs['padding'] : array() );
+	$margin  = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['margin']) ? $block_attrs['margin'] : array() );
+	$styles = array(
+			'padding-top'        => isset($padding['top']) ? $padding['top'] : "",
+			'padding-left'       => isset($padding['left']) ? $padding['left'] : "",
+			'padding-right'      => isset($padding['right']) ? $padding['right'] : "",
+			'padding-bottom'     => isset($padding['bottom']) ? $padding['bottom'] : "",
+			'margin-top'         => !empty($margin['top']) ? $margin['top']  : "",
+			'margin-left'        => !empty($margin['left']) ? $margin['left']  : "",
+			'margin-right'       => !empty($margin['right']) ? $margin['right']  : "",
+			'margin-bottom'      => !empty($margin['bottom']) ? $margin['bottom']  : "",
 	);
 
     $icon_size  = $icon_sizes[ $iconSize ];
@@ -41,15 +55,31 @@ function ub_render_social_share_block( $attributes ) {
 		$icons .= $iconDetails[$icon];
 	}
 
+	$classes = array( 'wp-block-ub-social-share' );
+	if(isset($className)) {
+		$classes[] = $className;
+	}
+	$wrapper_attributes = get_block_wrapper_attributes(
+		array(
+			'class' =>  implode(' ', $classes),
+			'id'    => 'ub-social-share-' . $blockID,
+			'style' => Ultimate_Blocks\includes\generate_css_string($styles),
+		)
+	);
 	if($blockID === ''){
 		$icons = str_replace('"><svg', '"' . $additionalStyle . '><svg', $icons);
 	}
 
-    return '<div class="wp-block-ub-social-share'.(isset($className) ? ' ' . esc_attr($className) : '').
-                '"' . ($blockID === '' ? '' : ' id="ub-social-share-' . esc_attr($blockID) . '"') . '>
-		<div class="social-share-icons align-icons-' . esc_attr($align) . ' orientation-icons-' . esc_attr($orientation) . ($useCaptions && !$addOutline ? ' no-outline' : '') . '">' . $icons .
-        '</div>
-	</div>';
+	return sprintf(
+		'<div %1$s>
+			<div class="social-share-icons align-icons-%2$s orientation-icons-%3$s%4$s">%5$s</div>
+		</div>',
+		$wrapper_attributes,
+		esc_attr($align),
+		esc_attr($orientation),
+		$useCaptions && !$addOutline ? ' no-outline' : '',
+		$icons
+	);
 }
 
 /**
@@ -61,20 +91,87 @@ function ub_render_social_share_block( $attributes ) {
  * @return string
  */
 
-function ub_prepare_social_share_icon($icon, $iconShape, $siteName, $link, $caption, $hasOutline){
-	if($hasOutline){
-		return '<a aria-label="' . $siteName . '-logo" target="_blank" rel="nofollow" href="' . esc_url($link) . '" class="ub-social-share-' . $siteName . '-container">
-		<span class="social-share-icon ub-social-share-' . $siteName . ($iconShape === 'none' ? '' : ' ' . esc_attr($iconShape)) . '">' .
-		   $icon .
-		'</span>' .
-		( $caption ? ('<span>' . wp_kses_post($caption) . '</span>') : '' ) . '</a>';
+function ub_prepare_social_share_icon($icon, $iconShape, $siteName, $link, $caption, $hasOutline, $icon_size, $attributes){
+	$icon_styles = array(
+		'width'  => ( $icon_size * 1.5 ) . 'px',
+		'height' => ( $icon_size * 1.5 ) . 'px',
+	);
+	$text_style = array();
+	$site_container_styles = array();
+
+	if ( $attributes['buttonColor'] !== '' ) {
+		if( $attributes['useCaptions'] ){
+			$icon_styles['background-color'] = $iconShape === 'none' ? 'transparent' : $attributes['buttonColor'];
+			$text_style['color'] =  $attributes['buttonColor'] ;
+			if ( $attributes['addOutline'] ) {
+				$site_container_styles['border'] = '1px solid ' . $attributes['buttonColor'];
+			} else {
+				$site_container_styles['border'] = 'none';
+			}
+		}
+	} else {
+		$siteColors = array(
+			'facebook'  => '#1877f2',
+			'twitter'   => '#1d9bf0',
+			'linkedin'  => '#2867b2',
+			'pinterest' => '#e60023',
+			'reddit'    => '#ff4500',
+			'tumblr'    => '#001935'
+		);
+
+		foreach ( $siteColors as $site => $color ) {
+			if ( $site === $siteName ) {
+				$site_container_styles['border-color'] = $color;
+				break;
+			}
+		}
 	}
-	else{
-		return ($caption ? ('<div class="ub-social-share-' . $siteName . '-container">') : '') .
-		'<a aria-label="' . $siteName . '-logo" target="_blank" rel="nofollow" href="' . esc_url($link) . '" class="social-share-icon ub-social-share-' . $siteName . ' ' . ($caption ? ' ' : 'ub-social-share-standalone-icon ') .
-			($iconShape === 'none' ? '' : ' ' . esc_attr($iconShape) ) . '">'
-        	. $icon . '</a>' .
-		( $caption ? '<span><a aria-label="' . $siteName . '-logo" target="_blank" href="' . esc_url($link) . '">' . wp_kses_post($caption) . '</a></span></div>' : '' );
+
+	if ( $attributes['iconShape'] === 'none' ) {
+		$anchor_styles = array(
+			'background-color' => 'transparent',
+			'box-shadow'       => 'none',
+		);
+		$site_container_styles = array_merge($site_container_styles, $anchor_styles);
+	}
+	if($hasOutline){
+		$caption_html = $caption ? sprintf(
+			'<span style="%2$s">%1$s</span>',
+			wp_kses_post($caption),
+			Ultimate_Blocks\includes\generate_css_string($text_style)
+			) : '';
+		return sprintf(
+			'<a aria-label="%1$s-logo" target="_blank" rel="nofollow" href="%2$s" class="ub-social-share-%1$s-container" style="%8$s">
+				<span class="social-share-icon ub-social-share-%1$s%3$s" style="%6$s">%4$s</span>%5$s
+			</a>',
+			$siteName,
+			esc_url($link),
+			($iconShape === 'none' ? '' : ' ' . esc_attr($iconShape)),
+			$icon,
+			$caption_html,
+			Ultimate_Blocks\includes\generate_css_string($icon_styles),
+			Ultimate_Blocks\includes\generate_css_string($text_style),
+			Ultimate_Blocks\includes\generate_css_string($site_container_styles)
+		);
+	} else {
+		$caption_html = $caption ? sprintf(
+			'<span><a style="%4$s" aria-label="%1$s-logo" target="_blank" href="%2$s">%3$s</a></span>',
+			$siteName,
+			esc_url($link),
+			wp_kses_post($caption),
+			Ultimate_Blocks\includes\generate_css_string($text_style)
+		) : '';
+		return sprintf(
+			'%1$s<a aria-label="%2$s-logo" target="_blank" rel="nofollow" href="%3$s" class="social-share-icon ub-social-share-%2$s %4$s%5$s" style="%7$s">%6$s</a>%8$s',
+			$caption ? '<div class="ub-social-share-' . $siteName . '-container" style="' . Ultimate_Blocks\includes\generate_css_string($site_container_styles) . '">' : '',
+			$siteName,
+			esc_url($link),
+			$caption ? ' ' : 'ub-social-share-standalone-icon ',
+			$iconShape === 'none' ? '' : ' ' . esc_attr($iconShape),
+			$icon,
+			Ultimate_Blocks\includes\generate_css_string($icon_styles),
+			$caption ? $caption_html . '</div>' : ''
+		);
 	}
 }
 
@@ -97,7 +194,7 @@ function ub_get_facebook_icon( $attributes, $icon_size, $iconShape, $caption, $h
     $facebook_url = 'https://www.facebook.com/sharer/sharer.php?u='
         . rawurlencode( get_the_permalink() ) . '&title=' . rawurlencode( get_the_title() );
 
-	return ub_prepare_social_share_icon($facebook_icon, $iconShape, 'facebook', $facebook_url, $caption, $hasOutline);
+	return ub_prepare_social_share_icon($facebook_icon, $iconShape, 'facebook', $facebook_url, $caption, $hasOutline, $icon_size, $attributes);
 }
 
 /**
@@ -126,7 +223,7 @@ function ub_get_twitter_icon( $attributes, $icon_size, $iconShape, $caption, $ha
 	// Generate the Twitter URL.
     $twitter_url = 'http://twitter.com/intent/tweet?url=' . rawurlencode( get_the_permalink() ) . '&text=' . rawurlencode( get_the_title() );
 
-	return ub_prepare_social_share_icon($twitter_icon, $iconShape, 'twitter', $twitter_url, $caption, $hasOutline);
+	return ub_prepare_social_share_icon($twitter_icon, $iconShape, 'twitter', $twitter_url, $caption, $hasOutline, $icon_size, $attributes);
 }
 
 
@@ -156,7 +253,7 @@ function ub_get_linkedin_icon( $attributes, $icon_size, $iconShape, $caption, $h
 	// Generate the Linked In URL.
 	$linkedin_url = 'https://www.linkedin.com/sharing/share-offsite/?url=' . rawurlencode( get_the_permalink() );
 
-	return ub_prepare_social_share_icon($linkedin_icon, $iconShape, 'linkedin', $linkedin_url, $caption, $hasOutline);
+	return ub_prepare_social_share_icon($linkedin_icon, $iconShape, 'linkedin', $linkedin_url, $caption, $hasOutline, $icon_size, $attributes);
 }
 
 
@@ -198,7 +295,7 @@ function ub_get_pinterest_icon( $attributes, $icon_size, $iconShape, $caption, $
         . '&description=' . rawurlencode( get_the_title() )
         . '&media=' . $thumbnail;
 
-	return ub_prepare_social_share_icon($pinterest_icon, $iconShape, 'pinterest', $pinterest_url, $caption, $hasOutline);
+	return ub_prepare_social_share_icon($pinterest_icon, $iconShape, 'pinterest', $pinterest_url, $caption, $hasOutline, $icon_size, $attributes);
 }
 
 
@@ -230,7 +327,7 @@ function ub_get_reddit_icon( $attributes, $icon_size, $iconShape, $caption, $has
         . rawurlencode( get_the_permalink() ) .
         '&title=' . rawurlencode( get_the_title() );
 
-	return ub_prepare_social_share_icon($reddit_icon, $iconShape, 'reddit', $reddit_url, $caption, $hasOutline);
+	return ub_prepare_social_share_icon($reddit_icon, $iconShape, 'reddit', $reddit_url, $caption, $hasOutline, $icon_size, $attributes);
 }
 
 
@@ -262,7 +359,7 @@ function ub_get_tumblr_icon( $attributes, $icon_size, $iconShape, $caption, $has
         . rawurlencode( get_the_permalink() )
 		. '&title=' . rawurlencode( get_the_title() );
 
-	return ub_prepare_social_share_icon($tumblr_icon, $iconShape, 'tumblr', $tumblr_url, $caption, $hasOutline);
+	return ub_prepare_social_share_icon($tumblr_icon, $iconShape, 'tumblr', $tumblr_url, $caption, $hasOutline, $icon_size, $attributes);
 }
 
 /**

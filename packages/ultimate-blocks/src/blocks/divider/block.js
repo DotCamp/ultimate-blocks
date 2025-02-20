@@ -24,12 +24,12 @@ import {
 } from "@wordpress/block-editor";
 import metadata from "./block.json";
 import { PanelBody, RangeControl, SelectControl } from "@wordpress/components";
-import { getStyles } from "./get-styles";
 import { CustomToggleGroupControl, SpacingControl } from "../components";
 import { withSelect } from "@wordpress/data";
 import { AVAILABLE_JUSTIFICATIONS, getParentBlock } from "../../common";
 import classNames from "classnames";
 import { isEmpty } from "lodash";
+import { generateStyles, getSpacingCss } from "../utils/styling-helpers";
 
 const attributes = {
 	blockID: {
@@ -90,6 +90,8 @@ function DividerBlock(props) {
 			lineHeight,
 			dividerWidth,
 			isWidthControlChanged,
+			padding,
+			margin,
 		},
 		isSelected,
 		setAttributes,
@@ -118,7 +120,18 @@ function DividerBlock(props) {
 			setAttributes({ blockID: block.clientId });
 		}
 	}, [block?.clientId]);
-	const styles = getStyles(props.attributes);
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+	const styles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+	};
 	const borderName = orientation === "horizontal" ? "borderTop" : "borderLeft";
 	const dividerStyle =
 		orientation === "horizontal"
@@ -201,17 +214,15 @@ function DividerBlock(props) {
 								attributeKey="orientation"
 								label={__("Orientation", "ultimate-blocks")}
 							/>
-							{orientation === "vertical" && (
-								<CustomToggleGroupControl
-									isAdaptiveWidth
-									options={AVAILABLE_JUSTIFICATIONS.slice(
-										0,
-										AVAILABLE_JUSTIFICATIONS.length - 1,
-									)}
-									attributeKey="alignment"
-									label={__("Alignment", "ultimate-blocks")}
-								/>
-							)}
+							<CustomToggleGroupControl
+								isAdaptiveWidth
+								options={AVAILABLE_JUSTIFICATIONS.slice(
+									0,
+									AVAILABLE_JUSTIFICATIONS.length - 1,
+								)}
+								attributeKey="alignment"
+								label={__("Alignment", "ultimate-blocks")}
+							/>
 						</PanelBody>
 					</InspectorControls>
 					<InspectorControls group="styles">
@@ -277,7 +288,7 @@ function DividerBlock(props) {
 					</InspectorControls>
 				</Fragment>
 			)}
-			<div className={className} style={styles}>
+			<div className={className} style={generateStyles(styles)}>
 				<div
 					className="ub_divider"
 					style={Object.assign(

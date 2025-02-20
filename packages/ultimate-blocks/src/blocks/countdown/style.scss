@@ -14,8 +14,11 @@
 .ub_countdown_circle_path {
 	stroke-linecap: round;
 	stroke-dashoffset: 0px;
-	transition: stroke-dashoffset 0.3s ease 0s, stroke-dasharray 0.3s ease 0s,
-		stroke 0.3s ease 0s, stroke-width 0.06s ease 0.3s;
+	transition:
+		stroke-dashoffset 0.3s ease 0s,
+		stroke-dasharray 0.3s ease 0s,
+		stroke 0.3s ease 0s,
+		stroke-width 0.06s ease 0.3s;
 	fill-opacity: 0;
 }
 
@@ -23,7 +26,9 @@
 	stroke: #d9d9d9;
 	stroke-dasharray: 219.911px, 219.911px;
 	stroke-dashoffset: 0px;
-	transition: stroke-dashoffset 0.3s ease 0s, stroke-dasharray 0.3s ease 0s,
+	transition:
+		stroke-dashoffset 0.3s ease 0s,
+		stroke-dasharray 0.3s ease 0s,
 		stroke 0.3s ease 0s;
 	fill-opacity: 0;
 }

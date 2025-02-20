@@ -43,14 +43,45 @@ if ( ! class_exists( 'ub_simple_html_dom_node' ) ) {
 	require dirname( dirname( __DIR__ ) ) . '/simple_html_dom.php';
 }
 
-function ub_render_content_toggle_block( $attributes, $content ) {
+function ub_render_content_toggle_block( $attributes, $content, $block ) {
 	extract( $attributes );
+	$block_attrs = $block->parsed_block['attrs'];
 
-	return '<div class="wp-block-ub-content-toggle' . ( isset( $className ) ? ' ' .  $className  : '' )
-			. (isset($align) ? " align". $align : "") . '" ' . ( $blockID === '' ? '' : 'id="ub-content-toggle-' . esc_attr($blockID) . '"' ) .
-			( $preventCollapse ? ' data-preventcollapse="true"' : '' ) .
-			( $showOnlyOne ? ' data-showonlyone="true"' : '' ) . ' data-mobilecollapse="' . json_encode( $collapsedOnMobile ) . '" data-desktopcollapse="' . json_encode( $collapsed ) . '">'
-			. $content . '</div>';
+	$padding = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['padding']) ? $block_attrs['padding'] : array() );
+	$margin  = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['margin']) ? $block_attrs['margin'] : array() );
+	$styles  = array(
+		'padding-top'        => isset($padding['top']) ? $padding['top'] : "",
+		'padding-left'       => isset($padding['left']) ? $padding['left'] : "",
+		'padding-right'      => isset($padding['right']) ? $padding['right'] : "",
+		'padding-bottom'     => isset($padding['bottom']) ? $padding['bottom'] : "",
+		'margin-top'         => !empty($margin['top']) ? $margin['top']  : "",
+		'margin-left'        => !empty($margin['left']) ? $margin['left']  : "",
+		'margin-right'       => !empty($margin['right']) ? $margin['right']  : "",
+		'margin-bottom'      => !empty($margin['bottom']) ? $margin['bottom']  : "",
+	);
+
+	$classes                  = array('wp-block-ub-content-toggle');
+
+	if(isset($className)){
+		$classes[] = $className;
+	}
+	$block_wrapper_attributes = get_block_wrapper_attributes(
+		array(
+			'class' => implode( ' ', $classes ),
+			'id'    => 'ub-content-toggle-' . esc_attr($blockID),
+			'style' => Ultimate_Blocks\includes\generate_css_string($styles),
+			'data-mobilecollapse' => json_encode($collapsedOnMobile),
+			'data-desktopcollapse' => json_encode($collapsed),
+			'data-preventcollapse' => $preventCollapse ? 'true' : 'false',
+			'data-showonlyone' => $showOnlyOne ? 'true' : 'false',
+		)
+	);
+
+	return sprintf(
+		'<div %1$s>%2$s</div>',
+		$block_wrapper_attributes, // 1
+		$content // 2
+	);
 }
 
 function ub_render_content_toggle_panel_block( $attributes, $content, $block_object ) {
@@ -70,23 +101,51 @@ function ub_render_content_toggle_panel_block( $attributes, $content, $block_obj
 	if (!in_array($titleTag, ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'])) {
 		$titleTag = 'p';
 	}
+	$toggle_icon_html = sprintf(
+		'<div class="%1$s-accordion-toggle-wrap %2$s" style="color: %5$s;"><span class="%1$s-accordion-state-indicator %3$s%4$s"></span></div>',
+		$classNamePrefix,
+		esc_attr($toggleLocation),
+		esc_attr($icon_class),
+		$should_collapsed ? '' : ' open',
+		esc_attr($toggleColor)
+	);
+	$title_styles = array(
+		'color' => isset($titleColor) ? $titleColor : '',
+		'--ub-content-toggle-title-link-color' => isset($titleLinkColor) ? $titleLinkColor : '',
+	);
 
-	return '<div ' . ( $toggleID === '' ? '' : 'id="' . esc_attr($toggleID) . '" ' ) . 'class="' . $border_class . $classNamePrefix . '-accordion' . ( isset( $className ) ? ' ' .  $className  : '' ) . '"'
-			. ( $parentID === '' ? ' style="border-color: ' . esc_attr($theme) . ';"' : '' ) . '>
-                <div class="' . $classNamePrefix . '-accordion-title-wrap"'
-			. ( $parentID === '' ? ' style="background-color: ' . esc_attr($theme) . ';"' : '' ) . ( $preventCollapse ? ' aria-disabled="true"' : '' )
-			.  '" aria-controls="ub-content-toggle-panel-' . esc_attr($index) . '-' . esc_attr($parentID) . '" tabindex="0">
-                    <' . esc_attr($titleTag) . ' class="' . $classNamePrefix . '-accordion-title ub-content-toggle-title-' . esc_attr($parentID) . '"'
-			. ( $parentID === '' ? ' style="color:' . esc_attr($titleColor) . ';"' : '' ) . '>' . wp_kses_post($panelTitle) . '</' . esc_attr($titleTag) . '>' .
-			( $toggleIcon === 'none' ? '' : '<div class="' . $classNamePrefix . '-accordion-toggle-wrap ' .  esc_attr($toggleLocation)  .
-											'"><span class="' . $classNamePrefix . '-accordion-state-indicator ' . esc_attr($icon_class) .
-											( $should_collapsed ? '' : ' open' ) . '"></span>
-                    </div>' ) .
-			'</div><div role="region" '. 'aria-expanded="'. (json_encode(! $should_collapsed)) .'" class="' . $classNamePrefix . '-accordion-content-wrap' .
-			( $should_collapsed ? ' ub-hide' : '' ) . '" id="ub-content-toggle-panel-' . esc_attr($index) . '-' . esc_attr($parentID) . '">' . $content
-			. '</div></div>';
+	$toggle_wrap = sprintf(
+		'<div class="%1$s"%2$s%3$s aria-controls="%4$s" tabindex="0">
+			<%5$s class="%6$s" style="%7$s">%8$s</%5$s>
+			%9$s
+		</div>',
+		$classNamePrefix . '-accordion-title-wrap', // 1
+		 'style="background-color: ' . esc_attr($theme) . ';"' , // 2
+		$preventCollapse ? ' aria-disabled="true"' : '', // 3
+		'ub-content-toggle-panel-' . esc_attr($index) . '-' . esc_attr($parentID), // 4
+		esc_attr($titleTag), // 5
+		$classNamePrefix . '-accordion-title ub-content-toggle-title-' . esc_attr($parentID), // 6
+		Ultimate_Blocks\includes\generate_css_string($title_styles) , // 7
+		wp_kses_post($panelTitle), // 8
+		$toggle_icon_html // 9
+	);
+
+	return sprintf(
+		'<div %1$s class="%2$s%3$s"%4$s>
+			%5$s
+			<div role="region" aria-expanded="%6$s" class="%7$s" id="%8$s">%9$s</div>
+		</div>',
+		$toggleID === '' ? '' : 'id="' . esc_attr($toggleID) . '" ', // 1
+		$border_class, // 2
+		$classNamePrefix . '-accordion', // 3
+		'style="border-color: ' . esc_attr($theme) . ';"', // 4
+		$toggle_wrap, // 5
+		json_encode(! $should_collapsed), // 6
+		$classNamePrefix . '-accordion-content-wrap' . ( $should_collapsed ? ' ub-hide' : '' ), // 7
+		'ub-content-toggle-panel-' . esc_attr($index) . '-' . esc_attr($parentID), // 8
+		$content // 9
+	);
 }
-
 function ub_register_content_toggle_panel_block() {
 	if ( function_exists( 'register_block_type_from_metadata' ) ) {
 		require dirname( dirname( __DIR__ ) ) . '/defaults.php';

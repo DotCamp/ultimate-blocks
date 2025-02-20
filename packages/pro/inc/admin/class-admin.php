@@ -104,7 +104,7 @@ class Admin {
 		 * class.
 		 */
 
-		$allowed_hooks = ['post.php', 'post-new.php'];
+		$allowed_hooks = ['post.php', 'post-new.php', 'site-editor.php'];
 
 		if ( in_array($hook, $allowed_hooks)) {
 

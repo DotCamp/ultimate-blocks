@@ -9,7 +9,8 @@ import { Button, Dashicon } from "@wordpress/components";
 import { __ } from "@wordpress/i18n";
 import { removeIcon } from "./icon";
 import { useEffect, useRef, useState } from "react";
-import { getStyles } from "./get-styles";
+
+import { generateStyles, getSpacingCss } from "../../utils/styling-helpers";
 
 export function OldStars(props) {
   const {
@@ -217,6 +218,12 @@ export function ReviewBody(props) {
     ctaNoFollow,
     ctaIsSponsored,
     block,
+    summaryTitleFontSize,
+    padding,
+    margin,
+    mainTitleFontSize,
+    bgColor,
+    fontColor,
   } = props;
 
   const { titleAlign, authorAlign, descriptionAlign } = alignments;
@@ -263,16 +270,40 @@ export function ReviewBody(props) {
         newArray.length
     );
   };
-  const styles = getStyles(props);
+  const paddingObj = getSpacingCss(padding);
+  const marginObj = getSpacingCss(margin);
+  const summaryStyles = {
+    fontSize: summaryTitleFontSize || "24px",
+  };
+  const mainTitleStyles = {
+    textAlign: titleAlign,
+    fontSize: mainTitleFontSize || "28px",
+  };
+  const styles = {
+    backgroundColor: bgColor,
+    color: fontColor,
+    paddingTop: paddingObj?.top,
+    paddingRight: paddingObj?.right,
+    paddingBottom: paddingObj?.bottom,
+    paddingLeft: paddingObj?.left,
+    marginTop: marginObj?.top,
+    marginRight: marginObj?.right,
+    marginBottom: marginObj?.bottom,
+    marginLeft: marginObj?.left,
+  };
   const has_button_block = block.innerBlocks.length > 0;
 
   return (
-    <div style={styles} className="ub_review_block" ref={wrapperRef}>
+    <div
+      style={generateStyles(styles)}
+      className="ub_review_block"
+      ref={wrapperRef}
+    >
       <RichText
         className="ub_review_item_name"
         placeholder={__("Title of the review")}
         value={itemName}
-        style={{ textAlign: titleAlign }}
+        style={generateStyles(mainTitleStyles)}
         onChange={(text) => setAttributes({ itemName: text })}
         unstableOnFocus={() => setEditable("reviewTitle")}
       />
@@ -533,6 +564,7 @@ export function ReviewBody(props) {
       <div className="ub_review_summary">
         {useSummary && (
           <RichText
+            style={generateStyles(summaryStyles)}
             className="ub_review_summary_title"
             placeholder={__("Title of the summary goes here")}
             onChange={(text) => setAttributes({ summaryTitle: text })}

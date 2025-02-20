@@ -22,8 +22,7 @@ import {
 } from "@wordpress/block-editor";
 
 import { ToolbarGroup, ToolbarButton } from "@wordpress/components";
-import { getStyles } from "../get-style";
-import { generateStyles } from "../../utils/styling-helpers";
+import { generateStyles, getSpacingCss } from "../../utils/styling-helpers";
 export class OldTabHolder extends Component {
 	constructor(props) {
 		super(props);
@@ -339,6 +338,10 @@ export const TabHolder = (props) => {
 		tabVertical,
 		blockID,
 		tabStyle,
+		padding,
+		margin,
+		contentColor,
+		contentBackground,
 	} = attributes;
 	let block = null;
 	const rootBlock = getParentBlock(props.rootBlockClientId, "core/block");
@@ -568,16 +571,30 @@ export const TabHolder = (props) => {
 			});
 		}
 	}, []);
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
 
+	let styles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+	};
 	const blockProps = useBlockProps({
 		className: `${className}${tabStyle === "tabs" ? "" : `-${tabStyle}`}`,
-		style: getStyles(attributes),
+		style: generateStyles(styles),
 	});
 	const tabContentsStyles = generateStyles({
 		borderTopLeftRadius: attributes.tabContentsBorderRadius?.topLeft,
 		borderTopRightRadius: attributes.tabContentsBorderRadius?.topRight,
 		borderBottomLeftRadius: attributes.tabContentsBorderRadius?.bottomLeft,
 		borderBottomRightRadius: attributes.tabContentsBorderRadius?.bottomRight,
+		"--ub-tab-content-color": contentColor,
+		"--ub-tab-content-background": contentBackground,
 	});
 
 	return [
@@ -696,7 +713,7 @@ export const TabHolder = (props) => {
 					className={`${className}-tabs-content ${
 						props.attributes.tabVertical ? "vertical-content-width" : ""
 					}`}
-					style={tabContentsStyles}
+					style={generateStyles(tabContentsStyles)}
 				>
 					<InnerBlocks
 						templateLock={false}

@@ -184,6 +184,7 @@ class Init {
 
 		Block_Status_Manager::init();
 
+		require_once dirname(__FILE__) .'/class-pro-blocks-assets.php';
 		require_once dirname(__FILE__) .'/managers/class-pro-extension-manager.php';
 	}
 

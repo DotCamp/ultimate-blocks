@@ -33,10 +33,10 @@ import {
 	CustomToggleGroupControl,
 	SpacingControl,
 } from "../components";
-import { getStyles } from "./get-styles";
 import HalfCircle from "./HalfCircle";
 import metadata from "./block.json";
 import { getParentBlock } from "../../common";
+import { generateStyles, getSpacingCss } from "../utils/styling-helpers";
 
 function ProgressBarMain(props) {
 	const {
@@ -58,6 +58,8 @@ function ProgressBarMain(props) {
 			showNumber,
 			numberPrefix,
 			numberSuffix,
+			padding,
+			margin,
 		},
 		isSelected,
 		setAttributes,
@@ -81,6 +83,63 @@ function ProgressBarMain(props) {
 		}
 	}, [block?.clientId]);
 
+	const percentagePositionOptions = [
+		{
+			label: __("Top", "ultimate-blocks"),
+			value: "top",
+		},
+		{
+			label: __("Inside", "ultimate-blocks"),
+			value: "inside",
+		},
+		{
+			label: __("Bottom", "ultimate-blocks"),
+			value: "bottom",
+		},
+	];
+
+	const blockClassName = className ?? props.attributes?.className ?? "";
+	const isStyleCircle = blockClassName
+		?.split(" ")
+		.includes("is-style-ub-progress-bar-circle-wrapper");
+	const isStyleHalfCircle = blockClassName
+		?.split(" ")
+		.includes("is-style-ub-progress-bar-half-circle-wrapper");
+	const finalClassNames = ["ub_progress-bar", blockClassName];
+	if ((isStyleCircle || isStyleHalfCircle) && isCircleRounded) {
+		finalClassNames.push("rounded-circle");
+	}
+
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+	const styles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+	};
+	const blockProps = useBlockProps({
+		className: finalClassNames.join(" "),
+		style: generateStyles(styles),
+	});
+	const labelStyles = {
+		width: percentage ? `${percentage}%` : "100%",
+		color: labelColor || "inherit",
+	};
+
+	if (percentagePosition === "inside" && !isStyleCircle && !isStyleHalfCircle) {
+		labelStyles.fontSize = barThickness ? `${barThickness + 5}%` : "6%";
+	}
+	const lineStyles = {
+		"border-top-left-radius": barBorderRadius?.topLeft,
+		"border-top-right-radius": barBorderRadius?.topRight,
+		"border-bottom-left-radius": barBorderRadius?.bottomLeft,
+		"border-bottom-right-radius": barBorderRadius?.bottomRight,
+	};
 	const progressBarAttributes = {
 		percent: percentage,
 		barColor,
@@ -96,40 +155,8 @@ function ProgressBarMain(props) {
 		showNumber,
 		numberPrefix,
 		numberSuffix,
+		labelStyles: generateStyles(labelStyles),
 	};
-
-	const percentagePositionOptions = [
-		{
-			label: __("Top", "ultimate-blocks"),
-			value: "top",
-		},
-		{
-			label: __("Inside", "ultimate-blocks"),
-			value: "inside",
-		},
-		{
-			label: __("Bottom", "ultimate-blocks"),
-			value: "bottom",
-		},
-	];
-	const styles = getStyles(props.attributes);
-
-	const blockClassName = className ?? props.attributes?.className ?? "";
-	const isStyleCircle = blockClassName
-		?.split(" ")
-		.includes("is-style-ub-progress-bar-circle-wrapper");
-	const isStyleHalfCircle = blockClassName
-		?.split(" ")
-		.includes("is-style-ub-progress-bar-half-circle-wrapper");
-	const finalClassNames = ["ub_progress-bar", blockClassName];
-	if ((isStyleCircle || isStyleHalfCircle) && isCircleRounded) {
-		finalClassNames.push("rounded-circle");
-	}
-	const blockProps = useBlockProps({
-		className: finalClassNames.join(" "),
-		style: styles,
-	});
-
 	return (
 		<>
 			{isSelected && (
@@ -315,7 +342,7 @@ function ProgressBarMain(props) {
 				{percentage > -1 && ( //linear progress bar fails to render properly unless a value of 0 or greater is inputted
 					<>
 						{!isStyleCircle && !isStyleHalfCircle && (
-							<Line {...progressBarAttributes} />
+							<Line {...progressBarAttributes} lineStyles={lineStyles} />
 						)}
 						{isStyleCircle && (
 							<Circle {...progressBarAttributes} size={circleSize} />

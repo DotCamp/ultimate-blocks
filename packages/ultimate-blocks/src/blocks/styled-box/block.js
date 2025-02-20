@@ -2,7 +2,6 @@ import { __ } from "@wordpress/i18n";
 
 import { registerBlockType, createBlock } from "@wordpress/blocks";
 import { SpacingControl } from "../components";
-import { getStyles } from "./get-styles";
 import { getParentBlock } from "../../common";
 import {
 	RichText,
@@ -52,6 +51,7 @@ import borderBoxMetaData from "./styled-box-border/block.json";
 import notificationBoxMetaData from "./styled-box-notification/block.json";
 import numberBoxMetaData from "./styled-box-number/block.json";
 import numberBoxColumnMetaData from "./styled-box-numbered-box-column/block.json";
+import { generateStyles, getSpacingCss } from "../utils/styling-helpers";
 
 function StyledBox(props) {
 	const [editable, setEditable] = useState("");
@@ -92,6 +92,8 @@ function StyledBox(props) {
 			titleAlign,
 			textAlign,
 			blockID,
+			padding,
+			margin,
 		},
 		setAttributes,
 		isSelected,
@@ -678,7 +680,19 @@ function StyledBox(props) {
 			setAttributes({ text: [""], textAlign: ["left"] });
 		}
 	}
-	const styles = getStyles(props.attributes);
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+
+	let styles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+	};
 
 	return (
 		<div {...blockProps}>
@@ -768,7 +782,7 @@ function StyledBox(props) {
 			)}
 			<div
 				className={`ub-styled-box ub-${mode}-box`}
-				style={{ ...extraStyles, ...styles }}
+				style={generateStyles({ ...extraStyles, ...styles })}
 			>
 				{renderedBlock}
 			</div>

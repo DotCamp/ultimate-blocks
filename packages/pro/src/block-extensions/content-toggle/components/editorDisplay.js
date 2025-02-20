@@ -31,8 +31,8 @@ import ContentToggleContext from "./hoc/ContentToggleContext";
 import ContentToggleColorControlPortal from "./ContentToggleColorControlPortal";
 import SavedStylesInspectorPanel from "@Components/SavedStyles/SavedStylesInspectorPanel";
 import InspectorControlsStylesTab from "@Components/Common/InspectorControlsStylesTab";
-import { getStyles } from "../get-styles";
 import { SpacingControl } from "../../../components/StylingControls";
+import { generateStyles, getSpacingCss } from "../../../utils/styling-helpers";
 const objectsNewChange = (obj1, obj2) => {
   let diff = {};
   if (obj1 && obj2) {
@@ -74,6 +74,8 @@ function PanelContent(props) {
       toggleIcon,
       border,
       showOnlyOne,
+      padding,
+      margin,
       align,
     },
     setAttributes,
@@ -411,7 +413,20 @@ function PanelContent(props) {
     { value: "none", label: __("None", "ultimate-blocks-pro") },
     ...availablePanels,
   ];
-  const styles = getStyles(props.attributes);
+  const paddingObj = getSpacingCss(padding);
+  const marginObj = getSpacingCss(margin);
+
+  let styles = {
+    paddingTop: paddingObj?.top,
+    paddingRight: paddingObj?.right,
+    paddingBottom: paddingObj?.bottom,
+    paddingLeft: paddingObj?.left,
+    marginTop: marginObj?.top,
+    marginRight: marginObj?.right,
+    marginBottom: marginObj?.bottom,
+    marginLeft: marginObj?.left,
+  };
+
   return (
     <>
       <BlockControls group="block">
@@ -911,7 +926,7 @@ function PanelContent(props) {
         )}
         <div
           className={className}
-          style={styles}
+          style={generateStyles(styles)}
           id={`ub-content-toggle-${blockID}`}
         >
           <ConditionalRenderer

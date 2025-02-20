@@ -6,7 +6,7 @@ Copyright (c) 2014-present yiminghe
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to use, 
+the Software without restriction, including without limitation the rights to use,
 copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
 Software, and to permit persons to whom the Software is furnished to do so,
 subject to the following conditions:
@@ -44,6 +44,8 @@ export default function Line(props) {
 		showNumber,
 		numberPrefix,
 		numberSuffix,
+		labelStyles,
+		lineStyles,
 	} = props;
 
 	useEffect(() => {
@@ -66,6 +68,7 @@ export default function Line(props) {
 	const insideLabelClass =
 		percentagePosition === "inside" ? " ub_progress-bar-label-inside" : "";
 	const stripeStyleClass = isStripe ? " ub_progress-bar-stripe" : "";
+
 	return (
 		<div
 			className={`ub_progress-bar-container${insideLabelClass}${stripeStyleClass}`}
@@ -88,9 +91,8 @@ export default function Line(props) {
 					<div
 						className="ub_progress-bar-label ub_progress-bar-label-top"
 						style={{
-							width: `${percent}%`,
 							visibility: isActive ? "visible" : "hidden",
-							color: labelColor || "inherit",
+							...labelStyles,
 						}}
 					>
 						<span className="ub-progress-number-prefix">{numberPrefix}</span>
@@ -103,6 +105,7 @@ export default function Line(props) {
 				className="ub_progress-bar-line"
 				viewBox={`0 0 100 ${barThickness}`}
 				preserveAspectRatio="none"
+				style={lineStyles}
 			>
 				<path
 					className="ub_progress-bar-line-trail"
@@ -133,9 +136,8 @@ export default function Line(props) {
 						<div
 							className="ub_progress-bar-label"
 							style={{
-								width: `${percent}%`,
 								visibility: isActive ? "visible" : "hidden",
-								color: labelColor || "inherit",
+								...labelStyles,
 							}}
 						>
 							<p>
@@ -155,9 +157,8 @@ export default function Line(props) {
 				<div
 					className="ub_progress-bar-label"
 					style={{
-						width: `${percent}%`,
 						visibility: isActive ? "visible" : "hidden",
-						color: labelColor || "inherit",
+						...labelStyles,
 					}}
 				>
 					<span className="ub-progress-number-prefix">{numberPrefix}</span>

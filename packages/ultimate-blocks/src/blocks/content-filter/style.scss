@@ -3,7 +3,6 @@
 .wp-block-ub-content-filter-block {
 	.ub-content-filter-buttons-wrapper {
 		display: flex;
-		justify-content: var(--ub-content-filter-buttons-justification);
 		flex-wrap: wrap;
 		gap: 20px;
 	}
@@ -14,6 +13,12 @@
 	padding: 8px;
 	border-radius: 3px;
 	text-align: center;
+	color: var(--ub-content-tags-text-color);
+	background-color: var(--ub-content-tags-background-color);
+	&.ub-selected {
+		color: var(--ub-content-tags-active-text-color);
+		background-color: var(--ub-content-tags-active-background-color);
+	}
 }
 
 .ub-content-filter-category-name {

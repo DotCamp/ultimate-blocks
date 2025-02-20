@@ -284,6 +284,12 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 		});
 	}
+	const smoothScrollElements = document.querySelectorAll(
+		'[data-enablesmoothscroll="true"]',
+	);
+	smoothScrollElements.forEach((element) => {
+		element.style.scrollBehavior = "smooth";
+	});
 });
 
 window.onhashchange = function () {

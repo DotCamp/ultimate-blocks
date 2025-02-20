@@ -5,6 +5,7 @@
  * that are used across the project.
 */
 .ub-hide-label {
+	.components-base-control__label,
 	legend,
 	label {
 		display: none !important;

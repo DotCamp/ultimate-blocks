@@ -217,6 +217,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+  var smoothScrollElements = document.querySelectorAll('[data-enablesmoothscroll="true"]');
+  smoothScrollElements.forEach(function (element) {
+    element.style.scrollBehavior = "smooth";
+  });
 });
 window.onhashchange = function () {
   var sourceToC = document.querySelector(".ub_table-of-contents");

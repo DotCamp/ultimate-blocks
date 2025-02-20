@@ -6,7 +6,6 @@ import { Slider } from "./components";
 import { version_1_1_4 } from "./oldVersions";
 
 import { useEffect, useState } from "react";
-import { getStyles } from "./get-styles";
 import { __ } from "@wordpress/i18n";
 import { registerBlockType } from "@wordpress/blocks";
 import {
@@ -40,6 +39,11 @@ import {
 import { withSelect } from "@wordpress/data";
 import metadata from "./block.json";
 import { getParentBlock } from "../../common";
+import {
+	generateStyles,
+	getBackgroundColorVar,
+	getSpacingCss,
+} from "../utils/styling-helpers";
 const attributes = {
 	blockID: {
 		type: "string",
@@ -174,6 +178,11 @@ function ImageSliderMain(props) {
 			useNavigation,
 			align,
 			speed,
+			padding,
+			margin,
+			navigationColor,
+			paginationColor,
+			activePaginationColor,
 		},
 		setAttributes,
 		isSelected,
@@ -216,13 +225,31 @@ function ImageSliderMain(props) {
 	if (!isEmpty(align)) {
 		classes.push("align" + align);
 	}
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+	const imageSliderWrapperStyles = {
+		minHeight: `${30 + (imageArray.length ? sliderHeight : 200)}px`,
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+		"--swiper-navigation-color": navigationColor,
+		"--swiper-pagination-color": activePaginationColor,
+		"--swiper-inactive-pagination-color": paginationColor,
+		"--swiper-navigation-background-color": getBackgroundColorVar(
+			props.attributes,
+			"navigationBackgroundColor",
+			"navigationGradientColor",
+		),
+	};
 	const blockProps = useBlockProps({
 		id: `ub_image_slider_${blockID}`,
 		className: classes.join(" "),
-		style: {
-			minHeight: `${30 + (imageArray.length ? sliderHeight : 200)}px`,
-			...getStyles(props.attributes),
-		},
+		style: generateStyles(imageSliderWrapperStyles),
 	});
 	return (
 		<>

@@ -17,7 +17,7 @@ import {
 	ToggleControl,
 } from "@wordpress/components";
 import { useSelect } from "@wordpress/data";
-import { getStyles } from "./get-styles";
+import { generateStyles, getSpacingCss } from "../utils/styling-helpers";
 export function ExpandRoot(props) {
 	const {
 		block,
@@ -35,6 +35,8 @@ export function ExpandRoot(props) {
 		scrollOffset,
 		scrollTarget,
 		scrollTargetType,
+		padding,
+		margin,
 	} = attributes;
 	const blockProps = useBlockProps();
 	const rootBlock = getParentBlock(rootBlockClientId, "core/block");
@@ -75,7 +77,19 @@ export function ExpandRoot(props) {
 			isVisible: fullVersionVisibility,
 		});
 	}
-	const styles = getStyles(attributes);
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+
+	let styles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+	};
 	return (
 		<div {...blockProps}>
 			{isSelected && (
@@ -170,7 +184,7 @@ export function ExpandRoot(props) {
 					</InspectorControls>
 				</>
 			)}
-			<div className="ub-expand" style={styles}>
+			<div className="ub-expand" style={generateStyles(styles)}>
 				<InnerBlocks
 					templateLock={"all"}
 					template={[

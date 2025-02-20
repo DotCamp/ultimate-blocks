@@ -1,27 +1,17 @@
 <?php
-function ub_countdown_styles($attributes){
-    $unit_color = $attributes['unitColor'];
-    $countdown_color = $attributes['countdownColor'];
 
-    $styles = array(
-        "--ub-countdown-unit-color" => esc_attr($unit_color),
-		"--ub-countdown-digit-color" => esc_attr($countdown_color),
-    );
-
-	return Ultimate_Blocks\includes\generate_css_string( $styles );
-}
 function ub_filter_time_display($timeArray, $largestUnit, $smallestUnit){
     $timeUnits = ["week", "day", "hour", "minute", "second"];
     return array_slice($timeArray, array_search($largestUnit, $timeUnits),
     (array_search($smallestUnit, $timeUnits)-array_search($largestUnit, $timeUnits)+1) );
 }
 
-function ub_render_countdown_block($attributes){
+function ub_render_countdown_block($attributes, $_, $block){
     //used to display initial rendering
     extract($attributes);
-
+	$block_attrs = $block->parsed_block['attrs'];
     $timeUnits = ["week", "day", "hour", "minute", "second"];
-
+	$circle_size = isset($circleSize) ? $circleSize . 'px' : '70px';
     $timeLeft = $endDate - time();
     $seconds = $timeLeft % 60;
     $minutes = (($timeLeft - $seconds) % 3600) / 60;
@@ -52,7 +42,7 @@ function ub_render_countdown_block($attributes){
         function ub_generateCircle($label, $value, $limit, $color, $size){
             $circlePath = "M 50,50 m 0,-35 a 35,35 0 1 1 0,70 a 35,35 0 1 1 0,-70";
             $prefix = "ub_countdown_circle_";
-            return '<div class="' . $prefix . $label . '">
+            return '<div class="' . $prefix . $label . '" style="width: ' . esc_attr($size) . 'px; height: ' . esc_attr($size) . 'px;">
                         <svg height="' . esc_attr($size) . '" width="' . esc_attr($size) . '" viewBox="0 0 100 100">
                             <path class="' . $prefix . 'trail" d="' . $circlePath . '" stroke-width="3" ></path>
                             <path class="' . $prefix . 'path" d="'.$circlePath.'" stroke="' . esc_attr($color) .
@@ -75,10 +65,16 @@ function ub_render_countdown_block($attributes){
     '<p class="ub-countdown-unit">'.__( 'Minutes', 'ultimate-blocks' ).'</p>',
     '<p class="ub-countdown-unit">'.__( 'Seconds', 'ultimate-blocks' ).'</p>'];
 
-    $circularFormat = '<div class="ub_countdown_circular_container">'.
-                implode('', ub_filter_time_display($circularFormatValues, $largestUnit, $smallestUnit)  ).
-                implode('', ub_filter_time_display($circularFormatLabels, $largestUnit, $smallestUnit)  ).
-                    '</div>';
+	$circularFormatStyles = array(
+		'grid-template-columns' => implode(' ', array_fill(0, array_search($attributes['smallestUnit'], $timeUnits) - array_search($attributes['largestUnit'], $timeUnits) + 1, '1fr')) . ';',
+	);
+
+	$circularFormat = sprintf(
+		'<div class="ub_countdown_circular_container" style="%1$s">%2$s%3$s</div>',
+		Ultimate_Blocks\includes\generate_css_string($circularFormatStyles),
+		implode('', ub_filter_time_display($circularFormatValues, $largestUnit, $smallestUnit)),
+		implode('', ub_filter_time_display($circularFormatLabels, $largestUnit, $smallestUnit))
+	);
 
     if(!function_exists('ub_generateDigitArray')){
         function ub_generateDigitArray($value, $maxValue = 0){
@@ -112,10 +108,15 @@ function ub_render_countdown_block($attributes){
         '<span class="ub-countdown-unit">'.__( 'Minutes', 'ultimate-blocks' ).'</span>',
         '<span class="ub-countdown-unit">'.__( 'Seconds', 'ultimate-blocks' ).'</span>'];
 
-    $odometerFormat = '<div class="ub-countdown-odometer-container">'.
-        implode('<span></span>', ub_filter_time_display($odometerLabels, $largestUnit, $smallestUnit)).
-        implode('<span class="ub-countdown-separator">:</span>', ub_filter_time_display($odometerValues, $largestUnit, $smallestUnit))
-        .'</div>';
+	$odometerStyles = array(
+		'grid-template-columns' => implode(' auto ', array_fill(0, array_search($attributes['smallestUnit'], $timeUnits) - array_search($attributes['largestUnit'], $timeUnits) + 1, '1fr')) . ';'
+	);
+	$odometerFormat = sprintf(
+		'<div class="ub-countdown-odometer-container" style="%1$s">%2$s%3$s</div>',
+		Ultimate_Blocks\includes\generate_css_string($odometerStyles), //1
+		implode('<span></span>', ub_filter_time_display($odometerLabels, $largestUnit, $smallestUnit)), // 2
+		implode('<span class="ub-countdown-separator">:</span>', ub_filter_time_display($odometerValues, $largestUnit, $smallestUnit)) //3
+	);
 
     $selctedFormat = $defaultFormat;
 
@@ -128,17 +129,47 @@ function ub_render_countdown_block($attributes){
     else{
         $selectedFormat = $odometerFormat;
     }
-    $styles = ub_countdown_styles($attributes);
+	$unit_color = isset($attributes['unitColor']) ? $attributes['unitColor'] : '';
+	$countdown_color = isset($attributes['countdownColor']) ? $attributes['countdownColor'] : '';
+
+	$padding = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['padding']) ? $block_attrs['padding'] : array() );
+	$margin = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['margin']) ? $block_attrs['margin'] : array() );
+
+    $styles = array(
+        "--ub-countdown-unit-color" => $unit_color,
+		"--ub-countdown-digit-color" => $countdown_color,
+		'padding-top'        => isset($padding['top']) ? $padding['top'] : "",
+		'padding-left'       => isset($padding['left']) ? $padding['left'] : "",
+		'padding-right'      => isset($padding['right']) ? $padding['right'] : "",
+		'padding-bottom'     => isset($padding['bottom']) ? $padding['bottom'] : "",
+		'margin-top'         => !empty($margin['top']) ? $margin['top']  : "",
+		'margin-left'        => !empty($margin['left']) ? $margin['left']  : "",
+		'margin-right'       => !empty($margin['right']) ? $margin['right']  : "",
+		'margin-bottom'      => !empty($margin['bottom']) ? $margin['bottom']  : "",
+		'text-align' 		 => isset($attributes['messageAlign']) ? $attributes['messageAlign']  : '',
+    );
+
     if($timeLeft > 0){
-        return '<div style="' . $styles . '" '.($blockID === ''?'': 'id="ub_countdown_'. esc_attr($blockID) .'"' ).'class="wp-block-ub-countdown ub-countdown ub-countdown-wrapper'.
-                (isset($className)?' '.esc_attr($className):'').
-                '" data-expirymessage="'. esc_attr($expiryMessage) .'" data-enddate="'. esc_attr($endDate)
-                .'" data-largestUnit="'. esc_attr($largestUnit) .'" data-smallestunit="'. esc_attr($smallestUnit) .'">
-            '.$selectedFormat
-            .'</div>';
-    }
-    else return '<div class="wp-block-ub-count-down ub-countdown'.(isset($className) ? ' ' . esc_attr($className) : '').'" '.
-        ($blockID === ''?'style="text-align:'. esc_attr($messageAlign) .';' :'id="ub_countdown_'. esc_attr($blockID) .'"').'>'. wp_kses_post($expiryMessage) .'</div>';
+		return sprintf(
+			'<div style="%1$s" %2$s class="wp-block-ub-countdown ub-countdown ub-countdown-wrapper%3$s" data-expirymessage="%4$s" data-enddate="%5$s" data-largestUnit="%6$s" data-smallestunit="%7$s">%8$s</div>',
+			Ultimate_Blocks\includes\generate_css_string($styles),
+			($blockID === '' ? '' : 'id="ub_countdown_' . esc_attr($blockID) . '"'),
+			(isset($className) ? ' ' . esc_attr($className) : ''),
+			esc_attr($expiryMessage),
+			esc_attr($endDate),
+			esc_attr($largestUnit),
+			esc_attr($smallestUnit),
+			$selectedFormat
+		);
+		}
+	else {
+		return sprintf(
+			'<div class="wp-block-ub-countdown ub-countdown %1$s" %2$s>%3$s</div>',
+			(isset($className) ? ' ' . esc_attr($className) : ''),
+			($blockID === '' ? 'style="text-align:' . esc_attr($messageAlign) . ';"' : 'id="ub_countdown_' . esc_attr($blockID) . '"'),
+			wp_kses_post($expiryMessage)
+		);
+	}
 }
 
 function ub_register_countdown_block() {

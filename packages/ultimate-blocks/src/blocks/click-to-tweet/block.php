@@ -23,12 +23,13 @@ add_action( 'init', 'ub_register_meta' );
  * @return string
  *
  */
-function ub_render_click_to_tweet_block( $attributes ) {
+function ub_render_click_to_tweet_block( $attributes, $_, $block ) {
     extract($attributes);
-	$via = get_post_meta( get_the_ID(), 'ub_ctt_via', true );
+	$via = isset( $attributes['ubVia'] ) ? $attributes['ubVia'] : false;
 	$via = ( $via ) ? '&via=' .  mb_strimwidth( preg_replace( '/[^A-Za-z0-9_]/', '', $via ), 0, 15  ): false; //ensure that only valid Twitter usernames appear
-    $tweet = preg_replace('/<br><br>$/', '<br>', $ubTweet);
+    	$tweet = preg_replace('/<br><br>$/', '<br>', $ubTweet);
 	$tweet_url  = ( $tweet ) ? rawurlencode( preg_replace('/<.+?>/', '', str_replace("<br>","\n",$tweet) )) : false;
+	$block_attrs = $block->parsed_block['attrs'];
 
     /*$tweetFontSize = isset( $attributes['tweetFontSize'] ) ? "font-size:{$attributes['tweetFontSize']}" : "font-size: 20";
 	$tweetColor = isset( $attributes['tweetColor'] ) ? "color:{$attributes['tweetColor']}" : "color: #444444";
@@ -37,26 +38,41 @@ function ub_render_click_to_tweet_block( $attributes ) {
 
 	$permalink = esc_url( get_the_permalink() );
 	$url       = apply_filters( 'ub_click_to_tweet_url', "http://twitter.com/intent/tweet?&text={$tweet_url}&url={$permalink}{$via}" );
+	$padding = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['padding']) ? $block_attrs['padding'] : array() );
+	$margin  = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['margin']) ? $block_attrs['margin'] : array() );
 
-    $output = '';
-    if($blockID === ''){
-        $output .= sprintf('<div class="wp-block-ub-click-to-tweet ub_click_to_tweet%1$s" style="border-color: %2$s;">', (isset($className) ? ' ' . esc_attr($className) : ''), esc_attr($borderColor) );
-        $output .= sprintf( '<div class="ub_tweet" style="font-size: %1$spx; color: %2$s">', esc_attr($tweetFontSize), esc_attr($tweetColor) );
-    }
-    else{
-        $output .= sprintf('<div class="wp-block-ub-click-to-tweet ub_click_to_tweet%1$s" id="%2$s">', (isset($className) ? ' ' . esc_attr($className) : ''), esc_attr('ub_click_to_tweet_' . $blockID ));
-        $output .= sprintf( '<div class="ub_tweet">');
-    }
+	$wrapper_styles = array(
+		'padding-top'        => isset($padding['top']) ? $padding['top'] : "",
+		'padding-left'       => isset($padding['left']) ? $padding['left'] : "",
+		'padding-right'      => isset($padding['right']) ? $padding['right'] : "",
+		'padding-bottom'     => isset($padding['bottom']) ? $padding['bottom'] : "",
+		'margin-top'         => !empty($margin['top']) ? $margin['top']  : "",
+		'margin-left'        => !empty($margin['left']) ? $margin['left']  : "",
+		'margin-right'       => !empty($margin['right']) ? $margin['right']  : "",
+		'margin-bottom'      => !empty($margin['bottom']) ? $margin['bottom']  : "",
+		'border-color' 	 => isset($attributes['borderColor']) ? $attributes['borderColor'] : "",
+	);
 
-    $output .= $tweet;
-	$output .= sprintf('</div>');
-	$output .= sprintf( '<div class="ub_click_tweet">' );
-	$output .= sprintf( '<span>');
-	$output .= sprintf( '<i></i>');
-	$output .= sprintf( '<a target="_blank" href="%1$s">' . __( 'Click to Tweet', 'ultimate-blocks' ) . '</a>',  esc_url($url)  );
-	$output .= sprintf( '</span>');
-	$output .= sprintf( '</div>');
-    $output .= sprintf( '</div>');
+	$output = sprintf(
+		'<div class="wp-block-ub-click-to-tweet ub_click_to_tweet%1$s" %2$s style="%3$s">
+			<div class="ub_tweet" style="font-size: %4$spx; color: %5$s;">
+				%6$s
+			</div>
+			<div class="ub_click_tweet">
+				<span>
+					<i></i>
+					<a target="_blank" href="%7$s">' . __( 'Click to Tweet', 'ultimate-blocks' ) . '</a>
+				</span>
+			</div>
+		</div>',
+		(isset($className) ? ' ' . esc_attr($className) : ''), // 1
+		($blockID === '' ? '' : 'id="' . esc_attr('ub_click_to_tweet_' . $blockID) . '"'), //2
+		Ultimate_Blocks\includes\generate_css_string($wrapper_styles), //3
+		esc_attr($tweetFontSize), //4
+		esc_attr($tweetColor), //5
+		$tweet, //6
+		esc_url($url) //7
+	);
 
 	return $output;
 }

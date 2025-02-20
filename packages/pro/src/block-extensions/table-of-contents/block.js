@@ -6,7 +6,6 @@ import {
 } from "./icons";
 import React, { Component, Fragment } from "react";
 import { SpacingControl } from "../../components/StylingControls";
-import { getStyles } from "./get-styles";
 import {
   getDescendantBlocks,
   mergeRichTextArray,
@@ -55,6 +54,7 @@ import {
 import { select, dispatch, subscribe } from "@wordpress/data";
 import { __ } from "@wordpress/i18n";
 import { loadPromise, models } from "@wordpress/api";
+import { generateStyles, getSpacingCss } from "../../utils/styling-helpers";
 
 class OptionalParent extends Component {
   constructor(props) {
@@ -416,7 +416,9 @@ class TableOfContents extends Component {
   }
 
   componentWillUnmount() {
-    this.state.unsubscribe();
+    if (this.state.unsubscribe) {
+      this.state.unsubscribe();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -1159,6 +1161,8 @@ export class NewTableOfContents extends Component {
       hideStickyTOCOnMobile,
       stickyTOCWidth,
       linkToDivider,
+      padding,
+      margin,
     } = attributes;
 
     const {
@@ -1180,7 +1184,19 @@ export class NewTableOfContents extends Component {
       availableIcons.filter((i) => i.iconName.includes(iconSearchTerm)),
       20
     );
-    const styles = getStyles(attributes);
+    const paddingObj = getSpacingCss(padding);
+    const marginObj = getSpacingCss(margin);
+
+    let styles = {
+      paddingTop: paddingObj?.top,
+      paddingRight: paddingObj?.right,
+      paddingBottom: paddingObj?.bottom,
+      paddingLeft: paddingObj?.left,
+      marginTop: marginObj?.top,
+      marginRight: marginObj?.right,
+      marginBottom: marginObj?.bottom,
+      marginLeft: marginObj?.left,
+    };
 
     const createColorSetting = (attrKey, label) => ({
       value: attributes[attrKey],
@@ -1572,7 +1588,10 @@ export class NewTableOfContents extends Component {
         </Fragment>
       ),
       isSelected && blockControls(this.props),
-      <div id={`ub_table-of-contents-${blockID}`} style={styles}>
+      <div
+        id={`ub_table-of-contents-${blockID}`}
+        style={generateStyles(styles)}
+      >
         {editorDisplay(this.props, this.state, this.setState)}
       </div>,
     ];

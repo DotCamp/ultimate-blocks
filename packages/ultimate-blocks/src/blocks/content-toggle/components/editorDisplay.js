@@ -43,8 +43,9 @@ import {
 	ButtonGroup,
 	Dropdown,
 } from "@wordpress/components";
-import { getStyles } from "../get-styles";
+
 import { SpacingControl } from "../../components";
+import { generateStyles, getSpacingCss } from "../../utils/styling-helpers";
 export function OldPanelContent(props) {
 	const {
 		attributes,
@@ -222,6 +223,8 @@ export function PanelContent(props) {
 			toggleIcon,
 			border,
 			showOnlyOne,
+			padding,
+			margin,
 			align,
 		},
 		setAttributes,
@@ -577,7 +580,18 @@ export function PanelContent(props) {
 		{ value: "none", label: __("None", "ultimate-blocks") },
 		...availablePanels,
 	];
-	const styles = getStyles(props.attributes);
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+	const styles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+	};
 	return (
 		<div {...blockProps}>
 			<BlockControls group="block">
@@ -985,7 +999,7 @@ export function PanelContent(props) {
 			)}
 			<div
 				className={className}
-				style={styles}
+				style={generateStyles(styles)}
 				id={`ub-content-toggle-${blockID}`}
 			>
 				<InnerBlocks

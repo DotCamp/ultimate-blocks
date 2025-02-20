@@ -27,8 +27,8 @@ import {
 import Inspector from "./inspector";
 
 import { useEffect, useState } from "react";
-import { getStyles } from "./get-styles";
 import { getParentBlock } from "../../common";
+import { generateStyles, getSpacingCss } from "../utils/styling-helpers";
 
 // variables
 const iconSizes = {
@@ -212,6 +212,8 @@ function SocialShareMain(props) {
 		useCaptions,
 		addOutline,
 		orientation,
+		padding,
+		margin,
 	} = attributes;
 
 	const iconSize = iconSizes[attributes.iconSize];
@@ -251,7 +253,19 @@ function SocialShareMain(props) {
 			setAttributes({ blockID: block.clientId });
 		}
 	}, [block?.clientId]);
-	const styles = getStyles(attributes);
+	const paddingObj = getSpacingCss(padding);
+	const marginObj = getSpacingCss(margin);
+
+	let styles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+	};
 	return (
 		<div {...blockProps}>
 			{isSelected && (
@@ -271,7 +285,7 @@ function SocialShareMain(props) {
 			<div
 				id="ub-social-share-block-editor"
 				className={className}
-				style={styles}
+				style={generateStyles(styles)}
 			>
 				<SortableList
 					axis="x"

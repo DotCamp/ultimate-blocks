@@ -71,7 +71,7 @@ function generate_css_string( $styles ) {
 
      foreach ( $styles as $key => $value ) {
           if ( ! is_undefined( $value ) && false !== $value && trim( $value ) !== '' && trim( $value ) !== 'undefined undefined undefined' && ! empty( $value ) ) {
-               $css_string .= $key . ': ' . $value . '; ';
+               $css_string .= $key . ': ' . esc_attr( $value ) . '; ';
           }
      }
 
@@ -188,11 +188,9 @@ function strip_xss( $html ) {
 			}
 		}
 	}
-
 	$script_tags = $dom->getElementsByTagName( 'script' );
 	while ( $script_tags->length > 0 ) {
 		$script_tags->item( 0 )->parentNode->removeChild( $script_tags->item( 0 ) );
 	}
-
 	return $dom->saveHTML();
 }

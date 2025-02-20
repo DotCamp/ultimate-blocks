@@ -3,6 +3,7 @@
 namespace Ultimate_Blocks_Pro\Src\Block_Extensions\Expand\Inc;
 
 use Ultimate_Blocks_Pro\Inc\Common\Base\Block_Extension_Base;
+use Ultimate_Blocks_Pro\Src\Block_Extensions\Expand\Inc\Views\Expand_Extension_View;
 
 /**
  * Pro extension for expand block.
@@ -21,7 +22,7 @@ class Expand_Extension extends Block_Extension_Base {
 	 * @return string | null view class or null to use base component render
 	 */
 	public function get_view() {
-		return null;
+		return Expand_Extension_View::class;
 	}
 
 	/**
