@@ -51,7 +51,7 @@ function ubpro_image_slider_filter($block_content, $block){
             'margin-right'          			 	=> isset($margin['left']) ? $margin['left']  : "",
             'margin-bottom'         			 	=> isset($margin['right']) ? $margin['right']  : "",
             'margin-left'           			 	=> isset($margin['bottom']) ? $margin['bottom']  : "",
-            'min-height' 							=> (35 + $sliderHeight) . 'px;',
+            'min-height' 							=> (35 + $sliderHeight) . 'px',
         );
 
 	    $imageArray = isset($pics) ? (count($pics) > 0 ? $pics : json_decode($images, true)) : array();
@@ -79,16 +79,11 @@ function ubpro_image_slider_filter($block_content, $block){
             $classes[] =  esc_attr($className) ;
         }
 
-        $wrapper_attributes = get_block_wrapper_attributes(
-            array(
-                'class' => implode(' ', $classes),
-                'style' => CSS_Generator\generate_css_string($image_slider_wrapper_styles)
-            )
-        );
         return sprintf(
-            '<div %1$s %2$s data-swiper-data=\'{"speed":%3$d,"spaceBetween":%4$d,"slidesPerView":%5$d,"loop":%6$s,"pagination":{"el": %7$s , "type": "%8$s"%9$s},%10$s"keyboard": { "enabled": true },"effect": "%11$s"%12$s%13$s%14$s%15$s%16$s%17$s}\'>
-            <div class="swiper-wrapper">%18$s</div><div class="swiper-pagination"></div>%19$s</div>%20$s',
-            $wrapper_attributes,
+            '<div class="%1$s" style="%2$s" %3$s data-swiper-data=\'{"speed":%4$d,"spaceBetween":%5$d,"slidesPerView":%6$d,"loop":%7$s,"pagination":{"el": %8$s , "type": "%9$s"%10$s},%11$s"keyboard": { "enabled": true },"effect": "%12$s"%13$s%14$s%15$s%16$s%17$s%18$s}\'>
+            <div class="swiper-wrapper">%19$s</div><div class="swiper-pagination"></div>%20$s</div>%21$s',
+            implode(' ', $classes),
+            CSS_Generator\generate_css_string($image_slider_wrapper_styles),
             ($blockID === '' ? 'style="min-height: ' . (25 + (count($imageArray) > 0 ? $sliderHeight : 200)) . 'px;"' : 'id="ub_image_slider_' . $blockID . '"'),
             $speed,
             $spaceBetween,

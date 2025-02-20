@@ -88,7 +88,7 @@ function ub_render_tabbed_content_block($attributes, $contents, $block){
 			'--ub-tabbed-title-background-color' => ($tabStyle === 'underline' ? 'inherit' : ($activeTab === $key ? esc_attr($theme) : (isset($normalColor) ? esc_attr($normalColor) : 'inherit'))),
 			'--ub-tabbed-title-color' => ($activeTab === $key ? esc_attr($titleColor) : $attributes['normalTitleColor']),
 			'--ub-tabbed-active-title-color' => $attributes['titleColor'] ?: 'inherit',
-			'--ub-tabbed-active-title-background-color' => $attributes['theme'] ?: 'inherit',
+			'--ub-tabbed-active-title-background-color' => ($tabStyle === 'underline' ? 'inherit' : ($attributes['theme'] ?: 'inherit')),
 			'border-top-left-radius' => !empty( $block_attrs['tabButtonsBorderRadius']['topLeft'] ) ? esc_attr($block_attrs['tabButtonsBorderRadius']['topLeft']) . ';': "",
 			'border-top-right-radius' => !empty( $block_attrs['tabButtonsBorderRadius']['topRight'] ) ?  esc_attr($block_attrs['tabButtonsBorderRadius']['topRight']) . ';': "",
 			'border-bottom-left-radius' => !empty( $block_attrs['tabButtonsBorderRadius']['bottomLeft'] ) ?  esc_attr($block_attrs['tabButtonsBorderRadius']['bottomLeft']) . ';': "",
@@ -133,7 +133,7 @@ function ub_render_tabbed_content_block($attributes, $contents, $block){
 	);
 
 	return sprintf(
-		'<div class="wp-block-ub-tabbed-content-block %1$s%2$s %3$s-holder%4$s%5$s%6$s%7$s%8$s"%9$s%10$s style="%24$s">
+		'<div class="wp-block-ub-tabbed-content %1$s%2$s %3$s-holder%4$s%5$s%6$s%7$s%8$s"%9$s%10$s style="%24$s">
 			<div class="%3$s-tab-holder%11$s%12$s%13$s">
 				<div role="tablist" class="%3$s-tabs-title%14$s%15$s%16$s" style="%23$s">%17$s</div>
 			</div>

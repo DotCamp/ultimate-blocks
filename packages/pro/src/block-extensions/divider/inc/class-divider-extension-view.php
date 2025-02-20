@@ -56,7 +56,6 @@ class Divider_Extension_View implements I_Block_Extension_View {
 			'margin-right'          			 	=> isset($margin['left']) ? $margin['left']  : "",
 			'margin-bottom'         			 	=> isset($margin['right']) ? $margin['right']  : "",
 			'margin-left'           			 	=> isset($margin['bottom']) ? $margin['bottom']  : "",
-			'min-height' 							=> (35 + $sliderHeight) . 'px;',
 		);
 		$divider_styles_string = NS\CSS_Generator\generate_css_string($divider_styles);
 

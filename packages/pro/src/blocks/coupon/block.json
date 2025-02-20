@@ -246,10 +246,8 @@
      "supports": {
           "align": true
      },
-     "editorScript": "./index.js",
-     "editorStyle": "file:./index.css",
+     "editorScript": "ultimate-blocks-pro-blocks-js",
+     "editorStyle": "ultimate-blocks-pro-blocks-editor-css",
      "viewScript": "ub-coupon-frontend-script",
-     "style": [
-          "file:./style.css"
-     ]
+     "style": "ultimate-blocks-pro-blocks-frontend-css"
 }

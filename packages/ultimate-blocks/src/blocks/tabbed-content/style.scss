@@ -7,7 +7,6 @@
 @import "../../common";
 
 @mixin tab-vertical-wrap {
-	border: 1px solid lightgrey;
 	border-top-left-radius: 5px;
 	padding: 10px 15px;
 	border-right: 0;
@@ -19,7 +18,7 @@
 		color: #000000;
 	}
 }
-.wp-block-ub-tabbed-content-block {
+.wp-block-ub-tabbed-content {
 	.wp-block-ub-tabbed-content-tabs-content {
 		color: var(--ub-tab-content-color);
 		background: var(--ub-tab-content-background);
@@ -49,13 +48,33 @@
 		}
 	}
 
-	& .wp-block-ub-tabbed-content-tabs-content {
-		border: 1px solid lightgrey;
+	&:not(.wp-block-ub-tabbed-content-pills):not(
+			.wp-block-ub-tabbed-content-underline
+		) {
+		.wp-block-ub-tabbed-content-tabs-content {
+			border: 1px solid lightgrey;
+		}
+		.wp-block-ub-tabbed-content-tab-title-wrap,
+		.wp-block-ub-tabbed-content-tab-title-vertical-wrap {
+			border: 1px solid lightgrey;
+		}
 	}
-
-	& .wp-block-ub-tabbed-content-tab-title-wrap {
-		border: 1px solid lightgrey;
-		border-bottom: 0;
+	&:not(.wp-block-ub-tabbed-content-underline):not(.vertical-holder) {
+		.wp-block-ub-tabbed-content-tab-title-wrap,
+		.wp-block-ub-tabbed-content-tab-title-vertical-wrap {
+			border-bottom: 0 !important;
+		}
+	}
+	&.wp-block-ub-tabbed-content-underline {
+		.wp-block-ub-tabbed-content-tab-title-wrap,
+		.wp-block-ub-tabbed-content-tab-title-vertical-wrap {
+			&.active {
+				border-bottom: 5px solid var(--ub-tabbed-active-title-color);
+			}
+		}
+	}
+	& .wp-block-ub-tabbed-content-tab-title-wrap,
+	.wp-block-ub-tabbed-content-tab-title-vertical-wrap {
 		background: var(--ub-tabbed-title-background-color);
 		color: var(--ub-tabbed-title-color);
 		&.active {
@@ -86,6 +105,23 @@
 		&:focus {
 			overflow-x: auto;
 		}
+	}
+	&-tabs-title-vertical-tab {
+		@media (max-width: 699px) {
+			display: flex;
+			overflow-x: hidden;
+			&:hover,
+			&:focus {
+				overflow-x: auto;
+			}
+		}
+	}
+	&-tabs-title,
+	&-tabs-title-vertical-tab {
+		&:hover,
+		&:focus {
+			overflow-x: auto;
+		}
 		@media (max-width: 699px) {
 			&.ub-mobile-hide {
 				display: none;
@@ -102,6 +138,13 @@
 		padding: 25px;
 		&.vertical-content-width {
 			width: 79%;
+		}
+	}
+	&:not(.wp-block-ub-tabbed-content-pills):not(
+			.wp-block-ub-tabbed-content-underline
+		) {
+		.wp-block-ub-tabbed-content-tab-title-wrap {
+			border-right: 1px solid lightgrey;
 		}
 	}
 	&-tab-title {

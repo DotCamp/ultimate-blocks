@@ -1,9 +1,3 @@
-/**
- * Blocks
- */
-import "./blocks/coupon";
-import "./blocks/timeline";
-
 import { VisibilityControl, Animation } from "./extensions";
 import { isEmpty, isNumber } from "lodash";
 import React from "react";
