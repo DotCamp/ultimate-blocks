@@ -8,7 +8,7 @@
  * Plugin Name: Ultimate Blocks Pro
  * Description: Make Your Content Shine With Ultimate Blocks Pro.
  * Plugin URI:  https://ultimateblocks.com/
- * Version:     3.2.7
+ * Version:     3.2.8
  * Author:      Ultimate Blocks
  * Author URI:  https://ultimateblocks.com/
  * License: GPL3+
