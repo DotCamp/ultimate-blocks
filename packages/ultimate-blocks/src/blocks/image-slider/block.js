@@ -188,10 +188,13 @@ function ImageSliderMain(props) {
 		isSelected,
 		block,
 		rootBlockClientId,
-		proProps: { showThumbnails, showThumbnailsToggle, thumbnails, thumbSwiper },
+		proProps,
 	} = props;
-	//maybe use useEffect for some of the values here?
 
+	const { showThumbnails, showThumbnailsToggle, thumbnails, thumbSwiper } =
+		proProps || {};
+
+	//maybe use useEffect for some of the values here?
 	if (images && JSON.parse(images).length !== 0 && pics.length === 0) {
 		setAttributes({
 			pics: JSON.parse(images),
