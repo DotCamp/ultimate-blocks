@@ -188,8 +188,8 @@ function ImageSliderMain(props) {
 		isSelected,
 		block,
 		rootBlockClientId,
+		proProps: { showThumbnails, showThumbnailsToggle, thumbnails, thumbSwiper },
 	} = props;
-
 	//maybe use useEffect for some of the values here?
 
 	if (images && JSON.parse(images).length !== 0 && pics.length === 0) {
@@ -398,6 +398,7 @@ function ImageSliderMain(props) {
 									max={10}
 								/>
 							)}
+							{showThumbnailsToggle && showThumbnailsToggle}
 						</PanelBody>
 					</InspectorControls>
 					<InspectorControls group="styles">
@@ -595,6 +596,8 @@ function ImageSliderMain(props) {
 							wrapAround={wrapsAround}
 							pageDots={showPageDots}
 							speed={speed}
+							thumbSwiper={thumbSwiper}
+							showThumbnails={showThumbnails}
 							useNavigation={useNavigation}
 							paginationType={usePagination ? paginationType : "none"}
 							autoplay={autoplays ? autoplayDuration : 0}
@@ -723,6 +726,7 @@ function ImageSliderMain(props) {
 								/>
 							</form>
 						)}
+						{showThumbnails && thumbnails}
 					</>
 				)}
 			</div>

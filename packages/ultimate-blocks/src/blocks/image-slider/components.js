@@ -1,15 +1,20 @@
 import { useState } from "react";
 
-import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from "swiper";
+import SwiperCore, {
+	Navigation,
+	Pagination,
+	Scrollbar,
+	A11y,
+	Thumbs,
+} from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Thumbs]);
 
 export function Slider(props) {
 	const [currentSwiper, initializeSwiper] = useState(null);
 
 	const currentSlides = props.slides;
-
 	const customProps = {
 		slidesPerView: props.slidesPerView,
 		spaceBetween: props.spaceBetween,
@@ -26,6 +31,10 @@ export function Slider(props) {
 				disableOnInteraction: false,
 			},
 		}),
+		...(props.showThumbnails &&
+			props.thumbSwiper && {
+				thumbs: { swiper: props.thumbSwiper },
+			}),
 		effect: props.transition,
 	};
 
