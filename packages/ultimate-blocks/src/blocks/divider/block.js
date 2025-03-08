@@ -95,16 +95,50 @@ function DividerBlock(props) {
 		},
 		isSelected,
 		setAttributes,
-		className,
 		block,
-		getBlock,
-		getClientIdsWithDescendants,
 		rootBlockClientId,
 	} = props;
+
+	const dividerStyle =
+		orientation === "horizontal"
+			? {
+					marginTop: borderHeight + "px",
+					marginBottom: borderHeight + "px",
+				}
+			: {
+					width: "fit-content",
+					height: lineHeight,
+				};
+
+	const dividerWrapperStyles =
+		orientation === "horizontal"
+			? {
+					width: dividerWidth,
+					height: `${borderHeight}px`,
+				}
+			: {
+					width: borderSize + "px",
+					height: lineHeight,
+				};
+
+	const styles = {
+		paddingTop: paddingObj?.top,
+		paddingRight: paddingObj?.right,
+		paddingBottom: paddingObj?.bottom,
+		paddingLeft: paddingObj?.left,
+		marginTop: marginObj?.top,
+		marginRight: marginObj?.right,
+		marginBottom: marginObj?.bottom,
+		marginLeft: marginObj?.left,
+		...dividerWrapperStyles,
+	};
+
 	const blockProps = useBlockProps({
-		className: classNames(`ub-divider-orientation-${orientation}`, {
+		className: classNames(`ub_divider ub-divider-orientation-${orientation}`, {
 			[`align${align}`]: !isEmpty(align),
 		}),
+		["data-divider-alignment"]: alignment,
+		style: generateStyles(styles),
 	});
 	useEffect(() => {
 		if (blockID === "") {
@@ -122,30 +156,11 @@ function DividerBlock(props) {
 	}, [block?.clientId]);
 	const paddingObj = getSpacingCss(padding);
 	const marginObj = getSpacingCss(margin);
-	const styles = {
-		paddingTop: paddingObj?.top,
-		paddingRight: paddingObj?.right,
-		paddingBottom: paddingObj?.bottom,
-		paddingLeft: paddingObj?.left,
-		marginTop: marginObj?.top,
-		marginRight: marginObj?.right,
-		marginBottom: marginObj?.bottom,
-		marginLeft: marginObj?.left,
-	};
+
 	const borderName = orientation === "horizontal" ? "borderTop" : "borderLeft";
-	const dividerStyle =
-		orientation === "horizontal"
-			? {
-					marginTop: borderHeight + "px",
-					marginBottom: borderHeight + "px",
-					width: dividerWidth,
-				}
-			: {
-					width: "fit-content",
-					height: lineHeight,
-				};
+
 	return (
-		<div {...blockProps}>
+		<>
 			<BlockControls group="block">
 				<BlockAlignmentControl
 					value={align}
@@ -214,16 +229,19 @@ function DividerBlock(props) {
 								attributeKey="orientation"
 								label={__("Orientation", "ultimate-blocks")}
 							/>
-							<CustomToggleGroupControl
-								isAdaptiveWidth
-								options={AVAILABLE_JUSTIFICATIONS.slice(
-									0,
-									AVAILABLE_JUSTIFICATIONS.length - 1,
-								)}
-								attributeKey="alignment"
-								label={__("Alignment", "ultimate-blocks")}
-							/>
+							{(width < 100 || orientation === "vertical") && (
+								<CustomToggleGroupControl
+									isAdaptiveWidth
+									options={AVAILABLE_JUSTIFICATIONS.slice(
+										0,
+										AVAILABLE_JUSTIFICATIONS.length - 1,
+									)}
+									attributeKey="alignment"
+									label={__("Alignment", "ultimate-blocks")}
+								/>
+							)}
 						</PanelBody>
+						{props.iconControls && props.iconControls}
 					</InspectorControls>
 					<InspectorControls group="styles">
 						<PanelBody
@@ -268,6 +286,7 @@ function DividerBlock(props) {
 									},
 								]}
 							></PanelColorSettings>
+							{props.iconColorControl && props.iconColorControl}
 						</PanelBody>
 						<PanelBody
 							title={__("Dimension Settings", "ultimate-blocks")}
@@ -284,27 +303,22 @@ function DividerBlock(props) {
 								attrKey="margin"
 								label={__("Margin", "ultimate-blocks")}
 							/>
+							{props.iconSpacingControl && props.iconSpacingControl}
 						</PanelBody>
 					</InspectorControls>
 				</Fragment>
 			)}
-			<div className={className} style={generateStyles(styles)}>
+			<div {...blockProps}>
 				<div
-					className="ub_divider"
-					style={Object.assign(
-						{
-							[borderName]: `${borderSize}px ${borderStyle} ${borderColor}`,
-							...dividerStyle,
-						},
-						alignment === "left"
-							? { marginLeft: "0" }
-							: alignment === "right"
-								? { marginRight: "0" }
-								: {},
-					)}
+					className="ub_divider_line"
+					style={generateStyles({
+						[borderName]: `${borderSize}px ${borderStyle} ${borderColor}`,
+						...dividerStyle,
+					})}
 				/>
+				{props.iconElement && props.iconElement}
 			</div>
-		</div>
+		</>
 	);
 }
 

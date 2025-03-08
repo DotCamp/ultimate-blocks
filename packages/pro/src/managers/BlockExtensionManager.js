@@ -14,6 +14,7 @@ import deepmerge from "deepmerge";
 import SocialShareBlockExtension from "../block-extensions/social-share";
 import DividerBlockExtension from "../block-extensions/divider";
 import { useBlockProps } from "@wordpress/block-editor";
+import { generateStyles } from "../utils/styling-helpers";
 
 /**
  * Block extension manager.
@@ -120,27 +121,34 @@ class BlockExtensionManager extends ManagerBase {
       `ultimate-blocks-pro/filter-inspector-controls`,
       createHigherOrderComponent(
         (BlockEdit) => (props) => {
+          const { attributes } = props;
           const extensionInstance = this.#getExtensionInstance(props.name);
           if (extensionInstance) {
             const ExtensionComponent = extensionInstance.blockComponent();
             let classes = ["ub-pro-api-v2-wrapper"];
+            let styles = {};
 
             if (props.name === "ub/divider") {
-              if (!isEmpty(props.attributes.align)) {
-                classes.push("align" + props.attributes.align);
+              if (!isEmpty(attributes.align)) {
+                classes.push("align" + attributes.align);
               }
-              classes.push(
-                `ub-divider-orientation-${props.attributes.orientation}`
-              );
+              classes.push(`ub-divider-orientation-${attributes.orientation}`);
             } else if (props.name === "ub/content-toggle-block") {
-              if (!isEmpty(props.attributes.align)) {
-                classes.push("align" + props.attributes.align);
+              if (!isEmpty(attributes.align)) {
+                classes.push("align" + attributes.align);
               }
             }
-
+            if (props.name === "ub/divider") {
+              return <ExtensionComponent {...props} BlockEdit={BlockEdit} />;
+            }
             return (
-              <div {...useBlockProps({ className: classes.join(" ") })}>
-                <ExtensionComponent {...props} />
+              <div
+                {...useBlockProps({
+                  className: classes.join(" "),
+                  style: generateStyles(styles),
+                })}
+              >
+                <ExtensionComponent {...props} BlockEdit={BlockEdit} />
               </div>
             );
           }
