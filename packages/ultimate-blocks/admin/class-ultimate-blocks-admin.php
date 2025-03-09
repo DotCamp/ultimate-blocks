@@ -182,8 +182,8 @@ class Ultimate_Blocks_Admin {
 
 		if ( $hook !== $menu_page && $hook !== $ub_pro_page ) {
 			return;
-		}		
-		
+		}
+
 		wp_enqueue_script(
 			$this->plugin_name . '_registered_blocks',
 			trailingslashit( $this->plugin_url ) . 'dist/blocks.build.js',
@@ -467,7 +467,9 @@ class Ultimate_Blocks_Admin {
 		$ultimate_blocks_settings = wp_json_encode( get_option( 'ultimate_blocks', array() ) );
 		?>
 
-		<script> window.ultimate_blocks =<?php echo $ultimate_blocks_settings; ?> </script>
+		<script>
+			window.ultimate_blocks = <?php echo wp_json_encode( json_decode( $ultimate_blocks_settings, true ), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ); ?>;
+		</script>
 
 		<?php
 	}
@@ -491,7 +493,7 @@ class Ultimate_Blocks_Admin {
 	 */
 	public function update_new_extensions(){
 		$extensions = $this->extensions();
-		
+
 		update_option( 'ultimate_blocks_extensions', $extensions );
 	}
 	/**
@@ -642,7 +644,7 @@ class Ultimate_Blocks_Admin {
 			<div class="UltimateBlocks-review-notice notice notice-info">
 				<p style="font-size: 14px;">
 					<?php
-					_e(
+					esc_html_e(
 						'Hey,<br> I noticed that you have been using <strong>Ultimate Blocks Plugin</strong> for a while now - that’s awesome! Could you please do me a BIG favor and <b>give it a 5-star rating on WordPress</b>? Just to help us spread the word and boost our motivation. <br>~ Imtiaz Rayhan<br>~ Lead Developer, Ultimate Blocks.',
 						'ultimate-blocks'
 					);
@@ -664,7 +666,7 @@ class Ultimate_Blocks_Admin {
 					jQuery('.UltimateBlocks_HideReview_Notice').click(function () {
 						var data = {'action': 'UltimateBlocksReviewNoticeHide'};
 						jQuery.ajax({
-							url: "<?php echo admin_url( 'admin-ajax.php' ); ?>",
+							url: "<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>",
 							type: "post",
 							data: data,
 							dataType: "json",

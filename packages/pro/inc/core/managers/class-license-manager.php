@@ -76,7 +76,7 @@ class License_Manager {
 				<span style="font-weight: bold">Ultimate Blocks <span style="color: #F64646">PRO</span></span>.'
 			);
 
-			echo Admin_Notices_Manager::generate_notice_html( $message, Admin_Notices_Manager::WARNING );
+			echo Admin_Notices_Manager::generate_notice_html( esc_html($message), esc_html(Admin_Notices_Manager::WARNING) );
 		}
 	}
 

@@ -43,7 +43,7 @@ class Admin_Notices_Manager {
 	 * @return string notice html
 	 */
 	public static function generate_notice_html( $message, $type = self::INFO ) {
-		return sprintf( '<div class="notice is-dismissible %1$s"><p>%2$s</p></div>', esc_attr( $type ), $message );
+		return sprintf( '<div class="notice is-dismissible %1$s"><p>%2$s</p></div>', esc_attr( $type ), esc_html($message) );
 	}
 
 	/**
@@ -54,7 +54,7 @@ class Admin_Notices_Manager {
 	 */
 	public static function show_notice( $message, $type = self::INFO ) {
 		static::add_admin_action( function () use ( $message, $type ) {
-			echo static::generate_notice_html( $message, $type );
+			echo static::generate_notice_html( esc_html($message), esc_attr($type) );
 		} );
 	}
 }

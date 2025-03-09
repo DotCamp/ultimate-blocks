@@ -44,7 +44,7 @@ class Activator {
 		// Check PHP Version and deactivate & die if it doesn't meet minimum requirements.
 		if ( version_compare( PHP_VERSION, $min_php, '<' ) ) {
 			deactivate_plugins( plugin_basename( __FILE__ ) );
-			wp_die( 'This plugin requires a minmum PHP Version of ' . $min_php );
+			wp_die( sprintf( esc_html__( 'This plugin requires a minimum PHP Version of %s', 'ultimate-blocks-pro' ), esc_html( $min_php ) ) );
 		}
 
 		static::check_base_version();
@@ -122,7 +122,7 @@ class Activator {
 				'ultimate-blocks-pro' ), '<strong>Ultimate Blocks</strong>' );
 
 			// kill WordPress execution to prevent further freemius related errors and possible data corruption
-			wp_die( $message );
+			wp_die(esc_html( $message ));
 		}
 	}
 }

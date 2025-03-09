@@ -83,7 +83,7 @@ function ub_render_call_to_action_block($attributes, $_, $block) {
 		($openInNewTab ? 'blank' : 'self'), // 9
 		($addNofollow ? 'nofollow ' : '') . ($linkIsSponsored ? 'sponsored ' : '') . 'noopener noreferrer', // 10
 		($blockID === '' ? ' style="background-color: ' . esc_attr($buttonColor) . '; width: ' . esc_attr($buttonWidth) . 'px;"' : ''), // 11
-		($blockID === '' ? ' style="color: ' . $buttonTextColor . '; font-size: ' . esc_attr($buttonFontSize) . 'px;"' : ''), // 12
+		($blockID === '' ? ' style="color: ' . esc_attr($buttonTextColor) . '; font-size: ' . esc_attr($buttonFontSize) . 'px;"' : ''), // 12
 		wp_kses_post($ub_cta_button_text), // 13
 		 esc_attr( Ultimate_Blocks\includes\generate_css_string($cta_headline_styles) ), //14
 		 esc_attr( Ultimate_Blocks\includes\generate_css_string($cta_content_styles) ), //15

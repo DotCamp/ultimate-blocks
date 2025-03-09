@@ -70,7 +70,7 @@ class Version_Control_Upgrader_Skin extends WP_Upgrader_Skin {
 		if ( count( $this->errors ) > 0 ) {
 			header( 'Content-Type: text/plain-text' );
 
-			echo join( ',', $this->errors );
+			echo esc_html( join( ',', $this->errors ) );
 			die();
 		}
 	}

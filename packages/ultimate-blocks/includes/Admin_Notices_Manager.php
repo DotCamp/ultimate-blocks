@@ -49,7 +49,7 @@ class Admin_Notices_Manager {
 		}
 
 		static::add_admin_action( function () use ( $message, $type ) {
-			printf( '<div class="notice is-dismissible %1$s"><p>%2$s</p></div>', esc_attr( $type ), $message );
+			printf( '<div class="notice is-dismissible %1$s"><p>%2$s</p></div>', esc_attr( $type ), esc_html($message) );
 		} );
 	}
 }

@@ -148,6 +148,7 @@ That's it. You're done!
 
 * IMPROVE: Ensure compatibility of all free and pro blocks with Full Site Editing (FSE).
 * FIX: Warning issue in the divider block.
+* FIX: XSS issue.
 
 = 3.2.7 =
 
