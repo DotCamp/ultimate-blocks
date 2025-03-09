@@ -1,3 +1,0 @@
-## Dotcamp Promoter
-
-*IN DEVELOPMENT*
