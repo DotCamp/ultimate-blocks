@@ -1,5 +1,7 @@
 <?php
 
+use DotCamp\Promoter\Promotion;
+use DotCamp\Promoter\Promoter;
 use Ultimate_Blocks\includes\Editor_Data_Manager;
 use Ultimate_Blocks\includes\managers\Render_Assistant;
 use Ultimate_Blocks\includes\pro_manager\Pro_Manager;
@@ -63,6 +65,19 @@ class Ultimate_Blocks {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+		$this->initialize_promoter();
+
+	}
+
+	/**
+	 * Initialize DotCamp promoter.
+	 *
+	 * @return void
+	 */
+	private function initialize_promoter()
+	{
+		$promotion_01 = new Promotion( 'Ultimate Blocks', 'ultimate-blocks/ultimate-blocks.php', 'Tableberg', 'tableberg/tableberg.php', 'Seamlessly craft stunning, fully customizable tables with Tableberg.', array( 'core/table' ) );
+		new Promoter( ULTIMATE_BLOCKS_PLUGIN_FILE, array($promotion_01));
 	}
 
 	/**

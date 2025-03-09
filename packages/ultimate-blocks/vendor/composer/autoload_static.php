@@ -11,12 +11,26 @@ class ComposerStaticInit4b7b070f8154dbc6753933c96b230c13
         array (
             'Ultimate_Blocks\\' => 16,
         ),
+        'D' => 
+        array (
+            'DotCamp\\Promoter\\Tests\\' => 23,
+            'DotCamp\\Promoter\\' => 17,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'Ultimate_Blocks\\' => 
         array (
             0 => __DIR__ . '/../..' . '/',
+        ),
+        'DotCamp\\Promoter\\Tests\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dotcamp/promoter/__tests__',
+        ),
+        'DotCamp\\Promoter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dotcamp/promoter/inc',
+            1 => __DIR__ . '/..' . '/dotcamp/promoter/__tests__/php/unit/inc',
         ),
     );
 

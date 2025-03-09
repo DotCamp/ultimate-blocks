@@ -6,8 +6,15 @@
 	"require": {
 		"ext-dom": "*",
 		"ext-libxml": "*",
-		"ext-json": "*"
+		"ext-json": "*",
+		"dotcamp/promoter": "^1.0"
 	},
+	"repositories": [
+		{
+			"type": "path",
+			"url": "vendor/dotcamp/promoter"
+		}
+	],
 	"autoload": {
 		"psr-4": {
 			"Ultimate_Blocks\\": [
