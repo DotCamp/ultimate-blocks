@@ -15,7 +15,9 @@
     "lint": "@phpcs-check",
     "lint-fix": "@phpcs-fix",
     "phpcs-check": "phpcs -p --standard=.phpcs.xml --extensions=php __tests__ inc",
-    "phpcs-fix": "phpcbf -p --standard=.phpcs.xml --extensions=php __tests__ inc"
+    "phpcs-fix": "phpcbf -p --standard=.phpcs.xml --extensions=php __tests__ inc",
+    "release": "pnpm run production && composer run test && composer run lint-fix",
+    "compress": "git archive master --format zip --output ./dotcamp-promoter.zip"
   },
   "autoload": {
     "psr-4": {
