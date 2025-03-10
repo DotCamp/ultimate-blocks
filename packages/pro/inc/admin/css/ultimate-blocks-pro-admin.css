@@ -2002,12 +2002,6 @@ button.swiper-pagination-bullet {
 .ub_divider {
   position: relative;
 }
-.ub_divider.ub-divider-orientation-vertical[data-divider-alignment=left] {
-  margin-left: 0 !important;
-}
-.ub_divider.ub-divider-orientation-vertical[data-divider-alignment=right] {
-  margin-right: 0 !important;
-}
 .ub_divider_icon {
   position: absolute;
   line-height: 0;

@@ -40,4 +40,3 @@ function ubpro_image_slider_extend($slider_html, $block){
 
     return $slider_html;
 }
-add_filter('ubpro_image_slider_filter', 'ubpro_image_slider_extend', 10, 2);

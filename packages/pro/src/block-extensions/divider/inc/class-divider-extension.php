@@ -15,7 +15,7 @@ class Divider_Extension extends Block_Extension_Base {
 	 * @return string | null view class or null to use base component render
 	 */
 	public function get_view() {
-		return Divider_Extension_View::class;
+		// return Divider_Extension_View::class;
 	}
 
 	/**

@@ -130,14 +130,12 @@ function DividerBlock(props) {
 		marginRight: marginObj?.right,
 		marginBottom: marginObj?.bottom,
 		marginLeft: marginObj?.left,
-		...dividerWrapperStyles,
 	};
 
 	const blockProps = useBlockProps({
 		className: classNames(`ub_divider ub-divider-orientation-${orientation}`, {
 			[`align${align}`]: !isEmpty(align),
 		}),
-		["data-divider-alignment"]: alignment,
 		style: generateStyles(styles),
 	});
 	useEffect(() => {
@@ -229,17 +227,15 @@ function DividerBlock(props) {
 								attributeKey="orientation"
 								label={__("Orientation", "ultimate-blocks")}
 							/>
-							{(width < 100 || orientation === "vertical") && (
-								<CustomToggleGroupControl
-									isAdaptiveWidth
-									options={AVAILABLE_JUSTIFICATIONS.slice(
-										0,
-										AVAILABLE_JUSTIFICATIONS.length - 1,
-									)}
-									attributeKey="alignment"
-									label={__("Alignment", "ultimate-blocks")}
-								/>
-							)}
+							<CustomToggleGroupControl
+								isAdaptiveWidth
+								options={AVAILABLE_JUSTIFICATIONS.slice(
+									0,
+									AVAILABLE_JUSTIFICATIONS.length - 1,
+								)}
+								attributeKey="alignment"
+								label={__("Alignment", "ultimate-blocks")}
+							/>
 						</PanelBody>
 						{props.iconControls && props.iconControls}
 					</InspectorControls>
@@ -310,13 +306,22 @@ function DividerBlock(props) {
 			)}
 			<div {...blockProps}>
 				<div
-					className="ub_divider_line"
+					className="ub_divider_wrapper"
 					style={generateStyles({
-						[borderName]: `${borderSize}px ${borderStyle} ${borderColor}`,
-						...dividerStyle,
+						...dividerWrapperStyles,
+						position: "relative",
 					})}
-				/>
-				{props.iconElement && props.iconElement}
+					data-divider-alignment={alignment}
+				>
+					<div
+						className="ub_divider_line"
+						style={generateStyles({
+							[borderName]: `${borderSize}px ${borderStyle} ${borderColor}`,
+							...dividerStyle,
+						})}
+					/>
+					{props.iconElement && props.iconElement}
+				</div>
 			</div>
 		</>
 	);

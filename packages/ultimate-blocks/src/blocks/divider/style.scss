@@ -11,10 +11,21 @@
 	align-content: center;
 	//begin overrides for twenty twenty-one
 	border-bottom: none;
-	&.ub_divider:not(.alignwide):not(.alignfull):not(.alignleft):not(.alignright):not(.wp-block-separator):not(.woocommerce) {
-		max-width: initial;
-	}
 	//end overrides for twenty twenty-one
+
+	[data-divider-alignment="left"] {
+		margin-left: 0 !important;
+		margin-right: auto !important;
+	}
+
+	[data-divider-alignment="right"] {
+		margin-right: 0 !important;
+		margin-left: auto !important;
+	}
+	[data-divider-alignment="center"] {
+		margin-right: auto !important;
+		margin-left: auto !important;
+	}
 }
 
 .entry-content.entry-content .ub_divider {
