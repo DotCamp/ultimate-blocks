@@ -1,14 +1,11 @@
 <?php
 
 
-use Ultimate_Blocks;
-use Ultimate_Blocks_Pro\Inc\Common\Interfaces\I_Block_Extension_View;
 use Ultimate_Blocks_Pro as NS;
-use Ultimate_Blocks_Pro\Ultimate_Blocks_Pro;
 use Ultimate_Blocks_Pro_IconSet;
 use function esc_attr;
 
-function ubpro_render_divider_block( $content, $attributes, $block){
+function ubpro_render_divider_block( $_, $attributes, $block){
     require_once( trailingslashit( NS\ULTIMATE_BLOCKS_PRO_DIR ) . 'src/icons.php' );
 
 		extract( $attributes );
@@ -17,32 +14,10 @@ function ubpro_render_divider_block( $content, $attributes, $block){
 
 		$is_horizontal 	= $orientation === 'horizontal';
 		$className     	= isset( $className ) ? esc_attr( $className ) : '';
-		$border_size   	= esc_attr( $borderSize . 'px' );
 		$border_height 	= $is_horizontal ? esc_attr( $borderHeight . 'px' ) : esc_attr( $lineHeight );
 		$border_color  	= esc_attr( $borderColor );
-		$border_style  	= esc_attr( $borderStyle );
-		$alignment     	= esc_attr( $alignment );
-		$divider_width      = isset($attributes['isWidthControlChanged']) && $attributes['isWidthControlChanged'] && isset($attributes['dividerWidth']) ? esc_attr($attributes['dividerWidth']) : esc_attr($attributes['width'] . '%');
-		$line_width    	= $is_horizontal ? $divider_width : $border_size;
 		$horizontal_spacing = $is_horizontal ? "margin-top: $border_height; margin-bottom: $border_height;" : ""; 
-		$border_name 	  	= $is_horizontal ? 'border-top' : 'border-left';
-		$divider_style 	= $is_horizontal ? '' : 'height:100%;';
 		$align 			= isset($align) ? ' align' . $align : '';
-
-		$margin 			 	= NS\CSS_Generator\get_spacing_css( isset($block_attrs['margin']) ? $block_attrs['margin'] : array() );
-        $padding 			 	= NS\CSS_Generator\get_spacing_css( isset($block_attrs['padding']) ? $block_attrs['padding'] : array() );
-
-		$divider_styles = array(
-			'padding-top'           			 	=> isset($padding['top']) ? $padding['top'] : "",
-			'padding-left'          			 	=> isset($padding['left']) ? $padding['left'] : "",
-			'padding-right'         			 	=> isset($padding['right']) ? $padding['right'] : "",
-			'padding-bottom'        			 	=> isset($padding['bottom']) ? $padding['bottom'] : "",
-			'margin-top'            			 	=> isset($margin['top']) ? $margin['top']  : "",
-			'margin-right'          			 	=> isset($margin['left']) ? $margin['left']  : "",
-			'margin-bottom'         			 	=> isset($margin['right']) ? $margin['right']  : "",
-			'margin-left'           			 	=> isset($margin['bottom']) ? $margin['bottom']  : "",
-		);
-		$divider_styles_string = NS\CSS_Generator\generate_css_string($divider_styles);
 
 		// need to check for both values for compatibility with older versions of plugin
 		if ( isset( $icon ) && $icon !== '' ) {
