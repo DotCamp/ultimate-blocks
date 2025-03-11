@@ -118,6 +118,7 @@ function ExpandPortion(props) {
 		updateBlockAttributes,
 		getBlock,
 		getBlockRootClientId,
+		ConditionalWrapperContent,
 	} = props;
 	const { clickText, displayType, isVisible, toggleAlign } = attributes;
 	const blockProps = useBlockProps();
@@ -158,13 +159,18 @@ function ExpandPortion(props) {
 					displayType === "full" && !isVisible ? " ub-hide" : ""
 				}`}
 			>
-				<InnerBlocks
-					templateLock={false}
-					renderAppender={() => <InnerBlocks.ButtonBlockAppender />}
-				/>
+				{ConditionalWrapperContent && ConditionalWrapperContent}
+				{!ConditionalWrapperContent && (
+					<InnerBlocks
+						templateLock={false}
+						renderAppender={() => <InnerBlocks.ButtonBlockAppender />}
+					/>
+				)}
 				<RichText
+					tagName="a"
 					style={{ textAlign: toggleAlign }} //attribute from parent can't be directly used
 					value={clickText}
+					className="ub-expand-toggle-button"
 					onChange={(value) => setAttributes({ clickText: value })}
 					placeholder={__(
 						`Text for show ${displayType === "full" ? "less" : "more"} button`,

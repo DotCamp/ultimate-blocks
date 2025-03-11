@@ -10,7 +10,6 @@ import {
 import { SpacingControl } from "../components";
 import {
 	PanelBody,
-	PanelRow,
 	SelectControl,
 	RangeControl,
 	TextControl,
@@ -26,6 +25,10 @@ export function ExpandRoot(props) {
 		setAttributes,
 		isSelected,
 		rootBlockClientId,
+		fadeControl,
+		buttonColorControl,
+		buttonSpacingControl,
+		buttonStyles,
 	} = props;
 
 	const {
@@ -89,6 +92,7 @@ export function ExpandRoot(props) {
 		marginRight: marginObj?.right,
 		marginBottom: marginObj?.bottom,
 		marginLeft: marginObj?.left,
+		...(buttonStyles || {}),
 	};
 	return (
 		<div {...blockProps}>
@@ -96,16 +100,12 @@ export function ExpandRoot(props) {
 				<>
 					<InspectorControls group="settings">
 						<PanelBody title={__("Scroll Settings")}>
-							<PanelRow>
-								<label htmlFor="ub_expand_toggle_display">
-									{__("Allow scrolling")}
-								</label>
-								<ToggleControl
-									id="ub_expand_toggle_display"
-									checked={allowScroll}
-									onChange={() => setAttributes({ allowScroll: !allowScroll })}
-								/>
-							</PanelRow>
+							<ToggleControl
+								label={__("Allow scrolling", "ultimate-blocks")}
+								id="ub_expand_toggle_display"
+								checked={allowScroll}
+								onChange={() => setAttributes({ allowScroll: !allowScroll })}
+							/>
 							{allowScroll && (
 								<>
 									<SelectControl
@@ -162,8 +162,10 @@ export function ExpandRoot(props) {
 									)}
 								</>
 							)}
+							{fadeControl && fadeControl}
 						</PanelBody>
 					</InspectorControls>
+					{buttonColorControl && buttonColorControl}
 					<InspectorControls group="styles">
 						<PanelBody
 							title={__("Dimension Settings", "ultimate-blocks")}
@@ -180,6 +182,7 @@ export function ExpandRoot(props) {
 								attrKey="margin"
 								label={__("Margin", "ultimate-blocks")}
 							/>
+							{buttonSpacingControl && buttonSpacingControl}
 						</PanelBody>
 					</InspectorControls>
 				</>

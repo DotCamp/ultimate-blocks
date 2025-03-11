@@ -1992,13 +1992,6 @@ button.swiper-pagination-bullet {
           mask-image: linear-gradient(to top, transparent, #000000 95%);
 }
 
-#ub_expand_fade_option_container {
-  padding: 16px;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
 .ub_divider {
   position: relative;
 }
