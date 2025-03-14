@@ -14,7 +14,6 @@ use Ultimate_Blocks_Pro\Src\Block_Extensions\Content_Toggle\Inc\Content_Toggle_E
 use Ultimate_Blocks_Pro\Src\Block_Extensions\Content_Toggle\Inc\Content_Toggle_Panel_Extension;
 use Ultimate_Blocks_Pro\Src\Block_Extensions\Divider\Inc\Divider_Extension;
 use Ultimate_Blocks_Pro\Src\Block_Extensions\Expand\Inc\Expand_Extension;
-use Ultimate_Blocks_Pro\Src\Block_Extensions\Expand\Inc\Expand_Portion_Extension;
 use Ultimate_Blocks_Pro\Src\Block_Extensions\Review\Inc\Review_Block_Extension;
 use Ultimate_Blocks_Pro\Src\Block_Extensions\Tabbed_Content\Inc\Tabbed_Content_Extension;
 use Ultimate_Blocks_Pro as NS;
@@ -47,7 +46,6 @@ class Block_Extension_Manager {
 		Tabbed_Content_Extension::class,
 		Divider_Extension::class,
 		Expand_Extension::class,
-		Expand_Portion_Extension::class,
 	);
 
 	/**

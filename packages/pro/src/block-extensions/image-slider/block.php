@@ -30,8 +30,7 @@ function ubpro_image_slider_extend($slider_html, $block){
     foreach ($imageArray as $image) {
         $thumbs .= '<img class="swiper-slide" src="' . esc_url($image['url']) . '">';
     }
-
-    if ($showThumbnails === true) {
+    if (isset($showThumbnails) && $showThumbnails === true) {
         $slider_html .= sprintf(
             '<div class="ub_image_slider_thumbs swiper-container" data-swiper-data=\'{"slidesPerView": 4, "freeMode": true, "watchSlidesProgress": true, "watchSlidesVisibility": true}\'><div class="swiper-wrapper">%1$s</div></div>',
             $thumbs

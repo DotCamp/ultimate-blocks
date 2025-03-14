@@ -18,18 +18,21 @@ function ub_render_expand_portion_block($attributes, $content){
 		array(
 			'class' => join(' ', $classNames),
 			'id'    => ($parentID === '' ? '' : "ub-expand-full-" . $parentID),
-			'role'  => 'button',
-			'aria-expanded' => 'false',
-			'aria-controls' => ($parentID === '' ? '' : "ub-expand-full-" . $parentID),
-			'tabindex' => '0',
 			'style' => Ultimate_Blocks\includes\generate_css_string($styles),
 		)
 	);
 
+	$filtered_content = apply_filters('ub_expand_portion_fade_content', $content, $attributes);
+
 	return sprintf(
-		'<div %1$s>%2$s<a class="ub-expand-toggle-button">%3$s</a></div>',
+		'<div %1$s>
+			%2$s
+			<a class="ub-expand-toggle-button" role="button">
+				%3$s
+			</a>
+		</div>',
 		$wrapper_attributes, // 1
-		$content, // 2
+		$filtered_content, // 2
 		$clickText // 3
 	);
 }
