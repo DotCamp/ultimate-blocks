@@ -66,6 +66,7 @@ function ub_render_expand_block($attributes, $content, $block){
 
 	$padding = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['padding']) ? $block_attrs['padding'] : array() );
 	$margin  = Ultimate_Blocks\includes\get_spacing_css( isset($block_attrs['margin']) ? $block_attrs['margin'] : array() );
+
 	$styles  = array(
 		'padding-top'        => isset($padding['top']) ? $padding['top'] : "",
 		'padding-left'       => isset($padding['left']) ? $padding['left'] : "",
@@ -78,6 +79,11 @@ function ub_render_expand_block($attributes, $content, $block){
 	);
 	$classNames = array('wp-block-ub-expand', 'ub-expand');
 
+	$pro_styles = apply_filters('ub_expand_styles', $styles, $block_attrs);
+
+	if(!empty($pro_styles)){
+		$styles = array_merge($styles, $pro_styles);
+	}
 
 	if (isset($className)) {
 		$classNames[] = $className;
