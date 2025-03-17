@@ -209,6 +209,9 @@ const withInspectorControls = createHigherOrderComponent(
       } else if (targetBlockName === "ub/table-of-contents-block") {
         classes.push("ub_table-of-contents");
       }
+      if (props.name === "ub/table-of-contents-block") {
+        return <ExtensionBlock {...props} BlockEdit={BlockEdit} />;
+      }
       return (
         <div
           {...useBlockProps({ className: classes.join(" "), style: styles })}

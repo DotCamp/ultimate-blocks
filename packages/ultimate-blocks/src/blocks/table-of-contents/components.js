@@ -13,6 +13,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import filterDiacritics from "./removeDiacritics";
 import SavedStylesInspector from "$Inc/components/SavedStyles/SavedStylesInspector";
 import { SpacingControl } from "../components";
+import { Disabled } from "@wordpress/components";
 
 library.add(faEye, faEyeSlash);
 
@@ -514,8 +515,15 @@ class TableOfContents extends Component {
 	}
 
 	render() {
-		const { allowedHeaders, blockProp, style, numColumns, listStyle } =
-			this.props;
+		const {
+			allowedHeaders,
+			blockProp,
+			style,
+			numColumns,
+			listStyle,
+			listIcon,
+		} = this.props;
+		const { parseProList } = blockProp;
 
 		const { isSelected } = blockProp;
 
@@ -667,14 +675,21 @@ class TableOfContents extends Component {
 					className={`ub_table-of-contents-container ub_table-of-contents-${numColumns}-column`}
 				>
 					{listStyle === "numbered" ? (
-						<ol>{parseList(makeHeaderArray(headers))}</ol>
+						<ol>
+							{parseProList
+								? parseProList(makeHeaderArray(headers), currentlyEditedItem)
+								: parseList(makeHeaderArray(headers))}
+						</ol>
 					) : (
 						<ul
+							className={listIcon ? "fa-ul" : null}
 							style={{
 								listStyle: listStyle === "plain" ? "none" : null,
 							}}
 						>
-							{parseList(makeHeaderArray(headers))}
+							{parseProList
+								? parseProList(makeHeaderArray(headers), currentlyEditedItem)
+								: parseList(makeHeaderArray(headers))}
 						</ul>
 					)}
 				</div>
@@ -692,7 +707,15 @@ class TableOfContents extends Component {
 }
 
 export const inspectorControls = (props) => {
-	const { attributes, setAttributes } = props;
+	const {
+		attributes,
+		setAttributes,
+		stickyControl,
+		savedStylePro,
+		toggleButtonTypeControl,
+		iconControlPro,
+	} = props;
+
 	const {
 		allowedHeaders,
 		showList,
@@ -715,6 +738,8 @@ export const inspectorControls = (props) => {
 		showText,
 		hideText,
 		linkToDivider,
+		toggleButtonType,
+		isSticky,
 	} = attributes;
 
 	const { updateBlockAttributes } =
@@ -741,6 +766,14 @@ export const inspectorControls = (props) => {
 						),
 					]
 				: []),
+			...(isSticky
+				? [
+						createColorSetting(
+							"stickyButtonIconColor",
+							__("Sticky Button Icon Color", "ultimate-blocks-pro"),
+						),
+					]
+				: []),
 		];
 
 		return settings.filter((setting) => Object.keys(setting).length > 0);
@@ -749,6 +782,7 @@ export const inspectorControls = (props) => {
 	return (
 		<>
 			<InspectorControls group="settings">
+				{savedStylePro && savedStylePro}
 				<PanelBody title={__("Allowed Headings")}>
 					<div className="ub_toc_heading_selection">
 						{allowedHeaders.map((a, i) => (
@@ -768,7 +802,6 @@ export const inspectorControls = (props) => {
 						))}
 					</div>
 				</PanelBody>
-
 				<PanelBody title={__("Layout")} initialOpen={false}>
 					<PanelRow>
 						<p>{__("Columns")}</p>
@@ -819,6 +852,8 @@ export const inspectorControls = (props) => {
 							/>
 						</ToolbarGroup>
 					</PanelRow>
+					<br></br>
+					{iconControlPro && iconControlPro}
 				</PanelBody>
 				<PanelBody title={__("Collapsible")} initialOpen={false}>
 					<ToggleControl
@@ -835,16 +870,22 @@ export const inspectorControls = (props) => {
 					/>
 					{allowToCHiding && (
 						<>
-							<TextControl
-								label={__("Show text", "ultimate-blocks")}
-								value={showText}
-								onChange={(showText) => setAttributes({ showText })}
-							/>
-							<TextControl
-								label={__("Hide text", "ultimate-blocks")}
-								value={hideText}
-								onChange={(hideText) => setAttributes({ hideText })}
-							/>
+							{!toggleButtonType ||
+								(toggleButtonType && toggleButtonType === "text" && (
+									<>
+										<TextControl
+											label={__("Show text", "ultimate-blocks")}
+											value={showText}
+											onChange={(showText) => setAttributes({ showText })}
+										/>
+										<TextControl
+											label={__("Hide text", "ultimate-blocks")}
+											value={hideText}
+											onChange={(hideText) => setAttributes({ hideText })}
+										/>
+									</>
+								))}
+
 							<ToggleControl
 								label={__("Initial Show", "ultimate-blocks")}
 								id="ub_show_toc"
@@ -857,6 +898,7 @@ export const inspectorControls = (props) => {
 								checked={hideOnMobile}
 								onChange={() => setAttributes({ hideOnMobile: !hideOnMobile })}
 							/>
+							{toggleButtonTypeControl && toggleButtonTypeControl}
 						</>
 					)}
 				</PanelBody>
@@ -924,12 +966,16 @@ export const inspectorControls = (props) => {
 						}}
 					/>
 				</PanelBody>
+				{stickyControl && stickyControl}
 				<PanelBody title={__("Additional")} initialOpen={false}>
-					<ToggleControl
-						label={__("Link to divider", "ultimate-blocks")}
-						checked={linkToDivider}
-						onChange={() => setAttributes({ linkToDivider: !linkToDivider })}
-					/>
+					<Disabled isDisabled={isSticky} style={{ marginBottom: "24px" }}>
+						<ToggleControl
+							label={__("Link to divider", "ultimate-blocks")}
+							checked={linkToDivider}
+							onChange={() => setAttributes({ linkToDivider: !linkToDivider })}
+						/>
+					</Disabled>
+
 					<ToggleControl
 						label={__("Romanize anchor links", "ultimate-blocks")}
 						id="ub_toc_enable_latin_conversion"
@@ -1042,7 +1088,16 @@ export const blockControls = (props) => {
 };
 
 export const editorDisplay = (props) => {
-	const { setAttributes, canRemoveItemFocus, toggleCanRemoveItemFocus } = props;
+	const {
+		setAttributes,
+		canRemoveItemFocus,
+		toggleCanRemoveItemFocus,
+		hideElementPro,
+		listIcon,
+		toggleButtonType,
+		styleTagPro,
+	} = props;
+
 	const {
 		links,
 		title,
@@ -1088,24 +1143,32 @@ export const editorDisplay = (props) => {
 				</div>
 				{allowToCHiding && (
 					<div id="ub_table-of-contents-header-toggle">
-						<div id="ub_table-of-contents-toggle" style={{ color: titleColor }}>
-							[
-							<a
-								className="ub_table-of-contents-toggle-link"
-								href="#"
-								style={{ color: titleColor }}
-								onClick={() => setAttributes({ showList: !showList })}
-							>
-								{showList ? hideText || __("hide") : showText || __("show")}
-							</a>
-							]
-						</div>
+						{!toggleButtonType ||
+							(toggleButtonType && toggleButtonType === "text" && (
+								<div
+									id="ub_table-of-contents-toggle"
+									style={{ color: titleColor }}
+								>
+									[
+									<a
+										className="ub_table-of-contents-toggle-link"
+										href="#"
+										style={{ color: titleColor }}
+										onClick={() => setAttributes({ showList: !showList })}
+									>
+										{showList ? hideText || __("hide") : showText || __("show")}
+									</a>
+									]
+								</div>
+							))}
+						{hideElementPro && hideElementPro}
 					</div>
 				)}
 			</div>
 			{showList && (
 				<TableOfContents
 					listStyle={listStyle}
+					listIcon={listIcon ? listIcon : ""}
 					numColumns={numColumns}
 					allowedHeaders={allowedHeaders}
 					headers={links && JSON.parse(links)}
@@ -1114,10 +1177,13 @@ export const editorDisplay = (props) => {
 					removeDiacritics={removeDiacritics}
 					canRemoveItemFocus={canRemoveItemFocus}
 					itemFocusRemoved={() => toggleCanRemoveItemFocus(false)}
-					style={{ backgroundColor: listBackgroundColor }}
+					style={{ backgroundColor: listBackgroundColor, color: listColor }}
+					toggleButtonType={toggleButtonType}
 				/>
 			)}
-			{
+			{styleTagPro ? (
+				styleTagPro
+			) : (
 				<style
 					dangerouslySetInnerHTML={{
 						__html: `#block-${blockID} .ub_table-of-contents-container li{
@@ -1128,7 +1194,7 @@ export const editorDisplay = (props) => {
 						}`,
 					}}
 				/>
-			}
+			)}
 		</>
 	);
 };

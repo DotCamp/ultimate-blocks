@@ -34,7 +34,7 @@ class Ultimate_Blocks_Responsive_Control  {
 
         // Remove empty classes
         $classes = array_filter($classes);
-        
+
         // Find the first occurrence of the class attribute in the HTML content
         preg_match('/class=["\']([^"\']*)["\']/', $content, $matches);
         // If there are matches, update the first occurrence of the class attribute

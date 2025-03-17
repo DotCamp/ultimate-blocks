@@ -263,17 +263,18 @@ registerBlockType(metadata.name, {
 				showList ? "" : " ub_table-of-contents-collapsed"
 			}`,
 			style: generateStyles(styles),
-			id: `ub_table-of-contents-${blockID}`,
 		});
 		return [
 			isSelected && inspectorControls(props),
 			isSelected && blockControls(props),
 			<div {...blockProps}>
-				{editorDisplay({
-					...props,
-					canRemoveItemFocus,
-					toggleCanRemoveItemFocus,
-				})}
+				<div id={`ub_table-of-contents-${blockID}`}>
+					{editorDisplay({
+						...props,
+						canRemoveItemFocus,
+						toggleCanRemoveItemFocus,
+					})}
+				</div>
 			</div>,
 		];
 	}),
