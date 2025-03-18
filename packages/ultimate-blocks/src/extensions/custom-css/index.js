@@ -1,6 +1,5 @@
 import { __ } from "@wordpress/i18n";
 import { assign, isEmpty } from "lodash";
-import { useEffect } from "@wordpress/element";
 import { addFilter } from "@wordpress/hooks";
 import { createHigherOrderComponent } from "@wordpress/compose";
 import Inspector from "./inspector";
@@ -44,9 +43,6 @@ const withAdvanceControls = createHigherOrderComponent((BlockEdit) => {
 		if (!isUbBlock(props.name)) {
 			return <BlockEdit {...props} />;
 		}
-		// useEffect(() => {
-		// 	props.setAttributes({ blockID: props.clientId });
-		// }, [props.clientId]);
 		return (
 			<>
 				<BlockEdit {...props} />
