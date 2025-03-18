@@ -251,8 +251,32 @@ function ubpro_table_of_contents_filter($block_content, $block){
         $list_container_styles = array(
             'background-color' => isset($attributes['listBackgroundColor']) ? $attributes['listBackgroundColor'] : '',
         );
-        return sprintf(
-            '<div %1$s class="wp-block-ub-table-of-contents-block ub_table-of-contents%2$s%3$s%22$s" style="%21$s" %4$s %5$s data-showtext="%6$s" data-hidetext="%7$s" data-scrolltype="%8$s"%9$s%10$s%11$s data-initiallyhideonmobile="%12$s" data-initiallyshow="%13$s">%14$s<div class="ub_table-of-contents-extra-container" style="%20$s"><div class="ub_table-of-contents-container ub_table-of-contents-%15$s-column %16$s">%17$s%18$s</div></div></div>',
+          return sprintf(
+            '<div
+                %1$s
+                class="wp-block-ub-table-of-contents-block ub_table-of-contents%2$s%3$s%22$s"
+                style="%21$s"
+                %4$s
+                %5$s
+                data-showtext="%6$s"
+                data-hidetext="%7$s"
+                data-scrolltype="%8$s"
+                %9$s
+                %10$s
+                %11$s
+                data-initiallyhideonmobile="%12$s"
+                data-initiallyshow="%13$s"
+            >
+                %14$s
+                <div
+                    class="ub_table-of-contents-extra-container"
+                    style="%20$s"
+                >
+                    <div
+                        class="ub_table-of-contents-container ub_table-of-contents-%15$s-column %16$s"
+                    >%17$s%18$s</div>
+                </div>
+            </div>',
             ($is_sticky ? 'data-is_sticky="true"' : 'data-is_sticky="false"'), //1
             (isset($className) ? ' ' . esc_attr($className) : ''), //2
             (!$showList && strlen($title) > 0 ? ' ub_table-of-contents-collapsed' : ''), //3
