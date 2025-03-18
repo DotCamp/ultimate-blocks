@@ -7,7 +7,7 @@
 class Ultimate_Blocks_Custom_CSS  {
     public function __construct(){
         add_filter( "render_block", array( $this, 'ub_render_custom_css' ), 10, 2 );
-        
+
         // Rendering styles for header.
 		add_action(
 			'wp_head',
@@ -24,7 +24,7 @@ class Ultimate_Blocks_Custom_CSS  {
 			}
 		);
     }
-    
+
      /**
       * Will minify the given css
       *
@@ -62,7 +62,7 @@ class Ultimate_Blocks_Custom_CSS  {
 			// Looping each block recursively.
 			foreach ($blocks as $block) {
                     $attributes    = isset($block['attrs']) ? $block['attrs'] : array();
-               
+
                     $custom_css    = isset($attributes['ubCustomCSS']) ? $attributes['ubCustomCSS'] : "";
 				// Looping innerblocks recursively, if found.
 				if (isset($block['innerBlocks'])) {
@@ -72,7 +72,7 @@ class Ultimate_Blocks_Custom_CSS  {
 				if (!isset($block['blockName']) || is_null($block['blockName']) || empty($custom_css)) {
 					continue;
 				}
-                    
+
 				$block_unique_id       = $this->generate_ub_block_id(render_block( $block ), $block);
 				$selector              = $this->replace_selector($custom_css, $block_unique_id);
 				$collected_styles      .= $selector;
@@ -128,21 +128,15 @@ class Ultimate_Blocks_Custom_CSS  {
 			$styles_id_suffix = $in_footer ? '-footer' : '-header';
 
 ?>
-			<style id="ub-generated-styles<?php echo $styles_id_suffix; ?>">
-				<?php echo $generated_ub_styles; ?>
+			<style id="ub-generated-styles<?php echo esc_attr($styles_id_suffix); ?>">
+				<?php echo esc_html($generated_ub_styles); ?>
 			</style>
 <?php
 		}
 	}
      // Helper function to create a new ID for 'ub/' blocks
      public function convert_ub_block_id($block_name, $block_id) {
-        // Replace '/' with '-'
-        $cleaned_block_name = str_replace('/', '-', $block_name);
-
-        // Combine cleaned block name and original block ID
-        $new_id =  $cleaned_block_name . '-' . $block_id;
-
-        return $new_id;
+		return str_replace('/', '-', $block_name) . '-' . $block_id;
     }
     public function generate_ub_block_id($content, $block){
           $block_name    = isset($block['blockName']) ? $block['blockName'] : "";
@@ -153,10 +147,9 @@ class Ultimate_Blocks_Custom_CSS  {
           preg_match('/<(\w+)[^>]*(?:\s+id=["\']([^"\']*)["\'])?[^>]*>.*<\/\1>/i', $content, $matches);
 
           if (isset($matches[2])) {
-               $final_id      = $matches[2];
+               $final_id      = esc_attr($matches[2]);
           } else {
-               $new_block_id  = $this->convert_ub_block_id($block_name, $block_id);
-               $final_id      = $new_block_id;
+               $final_id      = esc_attr($this->convert_ub_block_id($block_name, $block_id));
           }
 
 
@@ -167,7 +160,7 @@ class Ultimate_Blocks_Custom_CSS  {
                return $css;
           }
 
-          return preg_replace('/(\bselector\b)/', '#' . $block_id, $css);
+          return preg_replace('/(\bselector\b)/', '#' . esc_attr($block_id), $css);
      }
 
     	public function ub_render_custom_css($content, $block) {
