@@ -148,7 +148,12 @@ function ub_render_table_of_contents_block($attributes, $_, $block){
 		$styles['max-width'] = 'fit-content';
 		$styles['max-width'] = '-moz-fit-content';
 	}
+	$ubpro_classes = apply_filters('ubpro_table_of_contents_classes', array(), $attributes);
+	$ubpro_styles = apply_filters('ubpro_table_of_contents_styles', array(), $attributes);
 
+	// Merge ubpro classes and styles with existing values
+	$classes = array_merge($classes, isset($ubpro_classes) ? $ubpro_classes : array());
+	$styles = array_merge($styles, isset($ubpro_styles) ? $ubpro_styles : array());
 	$block_wrapper_attributes = get_block_wrapper_attributes(
 		array(
 			'class' => implode( ' ', $classes ),
@@ -182,6 +187,7 @@ function ub_render_table_of_contents_block($attributes, $_, $block){
 		Ultimate_Blocks\includes\generate_css_string($toggle_link_styles),
 		Ultimate_Blocks\includes\generate_css_string($toggle_styles)
 	) : '';
+	$headerToggle = apply_filters('ubpro_table_of_contents_header_toggle', $headerToggle, $attributes);
 
 	$contents_header_styles = array(
 		'text-align' => isset($attributes['titleAlignment']) ? $attributes['titleAlignment'] : 'left',
@@ -230,16 +236,18 @@ function ub_render_table_of_contents_block($attributes, $_, $block){
 		$listStyle === 'numbered' ? '</ol>' : '</ul>',
 		Ultimate_Blocks\includes\generate_css_string($list_container_styles)
 	);
+	$sticky_data = apply_filters('ubpro_table_of_contents_sticky_data', "", $attributes);
 
 	return sprintf(
-		'<div %1$s %2$s %3$s data-initiallyhideonmobile="%4$s" data-initiallyshow="%5$s">%6$s%7$s</div>',
+		'<div %8$s %1$s %2$s %3$s data-initiallyhideonmobile="%4$s" data-initiallyshow="%5$s">%6$s%7$s</div>',
 		$block_wrapper_attributes,
 		$scrollOption === 'fixedamount' ? 'data-scrollamount="' . esc_attr($scrollOffset) . '"' : '',
 		$scrollOption === 'namedelement' ? 'data-scrolltarget="' . $targetType . esc_attr($scrollTarget) . '"' : '',
 		json_encode($hideOnMobile),
 		json_encode($showList),
 		$headerContainer,
-		$listContainer
+		$listContainer,
+		$sticky_data
 	);
 }
 

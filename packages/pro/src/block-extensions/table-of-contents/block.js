@@ -214,8 +214,6 @@ export class NewTableOfContents extends Component {
       stickyTOCWidth,
     } = attributes;
 
-    c;
-
     const parseProList = (list, currentlyEditedItem) =>
       list.map((item) => (
         <li

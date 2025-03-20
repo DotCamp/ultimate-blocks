@@ -51,3 +51,4 @@ function ubpro_render_divider_block( $_, $attributes, $block){
 ICON_RENDER;
 		}
 }
+add_filter('ubpro_divider_content', 'ubpro_render_divider_block', 10, 3);

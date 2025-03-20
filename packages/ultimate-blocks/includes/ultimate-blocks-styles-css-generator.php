@@ -70,7 +70,7 @@ function generate_css_string( $styles ) {
      $css_string = '';
 
      foreach ( $styles as $key => $value ) {
-          if ( ! is_undefined( $value ) && false !== $value && trim( $value ) !== '' && trim( $value ) !== 'undefined undefined undefined' && ! empty( $value ) ) {
+          if ( ! is_undefined( $value ) && false !== $value && ! empty( $value ) && (is_string($value) && trim( $value ) !== '' && trim( $value ) !== 'undefined undefined undefined') ) {
                $css_string .= $key . ': ' . esc_attr( $value ) . '; ';
           }
      }

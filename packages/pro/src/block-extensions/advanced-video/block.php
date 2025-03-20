@@ -54,3 +54,5 @@ function ubpro_advanced_video_filter($block_content,$block) {
     return str_replace('</iframe>', '</iframe>' . $channel_details_markup, $block_content);
 	
 }
+
+add_filter('render_block_ub/advanced-video', 'ubpro_advanced_video_filter', 9, 3);
