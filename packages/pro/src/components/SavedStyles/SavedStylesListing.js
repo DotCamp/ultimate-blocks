@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import SavedStylesListingFilter from '@Components/SavedStyles/SavedStylesListingFilter';
-import SavedStyleItemCardContainer from '@Components/SavedStyles/SavedStyleItemCardContainer';
-import withBusyStatus from '@Stores/savedStyles/hoc/withBusyStatus';
+import React, { useState, useEffect } from "react";
+import SavedStylesListingFilter from "@Components/SavedStyles/SavedStylesListingFilter";
+import SavedStyleItemCardContainer from "@Components/SavedStyles/SavedStyleItemCardContainer";
+import withBusyStatus from "@Stores/savedStyles/hoc/withBusyStatus";
 import {
-	deleteStyle,
-	setStyleAsDefaultThunk,
-} from '@Stores/savedStyles/actions';
-import { getComponentDefaultStyle } from '@Stores/savedStyles/selectors';
-import { connectWithStore } from '@Stores/StoreHelpers';
-import SavedStylesManager from '@Managers/SavedStylesManager';
+  deleteStyle,
+  setStyleAsDefaultThunk,
+} from "@Stores/savedStyles/actions";
+import { getComponentDefaultStyle } from "@Stores/savedStyles/selectors";
+import { connectWithStore } from "@Stores/StoreHelpers";
+import SavedStylesManager from "@Managers/SavedStylesManager";
 
 /**
  * Component for displaying currently available styles for plugin blocks.
@@ -26,96 +26,90 @@ import SavedStylesManager from '@Managers/SavedStylesManager';
  * @class
  */
 function SavedStylesListing({
-	busyStatus,
-	styles,
-	applyStyle = () => {},
-	activeItemId,
-	defaultStyle,
-	advancedControlsVisibility,
-	selectedItemId,
-	setSelectedItemId,
+  busyStatus,
+  styles,
+  applyStyle = () => {},
+  activeItemId,
+  defaultStyle,
+  advancedControlsVisibility,
+  selectedItemId,
+  setSelectedItemId,
 }) {
-	const [filterName, setFilterName] = useState('');
-	const [filteredStyles, setFilteredStyles] = useState(styles);
+  const [filterName, setFilterName] = useState("");
+  const [filteredStyles, setFilteredStyles] = useState(styles);
 
-	/**
-	 * `useEffect` React hook.
-	 */
-	useEffect(() => {
-		if (!advancedControlsVisibility && activeItemId !== selectedItemId) {
-			applyStyle(selectedItemId);
-		}
-	}, [selectedItemId]);
+  /**
+   * `useEffect` React hook.
+   */
+  useEffect(() => {
+    if (!advancedControlsVisibility && activeItemId !== selectedItemId) {
+      applyStyle(selectedItemId);
+    }
+  }, [selectedItemId]);
 
-	/**
-	 * `useEffect` React hook.
-	 */
-	useEffect(() => {
-		const filteredStyleList = Object.keys(styles).reduce(
-			(carry, styleId) => {
-				if (Object.prototype.hasOwnProperty.call(styles, styleId)) {
-					if (
-						styles[styleId].title
-							.toLowerCase()
-							.includes(filterName.toLowerCase())
-					) {
-						carry[styleId] = styles[styleId];
-					}
-				}
-				return carry;
-			},
-			{}
-		);
+  /**
+   * `useEffect` React hook.
+   */
+  useEffect(() => {
+    const filteredStyleList = Object.keys(styles).reduce((carry, styleId) => {
+      if (Object.prototype.hasOwnProperty.call(styles, styleId)) {
+        if (
+          styles[styleId].title
+            ?.toLowerCase()
+            .includes(filterName.toLowerCase())
+        ) {
+          carry[styleId] = styles[styleId];
+        }
+      }
+      return carry;
+    }, {});
 
-		setFilteredStyles(filteredStyleList);
-	}, [styles, filterName]);
+    setFilteredStyles(filteredStyleList);
+  }, [styles, filterName]);
 
-	return (
-		<div className={'ub-pro-saved-styles-inspector-listing-parent'}>
-			<SavedStylesListingFilter
-				value={filterName}
-				onInput={setFilterName}
-			/>
-			<SavedStyleItemCardContainer
-				filterClause={filterName}
-				styles={filteredStyles}
-				onItemSelect={setSelectedItemId}
-				selectedItemId={selectedItemId}
-				activeItemId={activeItemId}
-				defaultStyleId={defaultStyle}
-			/>
-		</div>
-	);
+  return (
+    <div className={"ub-pro-saved-styles-inspector-listing-parent"}>
+      <SavedStylesListingFilter value={filterName} onInput={setFilterName} />
+      <SavedStyleItemCardContainer
+        filterClause={filterName}
+        styles={filteredStyles}
+        onItemSelect={setSelectedItemId}
+        selectedItemId={selectedItemId}
+        activeItemId={activeItemId}
+        defaultStyleId={defaultStyle}
+      />
+    </div>
+  );
 }
 
 // store select mapping
 const selectMapping = (storeSelect) => {
-	const { isAdvancedControlsVisible, getSelectedItemId } = storeSelect;
-	return {
-		defaultStyle: getComponentDefaultStyle(storeSelect),
-		advancedControlsVisibility: isAdvancedControlsVisible(),
-		selectedItemId: getSelectedItemId(),
-	};
+  const { isAdvancedControlsVisible, getSelectedItemId } = storeSelect;
+  return {
+    defaultStyle: getComponentDefaultStyle(storeSelect),
+    advancedControlsVisibility: isAdvancedControlsVisible(),
+    selectedItemId: getSelectedItemId(),
+  };
 };
 
 // store action mapping
 const actionMapping = (storeDispatch, storeSelect) => {
-	const { setSelectedItemId } = storeDispatch;
-	return {
-		deleteComponentStyle: deleteStyle(storeDispatch, storeSelect),
-		setDefaultStyle: setStyleAsDefaultThunk(storeDispatch, storeSelect),
-		removeDefaultStyle: () => {
-			setStyleAsDefaultThunk(storeDispatch, storeSelect)(null);
-		},
-		setSelectedItemId,
-	};
+  const { setSelectedItemId } = storeDispatch;
+  return {
+    deleteComponentStyle: deleteStyle(storeDispatch, storeSelect),
+    setDefaultStyle: setStyleAsDefaultThunk(storeDispatch, storeSelect),
+    removeDefaultStyle: () => {
+      setStyleAsDefaultThunk(storeDispatch, storeSelect)(null);
+    },
+    setSelectedItemId,
+  };
 };
 
 /**
  * @module SavedStylesListing
  */
 export default connectWithStore(
-	SavedStylesManager.storeNamespace,
-	selectMapping,
-	actionMapping
+  SavedStylesManager.storeNamespace,
+  selectMapping,
+  actionMapping
 )(withBusyStatus(SavedStylesListing));

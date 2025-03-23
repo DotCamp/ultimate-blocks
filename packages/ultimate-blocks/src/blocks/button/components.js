@@ -912,8 +912,16 @@ export function EditorComponent(props) {
 			padding,
 			margin,
 			blockSpacing,
+			activeButtonIndex,
 		},
+		proAnimationControl,
+		proSaveStyledControl,
+		proIconType,
+		proCustomImageControl,
+		proCustomImage,
+		proStyleTag,
 	} = props;
+
 	const { block, rootBlockClientId } = useSelect((select) => {
 		const { getBlock, getBlockRootClientId } =
 			select("core/block-editor") || select("core/editor");
@@ -926,7 +934,7 @@ export function EditorComponent(props) {
 		};
 	});
 	const [availableIcons, setAvailableIcons] = useState([]);
-	const [activeButtonIndex, setActiveButtonIndex] = useState(-1);
+	// const [activeButtonIndex, setActiveButtonIndex] = useState(-1);
 	const [enableLinkInput, setLinkInputStatus] = useState(false);
 	const [hoveredButton, setHoveredButton] = useState(-1);
 	const [iconChoices, setIconChoices] = useState([]);
@@ -937,6 +945,11 @@ export function EditorComponent(props) {
 	const [selectionTime, setSelectionTime] = useState(-1);
 	const [currentCorner, setCurrentCorner] = useState("all");
 	const rootBlock = getParentBlock(rootBlockClientId, "core/block");
+	const setActiveButtonIndex = (index) => {
+		if (index !== activeButtonIndex) {
+			setAttributes({ activeButtonIndex: index });
+		}
+	};
 
 	if (blockID === "") {
 		setAttributes({ blockID: block.clientId, align: "center" });
@@ -1442,35 +1455,49 @@ export function EditorComponent(props) {
 									title={__("Icon", "ultimate-blocks")}
 									initialOpen={true}
 								>
-									<div style={{ gridColumn: "1/-1" }}>
-										<IconControl
-											onIconSelect={(val) => {
-												if (val) {
-													setAttributes({
-														buttons: [
-															...buttons.slice(0, activeButtonIndex),
-															Object.assign({}, buttons[activeButtonIndex], {
-																chosenIcon: val,
-															}),
-															...buttons.slice(activeButtonIndex + 1),
-														],
-													});
-												} else {
-													setAttributes({
-														buttons: [
-															...buttons.slice(0, activeButtonIndex),
-															Object.assign({}, buttons[activeButtonIndex], {
-																chosenIcon: "",
-															}),
-															...buttons.slice(activeButtonIndex + 1),
-														],
-													});
-												}
-											}}
-											label={__("Icon", "ultimate-blocks-pro")}
-											selectedIcon={buttons[activeButtonIndex].chosenIcon}
-										/>
-									</div>
+									{proIconType && proIconType}
+									{!buttons[activeButtonIndex]?.iconType ||
+										(buttons[activeButtonIndex]?.iconType &&
+											buttons[activeButtonIndex]?.iconType === "preset" && (
+												<div style={{ gridColumn: "1/-1" }}>
+													<IconControl
+														onIconSelect={(val) => {
+															if (val) {
+																setAttributes({
+																	buttons: [
+																		...buttons.slice(0, activeButtonIndex),
+																		Object.assign(
+																			{},
+																			buttons[activeButtonIndex],
+																			{
+																				chosenIcon: val,
+																			},
+																		),
+																		...buttons.slice(activeButtonIndex + 1),
+																	],
+																});
+															} else {
+																setAttributes({
+																	buttons: [
+																		...buttons.slice(0, activeButtonIndex),
+																		Object.assign(
+																			{},
+																			buttons[activeButtonIndex],
+																			{
+																				chosenIcon: "",
+																			},
+																		),
+																		...buttons.slice(activeButtonIndex + 1),
+																	],
+																});
+															}
+														}}
+														label={__("Icon", "ultimate-blocks-pro")}
+														selectedIcon={buttons[activeButtonIndex].chosenIcon}
+													/>
+												</div>
+											))}
+									{proCustomImageControl && proCustomImageControl}
 									<RadioControl
 										className="ub-button-icon-position"
 										label={__("Icon position")}
@@ -1676,6 +1703,7 @@ export function EditorComponent(props) {
 											})
 										}
 									/>
+									{proAnimationControl && proAnimationControl}
 								</PanelBody>
 							</>
 						)}
@@ -1702,6 +1730,7 @@ export function EditorComponent(props) {
 							/>
 						</PanelBody>
 					</InspectorControls>
+					{proSaveStyledControl && proSaveStyledControl}
 					{isSelected && buttons.length > 0 && activeButtonIndex > -1 && (
 						<InspectorControls group="color">
 							<TabsPanelControl
@@ -1814,6 +1843,10 @@ export function EditorComponent(props) {
 										: b.buttonWidth === "flex"
 											? `ub-button-flex-${b.size}`
 											: ""
+								}${
+									b.animation === "wipe"
+										? ` ub-button-wipe-${b.wipeDirection}`
+										: ""
 								}`}
 								onMouseEnter={() => setHoveredButton(i)}
 								onMouseLeave={() => setHoveredButton(-1)}
@@ -1855,7 +1888,8 @@ export function EditorComponent(props) {
 											b.iconPosition === "left" ? "row" : "row-reverse",
 									}}
 								>
-									{b.chosenIcon !== "" &&
+									{b.iconType === "preset" &&
+										b.chosenIcon !== "" &&
 										allIcons.hasOwnProperty(
 											`fa${dashesToCamelcase(b.chosenIcon)}`,
 										) && (
@@ -1867,6 +1901,7 @@ export function EditorComponent(props) {
 												)}
 											</div>
 										)}
+									{proCustomImage(b)}
 									<RichText
 										className="ub-button-block-btn"
 										placeholder={__("Button Text", "ultimate-blocks")}
@@ -1994,6 +2029,7 @@ export function EditorComponent(props) {
 					</button>
 				</div>
 			}
+			{proStyleTag && proStyleTag}
 		</>
 	);
 }

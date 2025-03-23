@@ -35,6 +35,7 @@ export const mergeRichTextArray = (input) =>
 		.join("");
 
 export const dashesToCamelcase = (str) =>
+	str &&
 	str
 		.split("-")
 		.map((s) => s[0]?.toUpperCase() + s?.slice(1))

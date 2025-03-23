@@ -15,6 +15,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"activeButtonIndex": {
+			"type": "number",
+			"default": 0
+		},
 		"placeholder": {
 			"type": "string",
 			"default": ""
