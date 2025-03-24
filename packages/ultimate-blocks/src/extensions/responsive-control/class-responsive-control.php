@@ -37,21 +37,26 @@ class Ultimate_Blocks_Responsive_Control  {
         // Remove empty classes
         $classes = array_filter($classes);
         // Find the first occurrence of the class attribute in the HTML content
-        $dom = new DOMDocument();
-		libxml_use_internal_errors(true); // Suppress warnings for malformed HTML
-		$dom->loadHTML($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-		libxml_clear_errors();
+		$dom = new DOMDocument('1.0', 'UTF-8');
+        libxml_use_internal_errors(true); // Suppress warnings for malformed HTML
+        $content = '<?xml encoding="UTF-8">' . $content;
+        $dom->loadHTML($content, LIBXML_HTML_NODEFDTD);
+        libxml_clear_errors();
 
-		$xpath = new DOMXPath($dom);
-		$element = $xpath->query('//*[@class]')->item(0); // Select the first element with a class attribute
+        $xpath = new DOMXPath($dom);
+        $element = $xpath->query('//*[@class]')->item(0); // Select the first element with a class attribute
 
-		if ($element) {
-			$existing_classes = explode(' ', esc_attr($element->getAttribute('class')));
-			$new_classes = array_unique(array_merge($existing_classes, $classes));
-			$element->setAttribute('class', implode(' ', $new_classes));
-		}
+        if ($element) {
+            $existing_classes = explode(' ', $element->attributes->getNamedItem('class')->nodeValue);
+            $new_classes = array_unique(array_merge($existing_classes, $classes));
+            $element->attributes->getNamedItem('class')->nodeValue = implode(' ', $new_classes);
+        }
 
-		return $dom->saveHTML();
-    }
+        $html = $dom->saveHTML($dom->documentElement);
+        // Remove XML wrapper tags
+        $html = preg_replace('/<\/?html[^>]*>/', '', $html);
+        $html = preg_replace('/<\/?body[^>]*>/', '', $html);
+        return $html;
+	}
 }
 new Ultimate_Blocks_Responsive_Control();

@@ -147,6 +147,7 @@ That's it. You're done!
 = 3.2.9 =
 
 * FIX: Empty content error in responsive control extension.
+* FIX: Some language characters appear incorrectly.
 
 = 3.2.8 =
 
