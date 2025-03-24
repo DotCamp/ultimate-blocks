@@ -8,8 +8,6 @@
 namespace DotCamp\Promoter\Core;
 
 use DotCamp\Promoter\Utils\AjaxEndpoint;
-use function get_option;
-use function update_option;
 use function wp_send_json_success;
 
 /**
@@ -19,21 +17,21 @@ use function wp_send_json_success;
  */
 class PromotionBlacklistAjaxEndpoint extends AjaxEndpoint {
 	/**
-	 * Option id to write blacklist.
+	 * Promotion blacklist manager.
 	 *
-	 * @var string
+	 * @var PromotionBlacklistManager
 	 * @private
 	 */
-	private $option_id;
+	private $promotion_blacklist_manager;
 
 	/**
 	 * Class constructor.
 	 *
-	 * @param string $action_name Action name.
-	 * @param string $option_id Option id to write blacklist.
+	 * @param string                    $action_name Action name.
+	 * @param PromotionBlacklistManager $promotion_blacklist_manager Promotion blacklist manager.
 	 */
-	public function __construct( $action_name, $option_id ) {
-		$this->option_id = $option_id;
+	public function __construct( $action_name, $promotion_blacklist_manager ) {
+		$this->promotion_blacklist_manager = $promotion_blacklist_manager;
 		parent::__construct( $action_name );
 	}
 
@@ -43,7 +41,7 @@ class PromotionBlacklistAjaxEndpoint extends AjaxEndpoint {
 	 * @return array Required parameters..
 	 */
 	public function required_paramaters() {
-		return array( 'promotionTargetId' );
+		return array( 'promotionTargetId', 'blockId' );
 	}
 
 	/**
@@ -63,13 +61,11 @@ class PromotionBlacklistAjaxEndpoint extends AjaxEndpoint {
 	 * @return void
 	 */
 	public function handle_request( $request_parameters ) {
-		$target_plugin_id  = $request_parameters['promotionTargetId'];
-		$current_blacklist = get_option( $this->option_id, array() );
+		$block_id         = $request_parameters['blockId'];
+		$target_plugin_id = $request_parameters['promotionTargetId'];
 
-		if ( ! in_array( $target_plugin_id, $current_blacklist, true ) ) {
-			$current_blacklist[] = $target_plugin_id;
-			update_option( $this->option_id, $current_blacklist );
-		}
+		// Not using operation status result as it's not required with current setup.
+		$this->promotion_blacklist_manager->add_to_blacklist( $block_id, $target_plugin_id );
 
 		wp_send_json_success( array( 'message' => 'Promotion blacklisted successfully.' ) );
 	}

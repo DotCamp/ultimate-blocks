@@ -10,7 +10,8 @@ namespace DotCamp\Promoter\Core;
 use DotCamp\Promoter\Promotion;
 use DotCamp\Promoter\Utils\AjaxEndpoint;
 use function add_action;
-use function get_option;
+use function esc_html;
+use function esc_url;
 
 /**
  * Promoter core class.
@@ -33,12 +34,11 @@ class PromoterCore {
 	private $editor_asset_handler;
 
 	/**
-	 * Available promotions.
+	 * Promotion manager instance.
 	 *
-	 * @var Array<Promotion>
-	 * @private
+	 * @var PromotionManager
 	 */
-	private $promotions;
+	private $promotion_manager;
 
 	/**
 	 * Editor data object id.
@@ -65,14 +65,6 @@ class PromoterCore {
 	private $blacklist_ajax_endpoint;
 
 	/**
-	 * Blacklist option id.
-	 *
-	 * @var string
-	 * @private
-	 */
-	private $blacklist_option_id;
-
-	/**
 	 * Install ajax endpoint.
 	 *
 	 * @var AjaxEndpoint
@@ -81,28 +73,54 @@ class PromoterCore {
 	private $install_ajax_endpoint;
 
 	/**
+	 * Blacklist manager.
+	 *
+	 * @var PromotionBlacklistManager
+	 * @private
+	 */
+	private $blacklist_manager;
+
+	/**
 	 * Class constructor.
 	 *
-	 * @param Array<Promotion>   $promotions Promotions.
-	 * @param string             $editor_script_handle_name Editor script handle name.
-	 * @param EditorAssetHandler $editor_asset_handler Editor asset handler.
-	 * @param string             $editor_styles_handle_name Editor styles handle name.
-	 * @param AjaxEndpoint       $blacklist_ajax_endpoint Blacklist ajax endpoint.
-	 * @param string             $blacklist_option_id Blacklist option id.
-	 * @param AjaxEndpoint       $install_ajax_endpoint Promotion install ajax endpoint.
+	 * @param PromotionManager          $promotion_manager Promotion manager.
+	 * @param string                    $editor_script_handle_name Editor script handle name.
+	 * @param EditorAssetHandler        $editor_asset_handler Editor asset handler.
+	 * @param string                    $editor_styles_handle_name Editor styles handle name.
+	 * @param AjaxEndpoint              $blacklist_ajax_endpoint Blacklist ajax endpoint.
+	 * @param AjaxEndpoint              $install_ajax_endpoint Promotion install ajax endpoint.
+	 * @param PromotionBlacklistManager $blacklist_manager Blacklist manager.
 	 */
-	public function __construct( $promotions, $editor_script_handle_name, $editor_asset_handler, $editor_styles_handle_name, $blacklist_ajax_endpoint, $blacklist_option_id, $install_ajax_endpoint ) {
-		$this->promotions                = $promotions;
+	public function __construct( $promotion_manager, $editor_script_handle_name, $editor_asset_handler, $editor_styles_handle_name, $blacklist_ajax_endpoint, $install_ajax_endpoint, $blacklist_manager ) {
+		$this->promotion_manager         = $promotion_manager;
 		$this->editor_script_handle_name = $editor_script_handle_name;
 		$this->editor_styles_handle_name = $editor_styles_handle_name;
 		$this->editor_asset_handler      = $editor_asset_handler;
 		$this->blacklist_ajax_endpoint   = $blacklist_ajax_endpoint;
-		$this->blacklist_option_id       = $blacklist_option_id;
 		$this->install_ajax_endpoint     = $install_ajax_endpoint;
+		$this->blacklist_manager         = $blacklist_manager;
 
 		$this->initialize_ajax_endpoints();
 
 		add_action( 'enqueue_block_editor_assets', array( $this, 'editor_assets' ) );
+	}
+
+	/**
+	 * Add new promotions.
+	 *
+	 * @param Array<Promotion> $new_promotions New promotions to add.
+	 */
+	public function add_promotions( $new_promotions ) {
+		$this->promotion_manager->add_promotions( $new_promotions );
+	}
+
+	/**
+	 * Get available promotions.
+	 *
+	 * @return Array<Promotion> Available promotions.
+	 */
+	public function get_available_promotions() {
+		return $this->promotion_manager->get_available_promotions();
 	}
 
 	/**
@@ -121,16 +139,21 @@ class PromoterCore {
 	 * @return array Editor data.
 	 */
 	private function prepare_editor_data() {
+		// Prepare promotions data for frontend.
 		$promotions_data = array_reduce(
-			$this->promotions,
+			$this->promotion_manager->get_available_promotions(),
 			function ( $data, $promotion ) {
+				$link_href = $promotion->link_href;
+
 				$data[] = array(
-					'promoterPluginId'  => $promotion->promoter_plugin_id,
-					'promoterPlugin'    => $promotion->promoter_plugin_name,
-					'promotionTarget'   => $promotion->promotion_target_name,
-					'promotionTargetId' => $promotion->promotion_target_id,
-					'description'       => $promotion->description,
-					'blocksToUse'       => $promotion->blocks_to_use,
+					'promoterPluginId'  => esc_html( $promotion->promoter_plugin_id ),
+					'promoterPlugin'    => esc_html( $promotion->promoter_plugin_name ),
+					'promotionTarget'   => esc_html( $promotion->promotion_target_name ),
+					'promotionTargetId' => esc_html( $promotion->promotion_target_id ),
+					'description'       => esc_html( $promotion->description ),
+					'blocksToUse'       => array_map( 'esc_html', $promotion->blocks_to_use ),
+					'linkHref'          => is_null( $link_href ) ? $link_href : esc_url( $promotion->link_href ),
+					'linkLabel'         => esc_html( $promotion->link_label ),
 				);
 
 				return $data;
@@ -138,6 +161,7 @@ class PromoterCore {
 			array()
 		);
 
+		// Prepare ajax data for frontend.
 		$ajax_data = array(
 			'blacklist' => array(
 				'action' => $this->blacklist_ajax_endpoint->get_action_name(),
@@ -151,10 +175,25 @@ class PromoterCore {
 			),
 		);
 
+		// Prepare blacklist data for frontend.
+		$blacklist      = $this->blacklist_manager->get_blacklist();
+		$blacklist_data = array_reduce(
+			$blacklist->get_blacklist_items(),
+			function ( $data, $blacklist_item ) {
+				$data[] = array(
+					'blockId'           => $blacklist_item->block_id,
+					'promotionPluginId' => $blacklist_item->promotion_plugin_id,
+				);
+
+				return $data;
+			},
+			array()
+		);
+
 		return array(
 			'promotions' => $promotions_data,
 			'ajax'       => $ajax_data,
-			'blacklist'  => get_option( $this->blacklist_option_id, array() ),
+			'blacklist'  => $blacklist_data,
 		);
 	}
 

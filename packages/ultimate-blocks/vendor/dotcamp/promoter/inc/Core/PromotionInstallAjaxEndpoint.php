@@ -9,7 +9,6 @@ namespace DotCamp\Promoter\Core;
 
 use DotCamp\Promoter\Utils\AjaxEndpoint;
 use DotCamp\Promoter\Utils\PromotionUpgraderSkin;
-use DotCamp\Promoter\Promotion;
 use Plugin_Upgrader;
 use function activate_plugin;
 use function is_plugin_active;
@@ -25,22 +24,21 @@ use function wp_send_json_success;
  */
 class PromotionInstallAjaxEndpoint extends AjaxEndpoint {
 	/**
-	 * Available promotions.
+	 * Promoter core instance.
 	 *
-	 * @var Array<Promotion>
-	 * @private
+	 * @var PromoterCore
 	 */
-	private $available_promotions;
+	private $promoter_core_instance;
 
 	/**
-	 * Class constructor.
+	 * Add promoter core instance for further usage.
 	 *
-	 * @param string           $action_name Action name.
-	 * @param Array<Promotion> $available_promotions Available promotions.
+	 * @param PromoterCore $promoter_core_instance Promoter core instance.
+	 *
+	 * @return void
 	 */
-	public function __construct( $action_name, $available_promotions ) {
-		$this->available_promotions = $available_promotions;
-		parent::__construct( $action_name );
+	public function add_promoter_core_instance( $promoter_core_instance ) {
+		$this->promoter_core_instance = $promoter_core_instance;
 	}
 
 
@@ -70,10 +68,11 @@ class PromotionInstallAjaxEndpoint extends AjaxEndpoint {
 	 * @return void
 	 */
 	public function handle_request( $request_parameters ) {
-		$promotion_target_id = $request_parameters['promotionTargetId'];
+		$promotion_target_id  = $request_parameters['promotionTargetId'];
+		$available_promotions = $this->promoter_core_instance->get_available_promotions();
 
 		$promotion = array_filter(
-			$this->available_promotions,
+			$available_promotions,
 			function ( $promotion ) use ( $promotion_target_id ) {
 				return $promotion->promotion_target_id === $promotion_target_id;
 			}

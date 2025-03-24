@@ -76,8 +76,8 @@ class Ultimate_Blocks {
 	 */
 	private function initialize_promoter()
 	{
-		$promotion_01 = new Promotion( 'Ultimate Blocks', 'ultimate-blocks/ultimate-blocks.php', 'Tableberg', 'tableberg/tableberg.php', 'Seamlessly craft stunning, fully customizable tables with Tableberg.', array( 'core/table' ) );
-		new Promoter( ULTIMATE_BLOCKS_PLUGIN_FILE, array($promotion_01));
+		$default_promotions = Promoter::generate_default_promotions(ULTIMATE_BLOCKS_PLUGIN_FILE, 'Ultimate Blocks', 'ultimate-blocks/ultimate-blocks.php');
+		Promoter::add_promotions($default_promotions, ULTIMATE_BLOCKS_PLUGIN_FILE);
 	}
 
 	/**
