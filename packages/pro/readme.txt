@@ -148,6 +148,8 @@ That's it. You're done!
 
 * FIX: Empty content error in responsive control extension.
 * FIX: Some language characters appear incorrectly.
+* FIX: Classes are not applying on content toggle panel block.
+* FIX: Custom CSS not working from content toggle block.
 
 = 3.2.8 =
 

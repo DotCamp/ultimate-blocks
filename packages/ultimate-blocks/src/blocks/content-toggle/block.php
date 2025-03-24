@@ -68,7 +68,7 @@ function ub_render_content_toggle_block( $attributes, $content, $block ) {
 	$block_wrapper_attributes = get_block_wrapper_attributes(
 		array(
 			'class' => implode( ' ', $classes ),
-			'id'    => 'ub-content-toggle-' . esc_attr($blockID),
+			'id'    => 'ub-content-toggle-block-' . esc_attr($blockID),
 			'style' => Ultimate_Blocks\includes\generate_css_string($styles),
 			'data-mobilecollapse' => json_encode($collapsedOnMobile),
 			'data-desktopcollapse' => json_encode($collapsed),
@@ -131,7 +131,7 @@ function ub_render_content_toggle_panel_block( $attributes, $content, $block_obj
 	);
 
 	return sprintf(
-		'<div %1$s class="%2$s%3$s"%4$s>
+		'<div %1$s class="%2$s%3$s%10$s"%4$s>
 			%5$s
 			<div role="region" aria-expanded="%6$s" class="%7$s" id="%8$s">%9$s</div>
 		</div>',
@@ -143,7 +143,8 @@ function ub_render_content_toggle_panel_block( $attributes, $content, $block_obj
 		json_encode(! $should_collapsed), // 6
 		$classNamePrefix . '-accordion-content-wrap' . ( $should_collapsed ? ' ub-hide' : '' ), // 7
 		'ub-content-toggle-panel-' . esc_attr($index) . '-' . esc_attr($parentID), // 8
-		$content // 9
+		$content, // 9
+		isset($className) ? ' ' . $className : '' // 10
 	);
 }
 function ub_register_content_toggle_panel_block() {

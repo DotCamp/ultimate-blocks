@@ -152,7 +152,6 @@ class Ultimate_Blocks_Custom_CSS  {
                $final_id      = esc_attr($this->convert_ub_block_id($block_name, $block_id));
           }
 
-
           return $final_id;
     }
     public function replace_selector($css, $block_id) {
