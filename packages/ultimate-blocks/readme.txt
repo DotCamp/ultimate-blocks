@@ -150,6 +150,10 @@ That's it. You're done!
 
 == Changelog ==
 
+= 3.2.9 =
+
+* FIX: Empty content error in responsive control extension.
+
 = 3.2.8 =
 
 * IMPROVE: Ensure compatibility of all free and pro blocks with Full Site Editing (FSE).

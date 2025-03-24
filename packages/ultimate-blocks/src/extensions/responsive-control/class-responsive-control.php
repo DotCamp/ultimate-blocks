@@ -31,7 +31,9 @@ class Ultimate_Blocks_Responsive_Control  {
         if (isset($attributes['isHideOnDesktop']) && $attributes['isHideOnDesktop']) {
             $classes[] = 'ub-hide-on-desktop';
         }
-
+		if (empty($content)) {
+			return $content;
+		}
         // Remove empty classes
         $classes = array_filter($classes);
         // Find the first occurrence of the class attribute in the HTML content
