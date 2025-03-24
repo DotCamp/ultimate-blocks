@@ -25,7 +25,7 @@ function ub_multi_buttons_parse($b){
 
     $presetIconSize = array('small' => 25, 'medium' => 30, 'large' => 35, 'larger' => 40);
 
-	if ($chosenIcon !== '' && !is_null($chosenIcon)) {
+	if (isset($iconType) && $iconType === "preset" && $chosenIcon !== '' && !is_null($chosenIcon)) {
 		$icon = sprintf(
 			'<span class="ub-button-icon-holder">
 				<svg xmlns="http://www.w3.org/2000/svg" height="%1$s" width="%2$s" viewBox="0 0 %3$s %4$s">
@@ -38,6 +38,8 @@ function ub_multi_buttons_parse($b){
 			Ultimate_Blocks_IconSet::generate_fontawesome_icon($chosenIcon)[1],
 			Ultimate_Blocks_IconSet::generate_fontawesome_icon($chosenIcon)[2]
 		);
+	} else if (isset($iconType) && $iconType === "custom") {
+		$icon = apply_filters('ubpro_buttons_custom_image', "", $b);
 	} else {
 		$icon = '';
 	}
@@ -54,6 +56,8 @@ function ub_multi_buttons_parse($b){
 		$buttonWidth === 'full' ? ' ub-button-full-width' : '',
 		$buttonWidth === 'flex' ? ' ub-button-flex-'. $size : ''
 	);
+	$ubpro_link_classes = apply_filters( 'ubpro_button_link_classes', "", $b);
+	$link_class .= $ubpro_link_classes;
 
 	$style_vars = [
 		'--ub-button-background-color'			=> $buttonIsTransparent ? 'transparent' : esc_attr($buttonColor),
@@ -63,7 +67,12 @@ function ub_multi_buttons_parse($b){
 		'--ub-button-hover-color'				=> $buttonIsTransparent ? esc_attr($buttonHoverColor) : esc_attr($buttonTextHoverColor),
 		'--ub-button-hover-border'				=> $buttonIsTransparent ? '3px solid ' . esc_attr($buttonHoverColor) : 'none',
 	];
+	$pro_styles = apply_filters('ubpro_buttons_styles', [], $b);
+	$style_vars = array_merge($style_vars, $pro_styles);
+
 	$link_style = Ultimate_Blocks\includes\generate_css_string($style_vars);
+	$pro_link_styles = apply_filters('ubpro_button_link_styles', array(), $b);
+	$link_style .= Ultimate_Blocks\includes\generate_css_string($pro_link_styles);
 
 	if (isset($isBorderComponentChanged) && $isBorderComponentChanged) {
 		$link_border_radius_styles = [
@@ -130,7 +139,12 @@ function ub_single_button_parse($b) {
 		$buttonWidth === 'flex' ? 'ub-button-flex-' . esc_attr($size) : ''
 	);
 
+	$ubpro_link_classes = apply_filters( 'ubpro_button_link_classes', "", $b);
+	$link_class .= $ubpro_link_classes;
+
 	$link_style = sprintf('border-radius: %1$spx;', $buttonRounded ? '60' : '0');
+	$pro_link_styles = apply_filters('ubpro_button_link_styles', array(), $b);
+	$link_style .= Ultimate_Blocks\includes\generate_css_string($pro_link_styles);
 
 	$style_vars = [
 		'--ub-button-background-color'			=> $buttonIsTransparent ? 'transparent' : esc_attr($buttonColor),
@@ -141,7 +155,7 @@ function ub_single_button_parse($b) {
 		'--ub-button-hover-border'				=> $buttonIsTransparent ? '3px solid ' . esc_attr($buttonHoverColor) : 'none',
 	];
 	$link_style .= Ultimate_Blocks\includes\generate_css_string($style_vars);
-
+	var_dump($style_vars);
 	$link_attrs = sprintf(
 		'href="%1$s" target="%2$s" rel="noopener noreferrer%3$s" class="%4$s" style="%5$s"',
 		esc_url($url),

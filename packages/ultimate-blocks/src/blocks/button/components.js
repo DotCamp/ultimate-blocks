@@ -1901,7 +1901,7 @@ export function EditorComponent(props) {
 												)}
 											</div>
 										)}
-									{proCustomImage(b)}
+									{proCustomImage && proCustomImage(b)}
 									<RichText
 										className="ub-button-block-btn"
 										placeholder={__("Button Text", "ultimate-blocks")}
