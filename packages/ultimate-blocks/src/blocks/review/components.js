@@ -220,6 +220,9 @@ export function ReviewBody(props) {
 		margin,
 		summaryTitleFontSize,
 		mainTitleFontSize,
+		children,
+		proWrapperStyles,
+		wrapperRef,
 	} = props;
 
 	const { titleAlign, authorAlign, descriptionAlign } = alignments;
@@ -284,10 +287,16 @@ export function ReviewBody(props) {
 		marginRight: marginObj?.right,
 		marginBottom: marginObj?.bottom,
 		marginLeft: marginObj?.left,
+		...(proWrapperStyles || {}),
 	};
+
 	const has_button_block = block.innerBlocks.length > 0;
 	return (
-		<div className="ub_review_block" style={generateStyles(styles)}>
+		<div
+			className="ub_review_block"
+			style={generateStyles(styles)}
+			ref={wrapperRef}
+		>
 			<RichText
 				className="ub_review_item_name"
 				placeholder={__("Title of the review")}
@@ -591,6 +600,7 @@ export function ReviewBody(props) {
 						)}
 					</div>
 				</div>
+				{children}
 				<div className="ub_review_cta_panel">
 					<div
 						className="ub_review_cta_main"
