@@ -70,7 +70,7 @@ function ubpro_buttons_parse( $b ) {
 
 	$link_style .= CSS_generator\generate_css_string($link_border_radius_styles);
 
-    $iconType = $b['iconType'];
+    $iconType = isset($b['iconType']) ? $b['iconType'] : 'none';
     $presetIconSize = array(
         'small'  => 25,
         'medium' => 30,
