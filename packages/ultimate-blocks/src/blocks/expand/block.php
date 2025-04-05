@@ -111,22 +111,13 @@ function ub_register_expand_block($attributes){
 }
 
 function ub_expand_block_add_frontend_assets() {
-    require_once dirname(dirname(__DIR__)) . '/common.php';
-
-    $presentBlocks = ub_getPresentBlocks();
-
-    foreach( $presentBlocks as $block ){
-        if($block['blockName'] === 'ub/expand' || $block['blockName'] === 'ub/expand-portion'){
-            wp_enqueue_script(
-                'ultimate_blocks-expand-block-front-script',
-                plugins_url( 'expand/front.build.js', dirname( __FILE__ ) ),
-                array( ),
-                Ultimate_Blocks_Constants::plugin_version(),
-                true
-            );
-            break;
-        }
-    }
+	wp_register_script(
+		'ultimate_blocks-expand-block-front-script',
+		plugins_url( 'expand/front.build.js', dirname( __FILE__ ) ),
+		array( ),
+		Ultimate_Blocks_Constants::plugin_version(),
+		true
+	);
 }
 
 add_action('init', 'ub_register_expand_block');
