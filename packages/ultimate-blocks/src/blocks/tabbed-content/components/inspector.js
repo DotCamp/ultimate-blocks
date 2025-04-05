@@ -28,7 +28,7 @@ export default class Inspector extends Component {
 	}
 	render() {
 		const { displayMode } = this.state;
-		const { attributes, setAttributes } = this.props;
+		const { attributes, setAttributes, ProInspectorControls } = this.props;
 		const {
 			activeTab,
 			tabVertical,
@@ -371,6 +371,7 @@ export default class Inspector extends Component {
 						)}
 					/>
 				</InspectorControls>
+				{ProInspectorControls}
 			</>
 		);
 	}

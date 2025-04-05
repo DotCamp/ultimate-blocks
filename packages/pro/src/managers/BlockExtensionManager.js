@@ -142,6 +142,8 @@ class BlockExtensionManager extends ManagerBase {
               return <ExtensionComponent {...props} BlockEdit={BlockEdit} />;
             } else if (props.name === "ub/review") {
               return <ExtensionComponent {...props} BlockEdit={BlockEdit} />;
+            } else if (props.name === "ub/tabbed-content-block") {
+              return <ExtensionComponent {...props} BlockEdit={BlockEdit} />;
             }
             return (
               <div

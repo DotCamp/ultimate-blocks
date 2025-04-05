@@ -18,6 +18,7 @@ import {
 	RichText,
 	InnerBlocks,
 	BlockControls,
+	BlockAlignmentControl,
 	useBlockProps,
 } from "@wordpress/block-editor";
 
@@ -320,8 +321,20 @@ export const TabHolder = (props) => {
 		insertBlock,
 		getBlock,
 		getClientIdsWithDescendants,
+		showIconControls,
+		showImageControls,
+		TabTitleImageElem,
+		TabTitleIconElem,
+		checkIsImageSelected,
+		checkIsIconSelected,
+		proOnSortEnd,
+		proOnRemoveTitle,
+		isCTAEnabled,
+		CTATab,
+		tabsSubTitleEnabled,
+		TabsSubTitleElem,
+		ProInspectorControls,
 	} = props;
-
 	const { oldArrangement } = state;
 
 	let className = "wp-block-ub-tabbed-content";
@@ -341,6 +354,7 @@ export const TabHolder = (props) => {
 		padding,
 		margin,
 		contentColor,
+		align,
 		contentBackground,
 	} = attributes;
 	let block = null;
@@ -404,7 +418,15 @@ export const TabHolder = (props) => {
 
 	if (!block.SortableItem) {
 		block.SortableItem = SortableElement(
-			({ value, i, propz, onChangeTitle, onRemoveTitle, toggleTitle }) => (
+			({
+				value,
+				i,
+				propz,
+				onChangeTitle,
+				onRemoveTitle,
+				toggleTitle,
+				onChangeSubTitle,
+			}) => (
 				<div
 					className={`${className}-tab-title-${
 						tabVertical ? "vertical-" : ""
@@ -437,8 +459,14 @@ export const TabHolder = (props) => {
 						borderBottomRightRadius:
 							propz.attributes.tabButtonsBorderRadius?.bottomRight,
 					})}
-					onClick={() => toggleTitle("tab-title", i)}
+					onClick={(e) => {
+						toggleTitle("tab-title", i);
+						checkIsImageSelected && checkIsImageSelected(e);
+						checkIsIconSelected && checkIsIconSelected(e);
+					}}
 				>
+					{TabTitleImageElem && <TabTitleImageElem i={i} {...propz} />}
+					{TabTitleIconElem && <TabTitleIconElem i={i} {...propz} />}
 					<RichText
 						tagName="div"
 						className={`${className}-tab-title`}
@@ -451,6 +479,7 @@ export const TabHolder = (props) => {
 						onChange={(content) => onChangeTitle(content, i)}
 						placeholder={`Tab ${i + 1}`}
 					/>
+					{tabsSubTitleEnabled && TabsSubTitleElem(i, onChangeSubTitle)}
 					<div
 						className={`ub-tab-actions${
 							propz.attributes.tabsTitle.length === 1 ? " ub-hide" : ""
@@ -599,37 +628,52 @@ export const TabHolder = (props) => {
 
 	return [
 		isSelected && (
-			<BlockControls>
-				<ToolbarGroup>
-					{["left", "center", "right"].map((a) => (
-						<ToolbarButton
-							icon={`editor-align${a}`}
-							label={__(`Align Tab Title ${a[0].toUpperCase() + a.slice(1)}`)}
-							isActive={tabsTitleAlignment[activeTab] === a}
-							onClick={() =>
-								setAttributes({
-									tabsTitleAlignment: [
-										...tabsTitleAlignment.slice(0, activeTab),
-										a,
-										...tabsTitleAlignment.slice(activeTab + 1),
-									],
-								})
-							}
-						/>
-					))}
-				</ToolbarGroup>
-				<ToolbarGroup>
-					{["left", "center", "right"].map((a) => (
-						<ToolbarButton
-							icon={`align-${a}`}
-							label={__(`Align Tabs ${a[0].toUpperCase() + a.slice(1)}`)}
-							onClick={() => setAttributes({ tabsAlignment: a })}
-						/>
-					))}
-				</ToolbarGroup>
-			</BlockControls>
+			<>
+				<BlockControls group="block">
+					<BlockAlignmentControl
+						value={align}
+						controls={["wide", "full"]}
+						onChange={(value) => setAttributes({ align: value })}
+					/>
+				</BlockControls>
+				<BlockControls>
+					<ToolbarGroup>
+						{["left", "center", "right"].map((a) => (
+							<ToolbarButton
+								icon={`editor-align${a}`}
+								label={__(`Align Tab Title ${a[0].toUpperCase() + a.slice(1)}`)}
+								isActive={tabsTitleAlignment[activeTab] === a}
+								onClick={() =>
+									setAttributes({
+										tabsTitleAlignment: [
+											...tabsTitleAlignment.slice(0, activeTab),
+											a,
+											...tabsTitleAlignment.slice(activeTab + 1),
+										],
+									})
+								}
+							/>
+						))}
+					</ToolbarGroup>
+					<ToolbarGroup>
+						{["left", "center", "right"].map((a) => (
+							<ToolbarButton
+								icon={`align-${a}`}
+								label={__(`Align Tabs ${a[0].toUpperCase() + a.slice(1)}`)}
+								onClick={() => setAttributes({ tabsAlignment: a })}
+							/>
+						))}
+					</ToolbarGroup>
+				</BlockControls>
+			</>
 		),
-		isSelected && <Inspector {...{ attributes, setAttributes }} />,
+		isSelected && (
+			<Inspector
+				showIconControls={showIconControls}
+				showImageControls={showImageControls}
+				{...{ attributes, setAttributes, ProInspectorControls }}
+			/>
+		),
 		<div {...blockProps}>
 			<div
 				className={`${className}-holder ${
@@ -672,6 +716,7 @@ export const TabHolder = (props) => {
 									isActive: oldIndex === i,
 								});
 							});
+							proOnSortEnd && proOnSortEnd();
 						}}
 						onRemoveTitle={(i) => {
 							setAttributes({
@@ -694,6 +739,7 @@ export const TabHolder = (props) => {
 							);
 
 							showControls("tab-title", 0);
+							proOnRemoveTitle && proOnRemoveTitle(i);
 						}}
 						onAddTab={addTab}
 						toggleTitle={showControls}
@@ -715,11 +761,15 @@ export const TabHolder = (props) => {
 					}`}
 					style={generateStyles(tabContentsStyles)}
 				>
-					<InnerBlocks
-						templateLock={false}
-						allowedBlocks={["ub/tab-block"]}
-						template={[["ub/tab-block"]]}
-					/>
+					{isCTAEnabled && isCTAEnabled ? (
+						CTATab && CTATab
+					) : (
+						<InnerBlocks
+							templateLock={false}
+							allowedBlocks={["ub/tab-block"]}
+							template={[["ub/tab-block"]]}
+						/>
+					)}
 				</div>
 			</div>
 		</div>,
