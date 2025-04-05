@@ -85,15 +85,31 @@ export const TabHolder = (props) => {
       )}
     </i>
   );
-  const TabsSubTitleElem = (i, onChangeSubTitle) => {
+  const onChangeSubTitle = (val, tabIndex) => {
+    const { tabsSubTitle } = attributes;
+
+    const tabsSubTitleToUse = IndexDataRegistry.addToIndexData(
+      val,
+      tabIndex,
+      tabsSubTitle
+    );
+
+    setAttributes({
+      tabsSubTitle: tabsSubTitleToUse,
+    });
+  };
+  const TabsSubTitleElem = (props) => {
+    const { i, attributes } = props;
+    const { tabsSubTitle } = attributes;
+
     return (
       <RichText
         tagName="div"
         className={"tab-sub-title"}
-        value={tabsSubTitle[i]}
+        value={tabsSubTitle[i] ?? ""}
         allowedFormats={["core/bold", "core/italic"]}
         placeholder={__("sub text", "ultimate-blocks-pro")}
-        onChange={(val) => onChangeSubTitle(val, tabIndex)}
+        onChange={(val) => onChangeSubTitle(val, i)}
       />
     );
   };
@@ -105,6 +121,7 @@ export const TabHolder = (props) => {
       tabsImageStatus,
       tabImageWidth,
       tabImageHeight,
+      tabImages,
     } = attributes;
     return (
       <TabTitleImage
@@ -119,8 +136,9 @@ export const TabHolder = (props) => {
   };
 
   const TabTitleIconElem = (props) => {
-    const { i } = props;
-    const { activeTab, tabIconSize, tabsIconStatus } = attributes;
+    const { i, attributes } = props;
+    const { activeTab, tabIconSize, tabsIconStatus, tabIcons } = attributes;
+
     return (
       <TabTitleIcon
         iconIsSelected={activeTab === i && isIconSelected}
@@ -134,9 +152,10 @@ export const TabHolder = (props) => {
     <Inspector
       {...{ attributes, setAttributes }}
       showIconControls={isIconSelected}
-      showImageControls={isIconSelected}
+      showImageControls={isImageSelected}
     />
   );
+  const proTitleClass = ["ub-tabbed-content-with-sub-title"];
   const propProps = {
     TabTitleImageElem,
     TabTitleIconElem,
@@ -151,6 +170,7 @@ export const TabHolder = (props) => {
     tabsSubTitleEnabled,
     TabsSubTitleElem,
     ProInspectorControls,
+    proTitleClass: proTitleClass.join(" "),
   };
   return <BlockEdit {...props} {...propProps} />;
 };

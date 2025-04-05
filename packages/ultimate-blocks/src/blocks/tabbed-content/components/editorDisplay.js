@@ -334,6 +334,7 @@ export const TabHolder = (props) => {
 		tabsSubTitleEnabled,
 		TabsSubTitleElem,
 		ProInspectorControls,
+		proTitleClass,
 	} = props;
 	const { oldArrangement } = state;
 
@@ -415,24 +416,15 @@ export const TabHolder = (props) => {
 	const DragHandle = SortableHandle(() => (
 		<span className="dashicons dashicons-move drag-handle" />
 	));
-
 	if (!block.SortableItem) {
 		block.SortableItem = SortableElement(
-			({
-				value,
-				i,
-				propz,
-				onChangeTitle,
-				onRemoveTitle,
-				toggleTitle,
-				onChangeSubTitle,
-			}) => (
+			({ value, i, propz, onChangeTitle, onRemoveTitle, toggleTitle }) => (
 				<div
 					className={`${className}-tab-title-${
 						tabVertical ? "vertical-" : ""
 					}wrap SortableItem${
 						propz.attributes.activeTab === i ? " active" : ""
-					}`}
+					}${proTitleClass ? " " + proTitleClass : ""}`}
 					style={generateStyles({
 						textAlign: propz.attributes.tabsTitleAlignment[i],
 						backgroundColor:
@@ -479,7 +471,7 @@ export const TabHolder = (props) => {
 						onChange={(content) => onChangeTitle(content, i)}
 						placeholder={`Tab ${i + 1}`}
 					/>
-					{tabsSubTitleEnabled && TabsSubTitleElem(i, onChangeSubTitle)}
+					{propz?.tabsSubTitleEnabled && <TabsSubTitleElem i={i} {...propz} />}
 					<div
 						className={`ub-tab-actions${
 							propz.attributes.tabsTitle.length === 1 ? " ub-hide" : ""
