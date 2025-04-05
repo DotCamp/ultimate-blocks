@@ -254,5 +254,6 @@
 	},
 	"editorStyle": "ultimate_blocks-cgb-block-editor-css",
 	"editorScript": "ultimate_blocks-cgb-block-js",
-	"style": "ultimate_blocks-cgb-style-css"
+	"style": "ultimate_blocks-cgb-style-css",
+	"viewScript": "ultimate_blocks-advanced-video-front-script"
 }

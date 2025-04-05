@@ -116,22 +116,13 @@ function ub_register_advanced_video_block() {
 }
 
 function ub_advanced_video_add_frontend_assets() {
-    require_once dirname(dirname(__DIR__)) . '/common.php';
-
-    $presentBlocks = ub_getPresentBlocks();
-
-    foreach( $presentBlocks as $block ){
-        if($block['blockName'] === 'ub/advanced-video'){
-            wp_enqueue_script(
-                'ultimate_blocks-advanced-video-front-script',
-                plugins_url( 'advanced-video/front.build.js', dirname( __FILE__ ) ),
-                array( ),
-                Ultimate_Blocks_Constants::plugin_version(),
-                true
-            );
-            break;
-        }
-    }
+    wp_register_script(
+		'ultimate_blocks-advanced-video-front-script',
+		plugins_url( 'advanced-video/front.build.js', dirname( __FILE__ ) ),
+		array( ),
+		Ultimate_Blocks_Constants::plugin_version(),
+		true
+	);
 }
 
 add_action( 'wp_enqueue_scripts', 'ub_advanced_video_add_frontend_assets' );
