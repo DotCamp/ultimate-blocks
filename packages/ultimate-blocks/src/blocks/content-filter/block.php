@@ -161,22 +161,13 @@ function ub_register_content_filter_block(){
 }
 
 function ub_content_filter_add_frontend_assets() {
-    require_once dirname(dirname(__DIR__)) . '/common.php';
-
-    $presentBlocks = ub_getPresentBlocks();
-
-    foreach( $presentBlocks as $block ){
-        if($block['blockName'] === 'ub/content-filter' || $block['blockName'] === 'ub/content-filter-block'){
-            wp_enqueue_script(
-                'ultimate_blocks-content-filter-front-script',
-                plugins_url( 'content-filter/front.build.js', dirname( __FILE__ ) ),
-                array( ),
-                Ultimate_Blocks_Constants::plugin_version(),
-                true
-            );
-            break;
-        }
-    }
+	wp_register_script(
+		'ultimate_blocks-content-filter-front-script',
+		plugins_url( 'content-filter/front.build.js', dirname( __FILE__ ) ),
+		array( ),
+		Ultimate_Blocks_Constants::plugin_version(),
+		true
+	);
 }
 
 add_action( 'wp_enqueue_scripts', 'ub_content_filter_add_frontend_assets' );
