@@ -184,21 +184,13 @@ function ub_register_countdown_block() {
 add_action( 'init', 'ub_register_countdown_block' );
 
 function ub_countdown_add_frontend_assets() {
-    require_once dirname(dirname(__DIR__)) . '/common.php';
-
-    $presentBlocks = ub_getPresentBlocks();
-
-    foreach( $presentBlocks as $block ){
-        if($block['blockName'] === 'ub/countdown'){
-            wp_enqueue_script(
-                'ultimate_blocks-countdown-script',
-                plugins_url( 'countdown/front.build.js', dirname( __FILE__ ) ),
-                array(  ),
-                Ultimate_Blocks_Constants::plugin_version(),
-                true
-            );
-        }
-    }
+    wp_register_script(
+		'ultimate_blocks-countdown-script',
+		plugins_url( 'countdown/front.build.js', dirname( __FILE__ ) ),
+		array(  ),
+		Ultimate_Blocks_Constants::plugin_version(),
+		true
+	);
 }
 
 add_action( 'wp_enqueue_scripts', 'ub_countdown_add_frontend_assets' );
