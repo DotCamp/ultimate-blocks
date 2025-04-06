@@ -3,7 +3,16 @@
 function ub_render_table_of_contents_block($attributes, $_, $block){
     extract($attributes);
 	$block_attrs = $block->parsed_block['attrs'];
-
+	 if(isset($block_attrs['enableSmoothScroll']) && $block_attrs['enableSmoothScroll']
+		&& !wp_script_is('ultimate_blocks-scrollby-polyfill', 'queue')){
+		wp_enqueue_script(
+		'ultimate_blocks-scrollby-polyfill',
+		plugins_url( 'scrollby-polyfill.js', dirname( __FILE__ ) ),
+		array(),
+		Ultimate_Blocks_Constants::plugin_version(),
+		true
+		);
+	}
     $linkArray = json_decode($links, true);
 	$linkArray = is_null($linkArray) ? [] : $linkArray;
 	$is_link_to_divider = isset($linkToDivider) && $linkToDivider;
@@ -253,31 +262,13 @@ function ub_register_table_of_contents_block() {
 }
 
 function ub_table_of_contents_add_frontend_assets() {
-    require_once dirname(dirname(__DIR__)) . '/common.php';
-
-    $presentBlocks = ub_getPresentBlocks();
-
-    foreach( $presentBlocks as $block ){
-        if($block['blockName'] === 'ub/table-of-contents' || $block['blockName'] === 'ub/table-of-contents-block'){
-            wp_enqueue_script(
-                'ultimate_blocks-table-of-contents-front-script',
-                plugins_url( 'table-of-contents/front.build.js', dirname( __FILE__ ) ),
-                array( ),
-                Ultimate_Blocks_Constants::plugin_version(),
-                true
-            );
-            if(isset($block['attrs']['enableSmoothScroll']) && $block['attrs']['enableSmoothScroll']
-                && !wp_script_is('ultimate_blocks-scrollby-polyfill', 'queue')){
-                wp_enqueue_script(
-                    'ultimate_blocks-scrollby-polyfill',
-                    plugins_url( 'scrollby-polyfill.js', dirname( __FILE__ ) ),
-                    array(),
-                    Ultimate_Blocks_Constants::plugin_version(),
-                    true
-                );
-            }
-        }
-    }
+	wp_register_script(
+		'ultimate_blocks-table-of-contents-front-script',
+		plugins_url( 'table-of-contents/front.build.js', dirname( __FILE__ ) ),
+		array( ),
+		Ultimate_Blocks_Constants::plugin_version(),
+		true
+	);
 }
 
 add_action('init', 'ub_register_table_of_contents_block');
