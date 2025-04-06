@@ -252,22 +252,13 @@ function ub_render_button_block($attributes, $_, $block){
 }
 
 function ub_button_add_frontend_assets() {
-    require_once dirname(dirname(__DIR__)) . '/common.php';
-
-    $presentBlocks = ub_getPresentBlocks();
-
-    foreach( $presentBlocks as $block ){
-        if(($block['blockName'] === 'ub/button' && !isset($block['attrs']['blockID'])) || $block['blockName'] === 'ub/button-block'){
-            wp_enqueue_script(
-                'ultimate_blocks-button-front-script',
-                plugins_url( 'button/front.build.js', dirname( __FILE__ ) ),
-                array( ),
-                Ultimate_Blocks_Constants::plugin_version(),
-                true
-            );
-            break;
-        }
-    }
+    wp_register_script(
+		'ultimate_blocks-button-front-script',
+		plugins_url( 'button/front.build.js', dirname( __FILE__ ) ),
+		array( ),
+		Ultimate_Blocks_Constants::plugin_version(),
+		true
+	);
 }
 
 function ub_register_button_block() {
