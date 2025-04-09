@@ -53,7 +53,7 @@ export default registerBlockType(metadata.name, {
 		},
 	},
 	edit: (props) => {
-		const { attributes, setAttributes } = props;
+		const { attributes, setAttributes, postType } = props;
 		const {
 			postLayout,
 			wrapAlignment,
@@ -91,7 +91,11 @@ export default registerBlockType(metadata.name, {
 			);
 
 			return {
-				posts: getEntityRecords("postType", "post", getPosts),
+				posts: getEntityRecords(
+					"postType",
+					postType ? postType : "post",
+					getPosts,
+				),
 			};
 		});
 		const blockProps = useBlockProps();

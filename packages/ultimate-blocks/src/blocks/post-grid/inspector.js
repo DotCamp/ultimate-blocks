@@ -146,6 +146,13 @@ export default function Inspector(props) {
 		},
 		setAttributes,
 		posts,
+		customPostTypeSelector,
+		paginationPanel,
+		taxonomySettings,
+		displayTaxonomyControl,
+		loadMoreBorderRadius,
+		proNormalStateColors,
+		proHoverStateColors,
 	} = props;
 
 	useEffect(() => {
@@ -247,6 +254,7 @@ export default function Inspector(props) {
 				attrGradientKey="postBackgroundGradient"
 				label={__("Post Background", "ultimate-blocks")}
 			/>
+			{proNormalStateColors && proNormalStateColors}
 		</>
 	);
 	const hoverStateColors = (
@@ -281,6 +289,7 @@ export default function Inspector(props) {
 				attrGradientKey="postBackgroundGradientHover"
 				label={__("Post Background", "ultimate-blocks")}
 			/>
+			{proHoverStateColors && proHoverStateColors}
 		</>
 	);
 	return (
@@ -327,6 +336,7 @@ export default function Inspector(props) {
 					/>
 				</PanelBody>
 				<PanelBody title={__("Query", "ultimate-blocks")} initialOpen={false}>
+					{customPostTypeSelector && customPostTypeSelector}
 					<p>{__("Authors")}</p>
 					{authorArray && (
 						<div className="ub-autocomplete-container">
@@ -518,7 +528,9 @@ export default function Inspector(props) {
 						min={1}
 						max={100}
 					/>
+					{taxonomySettings && taxonomySettings}
 				</PanelBody>
+				{paginationPanel && paginationPanel}
 				{Array.isArray(posts) && posts.length > 0 && (
 					<PanelBody
 						title={__("Display", "ultimate-blocks")}
@@ -615,6 +627,7 @@ export default function Inspector(props) {
 								onChange={(postTitleTag) => setAttributes({ postTitleTag })}
 							/>
 						)}
+						{displayTaxonomyControl && displayTaxonomyControl}
 					</PanelBody>
 				)}
 			</InspectorControls>
@@ -681,6 +694,7 @@ export default function Inspector(props) {
 					attrBorderRadiusKey="linkBorderRadius"
 					borderRadiusLabel={__("Link Border Radius", "ultimate-blocks")}
 				/>
+				{loadMoreBorderRadius && loadMoreBorderRadius}
 			</InspectorControls>
 		</>
 	);

@@ -53,6 +53,12 @@ export default function PostGridBlock(props) {
 		},
 		className,
 		posts,
+		getPostTerms,
+		displayTaxonomy,
+		renderTerms,
+		taxonomyPosition,
+		LoadMorePaginationElem,
+		NumberPaginationElem,
 	} = props;
 	const postPaddingObj = getSpacingCss(postPadding ?? {});
 	const sectionPadding = getSpacingCss(padding ?? {});
@@ -154,109 +160,123 @@ export default function PostGridBlock(props) {
 				}`}
 				style={generateStyles(gridStyles)}
 			>
-				{posts?.map((post, i) => (
-					<article
-						style={generateStyles(postStyles)}
-						key={i}
-						id={`post-${post.id}`}
-						className={`post-${post.id}${
-							post.featured_image_src && checkPostImage
-								? " has-post-thumbnail"
-								: ""
-						}
+				{posts?.map((post, i) => {
+					const { terms, isResolved } = getPostTerms && getPostTerms(post);
+					const shouldShowTerms =
+						isResolved && !isEmpty(terms) && displayTaxonomy;
+
+					return (
+						<article
+							style={generateStyles(postStyles)}
+							key={i}
+							id={`post-${post.id}`}
+							className={`post-${post.id}${
+								post.featured_image_src && checkPostImage
+									? " has-post-thumbnail"
+									: ""
+							}
 					`}
-					>
-						<>
-							{checkPostImage && post.featured_media ? (
-								<div
-									className="ub-block-post-grid-image"
-									style={generateStyles(imageStyles)}
-								>
-									<FeaturedImage
-										{...props}
-										imgID={post.featured_media}
-										imgSizeLandscape={post.featured_image_src}
-									/>
-								</div>
-							) : null}
-							<div
-								className="ub-block-post-grid-text"
-								style={generateStyles(contentStyles)}
-							>
-								<header className="ub_block-post-grid-header">
-									{checkPostTitle && (
-										<PostTag className="ub-block-post-grid-title">
-											<a
-												href={post.link}
-												target="_blank"
-												rel="bookmark"
-												style={generateStyles(titleStyles)}
-											>
-												{decodeEntities(post.title.rendered.trim()) ||
-													__("(Untitled)", "ultimate-blocks")}
-											</a>
-										</PostTag>
-									)}
-									{checkPostAuthor && (
-										<div
-											className="ub-block-post-grid-author"
-											style={generateStyles(authorStyles)}
-										>
-											<a
-												className="ub-text-link"
-												target="_blank"
-												href={post.author_info.author_link}
-											>
-												{post.author_info.display_name}
-											</a>
-										</div>
-									)}
-									{checkPostDate && (
-										<time
-											dateTime={moment(post.date_gmt).utc().format()}
-											className={"ub-block-post-grid-date"}
-											style={generateStyles(dateStyles)}
-										>
-											{moment(post.date_gmt)
-												.local()
-												.format("MMMM DD, Y", "ultimate-blocks")}
-										</time>
-									)}
-								</header>
-								<div
-									className="ub-block-post-grid-excerpt"
-									style={generateStyles(excerptStyles)}
-								>
-									{checkPostExcerpt && (
-										<div
-											className="ub-block-post-grid-excerpt-text"
-											dangerouslySetInnerHTML={{
-												__html: cateExcerpt(
-													post.excerpt.rendered,
-													excerptLength,
-												),
-											}}
+						>
+							<>
+								{checkPostImage && post.featured_media ? (
+									<div
+										className="ub-block-post-grid-image"
+										style={generateStyles(imageStyles)}
+									>
+										<FeaturedImage
+											{...props}
+											imgID={post.featured_media}
+											imgSizeLandscape={post.featured_image_src}
 										/>
-									)}
-									{checkPostLink && (
-										<p>
-											<a
-												className="ub-block-post-grid-more-link ub-text-link"
-												href={post.link}
-												target="_blank"
-												rel="bookmark"
-												style={generateStyles(linkStyles)}
+									</div>
+								) : null}
+								<div
+									className="ub-block-post-grid-text"
+									style={generateStyles(contentStyles)}
+								>
+									{shouldShowTerms &&
+										taxonomyPosition === "above-title" &&
+										renderTerms(terms)}
+									<header className="ub_block-post-grid-header">
+										{checkPostTitle && (
+											<PostTag className="ub-block-post-grid-title">
+												<a
+													href={post.link}
+													target="_blank"
+													rel="bookmark"
+													style={generateStyles(titleStyles)}
+												>
+													{decodeEntities(post.title.rendered.trim()) ||
+														__("(Untitled)", "ultimate-blocks")}
+												</a>
+											</PostTag>
+										)}
+										{checkPostAuthor && (
+											<div
+												className="ub-block-post-grid-author"
+												style={generateStyles(authorStyles)}
 											>
-												{readMoreText}
-											</a>
-										</p>
-									)}
+												<a
+													className="ub-text-link"
+													target="_blank"
+													href={post?.author_info?.author_link}
+												>
+													{post?.author_info?.display_name}
+												</a>
+											</div>
+										)}
+										{checkPostDate && (
+											<time
+												dateTime={moment(post.date_gmt).utc().format()}
+												className={"ub-block-post-grid-date"}
+												style={generateStyles(dateStyles)}
+											>
+												{moment(post.date_gmt)
+													.local()
+													.format("MMMM DD, Y", "ultimate-blocks")}
+											</time>
+										)}
+										{shouldShowTerms &&
+											taxonomyPosition === "with-meta" &&
+											renderTerms(terms)}
+									</header>
+									<div
+										className="ub-block-post-grid-excerpt"
+										style={generateStyles(excerptStyles)}
+									>
+										{checkPostExcerpt && (
+											<div
+												className="ub-block-post-grid-excerpt-text"
+												dangerouslySetInnerHTML={{
+													__html: cateExcerpt(
+														post.excerpt.rendered,
+														excerptLength,
+													),
+												}}
+											/>
+										)}
+										{checkPostLink && (
+											<p>
+												<a
+													className="ub-block-post-grid-more-link ub-text-link"
+													href={post.link}
+													target="_blank"
+													rel="bookmark"
+													style={generateStyles(linkStyles)}
+												>
+													{readMoreText}
+												</a>
+											</p>
+										)}
+									</div>
 								</div>
-							</div>
-						</>
-					</article>
-				))}
+							</>
+						</article>
+					);
+				})}
 			</div>
+			{NumberPaginationElem && NumberPaginationElem}
+			{LoadMorePaginationElem && LoadMorePaginationElem}
 		</section>
 	);
 }
